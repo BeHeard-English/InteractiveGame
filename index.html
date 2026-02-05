@@ -1,1136 +1,597 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be Heard - Interactive Learning</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Be Heard | Bubble Pop</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            /* Base Variables */
-            --font-main: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
-            --transition-speed: 0.3s;
+            /* Default Theme: Spring */
+            --bg-gradient-home: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            --primary-btn: #ff6b6b;
+            --font-main: 'Nunito', sans-serif;
         }
 
-        /* Themes */
-        .theme-spring {
-            --bg-color: #fce4ec;
-            --bg-gradient: linear-gradient(135deg, #fce4ec 0%, #e8f5e9 100%);
-            --primary-color: #66bb6a;
-            --secondary-color: #f06292;
-            --text-color: #2e7d32;
-            --card-bg: #ffffff;
-            --highlight: #a5d6a7;
+        /* THEMES */
+        .theme-spring { 
+            --bg-gradient-home: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%); 
+            --primary-btn: #4facfe; 
+            --game-bg: linear-gradient(135deg, rgba(161, 196, 253, 0.1) 0%, rgba(194, 233, 251, 0.1) 100%);
+        }
+        .theme-summer { 
+            --bg-gradient-home: linear-gradient(120deg, #f6d365 0%, #fda085 100%); 
+            --primary-btn: #fa709a; 
+            --game-bg: linear-gradient(135deg, rgba(246, 211, 101, 0.1) 0%, rgba(253, 160, 133, 0.1) 100%);
+        }
+        .theme-autumn { 
+            --bg-gradient-home: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%); 
+            --primary-btn: #ff9966; 
+            --game-bg: linear-gradient(135deg, rgba(212, 252, 121, 0.1) 0%, rgba(150, 230, 161, 0.1) 100%);
+        }
+        .theme-winter { 
+            --bg-gradient-home: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%); 
+            --primary-btn: #a18cd1; 
+            --game-bg: linear-gradient(135deg, rgba(224, 195, 252, 0.1) 0%, rgba(142, 197, 252, 0.1) 100%);
         }
 
-        .theme-summer {
-            --bg-color: #fffde7;
-            --bg-gradient: linear-gradient(135deg, #fffde7 0%, #e1f5fe 100%);
-            --primary-color: #29b6f6;
-            --secondary-color: #fbc02d;
-            --text-color: #0277bd;
-            --card-bg: #ffffff;
-            --highlight: #b3e5fc;
+        * { box-sizing: border-box; user-select: none; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body { 
+            width: 100vw; height: 100vh; overflow: hidden; 
+            font-family: var(--font-main); 
+            background: var(--bg-gradient-home);
+            transition: background 0.5s ease;
         }
 
-        .theme-autumn {
-            --bg-color: #fff3e0;
-            --bg-gradient: linear-gradient(135deg, #fff3e0 0%, #d7ccc8 100%);
-            --primary-color: #ef6c00;
-            --secondary-color: #8d6e63;
-            --text-color: #e65100;
-            --card-bg: #ffffff;
-            --highlight: #ffe0b2;
-        }
-
-        .theme-winter {
-            --bg-color: #e3f2fd;
-            --bg-gradient: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
-            --primary-color: #42a5f5;
-            --secondary-color: #78909c;
-            --text-color: #1565c0;
-            --card-bg: #ffffff;
-            --highlight: #bbdefb;
-        }
-
-        * { 
-            box-sizing: border-box; 
-            user-select: none; 
-            margin: 0;
-            padding: 0;
-        }
-        
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            font-family: var(--font-main);
-        }
-        
-        body {
-            background: var(--bg-gradient);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            transition: background 1s ease;
-        }
-
-        /* UI Containers */
+        /* SCREEN & HOME */
         .screen {
-            display: none;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-            padding: 15px;
-            align-items: center;
-            justify-content: center;
-            position: absolute;
-            top: 0;
-            left: 0;
-            animation: fadeIn 0.5s;
-            overflow: hidden;
+            display: none; position: absolute; width: 100%; height: 100%;
+            flex-direction: column; align-items: center; justify-content: center;
+            padding: 15px; animation: fadeIn 0.5s; z-index: 10;
         }
+        .screen.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .screen.active { 
-            display: flex; 
-        }
-
-        @keyframes fadeIn { 
-            from { opacity: 0; } 
-            to { opacity: 1; } 
-        }
-
-        /* General UI Elements */
-        h1 { 
-            font-size: clamp(1.8rem, 5vw, 3rem); 
-            margin-bottom: 15px; 
-            text-shadow: 2px 2px 0px rgba(255,255,255,0.5); 
-            text-align: center; 
-            line-height: 1.2;
-        }
-        
-        h2 { 
-            font-size: clamp(1.3rem, 3.5vw, 2rem); 
-            margin: 8px 0; 
-            line-height: 1.2;
-        }
-        
-        button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: clamp(12px, 2vw, 20px) clamp(20px, 4vw, 40px);
-            font-size: clamp(1rem, 2.5vw, 1.5rem);
-            font-family: var(--font-main);
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 6px 0 rgba(0,0,0,0.1);
-            transition: transform 0.1s, background-color 0.3s;
-            margin: 8px;
-            font-weight: bold;
-            min-height: 44px; /* Tối thiểu cho touch */
-        }
-
-        button:active { 
-            transform: translateY(4px); 
-            box-shadow: 0 2px 0 rgba(0,0,0,0.1); 
-        }
-        
-        button:hover { 
-            filter: brightness(1.1); 
-        }
-
-        .btn-secondary { 
-            background-color: var(--secondary-color); 
-            font-size: clamp(0.9rem, 2vw, 1.2rem); 
-            padding: clamp(10px, 1.5vw, 15px) clamp(15px, 3vw, 30px); 
-        }
-
-        /* Home Screen Specifics */
+        #screen-home { overflow-y: auto; }
         .setup-container {
-            background: rgba(255,255,255,0.95);
-            padding: clamp(20px, 3vw, 40px);
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-            max-width: min(900px, 95vw);
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: clamp(15px, 2vw, 25px);
-            max-height: min(90vh, 800px);
-            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: clamp(20px, 4vw, 40px); border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            width: 95%; max-width: 600px; text-align: center;
         }
+        h1 { font-size: clamp(2rem, 5vw, 3.5rem); color: #333; margin-bottom: 15px; font-weight: 900; }
+        .section-title { font-size: 1.1rem; color: #555; margin: 15px 0 5px; font-weight: 800; text-align: left; }
         
-        .full-width { 
-            grid-column: span 2; 
-        }
-
-        textarea {
-            width: 100%;
-            height: clamp(120px, 20vh, 200px);
-            border: 3px solid var(--primary-color);
-            border-radius: 12px;
-            padding: 12px;
-            font-family: inherit;
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .file-input-wrapper {
-            border: 3px dashed var(--secondary-color);
-            padding: clamp(20px, 3vw, 30px);
-            text-align: center;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            transition: background 0.3s;
-        }
-
-        .file-input-wrapper:hover {
-            background: rgba(255,255,255,0.8);
-        }
-
-        .theme-selector { 
-            display: flex; 
-            gap: clamp(10px, 1.5vw, 15px); 
-            justify-content: center; 
-            margin-top: 10px; 
-        }
-        
+        .theme-selector { display: flex; gap: 15px; justify-content: center; margin: 15px 0; }
         .theme-btn {
-            width: clamp(40px, 6vw, 50px); 
-            height: clamp(40px, 6vw, 50px); 
-            border-radius: 50%; 
-            border: 3px solid white; 
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
+            width: 45px; height: 45px; border-radius: 50%; cursor: pointer;
+            border: 3px solid white; box-shadow: 0 3px 10px rgba(0,0,0,0.2); transition: 0.2s;
+        }
+        .theme-btn:hover, .theme-btn.active { transform: scale(1.15); border-color: #333; }
+
+        textarea { 
+            width: 100%; height: 120px; border: 2px solid #ddd; border-radius: 15px;
+            padding: 15px; font-size: 1rem; font-family: inherit; font-weight: 600;
+            resize: none; outline: none; margin-bottom: 10px;
+        }
+        .btn-upload {
+            background: #f0f0f0; color: #555; border: 2px dashed #bbb;
+            padding: 12px; border-radius: 12px; cursor: pointer; display: block; width: 100%; font-weight: 700;
+        }
+        .btn-start {
+            background: var(--primary-btn); color: white; border: none;
+            padding: 15px 40px; border-radius: 50px; font-size: 1.5rem; font-weight: 900;
+            cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2); margin-top: 15px; width: 100%;
         }
 
-        .theme-btn:hover {
-            transform: scale(1.1);
+        /* GAME SCREEN (Sử dụng theme từ trang đầu) */
+        #screen-game { 
+            background: var(--game-bg);
+            position: relative;
+            overflow: hidden;
         }
-
-        /* Game Screen - OPTIMIZED FOR ALL DEVICES */
         .game-header {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: clamp(8px, 1.5vw, 15px) clamp(15px, 2vw, 30px);
-            background: rgba(255,255,255,0.8);
-            border-radius: 0 0 20px 20px;
-            flex-shrink: 0;
-            flex-wrap: wrap;
-            gap: 10px;
-            min-height: 60px;
+            position: absolute; top: 0; left: 0; width: 100%;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; z-index: 50; background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(5px); border-bottom: 1px solid #eee;
+        }
+        .stat-box { font-size: clamp(1rem, 2.5vw, 1.4rem); font-weight: 800; color: #333; }
+        .btn-mute {
+            background: #eee; border: none; padding: 8px 15px; border-radius: 20px;
+            font-weight: 700; cursor: pointer; font-family: inherit;
+        }
+        #question-display {
+            position: absolute; top: 12%; width: 90%; text-align: center;
+            font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; color: #333; z-index: 40;
+            padding: 10px; background: rgba(240, 240, 240, 0.5); border-radius: 20px;
         }
 
-        .stats-box { 
-            font-size: clamp(1rem, 2.5vw, 1.5rem); 
-            font-weight: bold;
-            padding: clamp(5px, 1vw, 10px) clamp(10px, 2vw, 20px);
-            background: rgba(255,255,255,0.9);
-            border-radius: 12px;
-            min-width: min(120px, 25vw);
-            text-align: center;
-            white-space: nowrap;
-        }
-
-        .game-main-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            height: calc(100% - 70px);
-            padding: clamp(10px, 1.5vw, 20px);
-            overflow: hidden;
-        }
-
-        .question-container {
-            width: 100%;
-            padding: clamp(15px, 2vw, 30px);
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            text-align: center;
-            font-size: clamp(1.5rem, 4vw, 2.8rem);
-            color: var(--text-color);
-            font-weight: 900;
-            z-index: 10;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            word-break: break-word;
-            line-height: 1.3;
-            margin-bottom: clamp(10px, 2vw, 20px);
-            max-height: 25vh;
-            overflow-y: auto;
-        }
-
-        .answers-grid-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .answers-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            gap: clamp(10px, 1.5vw, 20px);
-            width: 100%;
-            height: 100%;
-            max-height: 100%;
-            padding: clamp(5px, 1vw, 10px);
-            align-content: center;
-            justify-items: center;
-            overflow: hidden;
-        }
-
-        .answer-card {
-            background: var(--card-bg);
-            border: clamp(3px, 0.5vw, 5px) solid var(--primary-color);
-            border-radius: 15px;
-            padding: clamp(10px, 1.5vw, 20px);
-            text-align: center;
-            font-size: clamp(1rem, 2.5vw, 2rem);
-            font-weight: 900;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            box-shadow: 0 6px 0 rgba(0,0,0,0.1);
-            width: 100%;
-            height: 100%;
-            min-height: 0;
-            word-break: break-word;
-            overflow: hidden;
-            line-height: 1.2;
-            touch-action: manipulation;
-        }
-
-        .answer-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 0 rgba(0,0,0,0.1);
-        }
-
-        .answer-card.correct { 
-            background-color: #a5d6a7; 
-            border-color: #2e7d32; 
-            color: #1b5e20; 
-            animation: pop 0.5s;
-            transform: scale(1.02);
-        }
-        
-        .answer-card.incorrect { 
-            background-color: #ef9a9a; 
-            border-color: #c62828; 
-            color: #b71c1c; 
-            opacity: 0.8; 
-        }
-
-        @keyframes pop { 
-            0% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-            100% { transform: scale(1.02); }
-        }
-
-        /* Camera & Hand Tracking */
-        #camera-container {
-            position: fixed;
-            bottom: 15px;
-            right: 15px;
-            width: min(180px, 25vw);
-            height: min(135px, 18vw);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 3px solid white;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-            z-index: 100;
-            background: black;
-        }
-        
-        #input_video { 
-            transform: scaleX(-1); 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-        }
-        
-        /* Custom Hand Cursor */
-        #hand-cursor {
-            position: fixed;
-            width: clamp(60px, 8vw, 80px);
-            height: clamp(60px, 8vw, 80px);
-            pointer-events: none;
-            z-index: 9999;
-            display: none;
-            transform: translate(-50%, -50%);
-        }
-
-        .cursor-circle {
-            width: 100%; 
-            height: 100%;
-            border: clamp(3px, 0.5vw, 5px) solid var(--primary-color);
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.4);
-            position: relative;
-            transition: all 0.2s;
-        }
-
-        .cursor-progress {
+        /* --- BUBBLE STYLE (GLOSSY & REALISTIC) --- */
+        .answer-bubble {
             position: absolute;
-            top: -5px; 
-            left: -5px; 
-            right: -5px; 
-            bottom: -5px;
+            width: clamp(130px, 22vw, 200px);
+            height: clamp(130px, 22vw, 200px);
             border-radius: 50%;
-            border: 5px solid transparent;
-            border-top-color: var(--secondary-color);
-            transform: rotate(0deg);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 10px;
+            
+            /* Text Style với viền glow trắng */
+            color: #000;
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            font-weight: 800;
+            line-height: 1.1;
+            word-break: break-word;
+            text-shadow: 
+                0 0 8px rgba(255, 255, 255, 0.9),
+                0 0 12px rgba(255, 255, 255, 0.7),
+                0 0 20px rgba(255, 255, 255, 0.5);
+            
+            /* Hiệu ứng thủy tinh cầu nâng cao */
+            background: radial-gradient(
+                circle at 25% 25%, 
+                rgba(255, 255, 255, 0.98) 0%, 
+                rgba(255, 255, 255, 0.6) 15%, 
+                rgba(255, 255, 255, 0.3) 30%, 
+                var(--bubble-color) 65%, 
+                var(--bubble-border) 100%
+            );
+            
+            /* Bóng đổ và ánh sáng */
+            box-shadow: 
+                inset 2px 2px 20px rgba(255, 255, 255, 0.8),
+                inset -5px -5px 20px rgba(0, 0, 0, 0.15),
+                0 8px 25px rgba(0, 0, 0, 0.2),
+                0 0 30px rgba(255, 255, 255, 0.3) inset;
+            
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: transform 0.15s ease-out, filter 0.2s;
+            z-index: 20;
+            filter: brightness(1);
+            overflow: hidden;
+        }
+
+        /* Hiệu ứng phản chiếu thực tế */
+        .answer-bubble::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle at 40% 40%,
+                rgba(255, 255, 255, 0.4) 0%,
+                rgba(255, 255, 255, 0) 50%
+            );
+            pointer-events: none;
+        }
+
+        /* Đốm sáng chính (specular highlight) */
+        .answer-bubble::after {
+            content: '';
+            position: absolute;
+            top: 12%; left: 15%; width: 28%; height: 15%;
+            border-radius: 50%;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(255, 255, 255, 0.95) 0%,
+                rgba(255, 255, 255, 0.1) 70%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(-35deg);
+            filter: blur(0.5px);
+            pointer-events: none;
+        }
+
+        /* Hiệu ứng hover */
+        .answer-bubble:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .pop-animation { animation: pop 0.3s forwards ease-out; }
+        @keyframes pop {
+            0% { transform: scale(1); opacity: 1; filter: brightness(1); }
+            50% { transform: scale(1.4); opacity: 0.7; filter: brightness(1.5); }
+            100% { transform: scale(0); opacity: 0; filter: brightness(0); }
+        }
+
+        /* Hiệu ứng hoa giấy */
+        .paper-flower {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f, #4d96ff);
+            border-radius: 50% 20% 50% 20%;
             opacity: 0;
-            transition: opacity 0.2s;
+            pointer-events: none;
+            z-index: 30;
+            animation: flowerFloat 1.5s ease-out forwards;
         }
 
-        /* Cursor states */
-        .grabbing .cursor-circle { 
-            background: rgba(255, 255, 255, 0.8); 
-            transform: scale(0.85); 
-            border-color: var(--secondary-color);
-        }
-        
-        .pointing .cursor-circle {
-            background: rgba(255, 255, 255, 0.6);
-            border-color: #FF9800;
-            transform: scale(1.1);
-        }
-        
-        .grabbing .cursor-progress, 
-        .pointing .cursor-progress { 
-            opacity: 1; 
+        @keyframes flowerFloat {
+            0% { 
+                transform: translate(0, 0) rotate(0deg) scale(0); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translate(var(--tx, 100px), var(--ty, -150px)) rotate(720deg) scale(1); 
+                opacity: 0; 
+            }
         }
 
-        /* Overlays */
-        .overlay {
-            position: fixed;
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            color: white;
-            text-align: center;
-            padding: 20px;
+        /* Hiệu ứng mặt buồn */
+        .sad-face {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 30;
+            animation: sadFloat 1s ease-out forwards;
         }
 
-        .overlay.active { 
-            display: flex; 
+        @keyframes sadFloat {
+            0% { 
+                transform: translate(-50%, -50%) scale(0.5); 
+                opacity: 0; 
+            }
+            30% { 
+                transform: translate(-50%, -50%) scale(1.2); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translate(-50%, -150%) scale(1); 
+                opacity: 0; 
+            }
         }
 
-        /* Results Table */
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin-top: 20px; 
-            background: white; 
-            color: black; 
-            border-radius: 15px; 
-            overflow: hidden; 
-            font-size: clamp(1rem, 2vw, 1.3rem);
+        /* CAMERA & HAND */
+        #camera-container {
+            position: fixed; bottom: 15px; right: 15px;
+            width: clamp(100px, 20vw, 150px); height: clamp(75px, 15vw, 110px);
+            border: 3px solid #333; border-radius: 12px;
+            overflow: hidden; background: #000; z-index: 100;
         }
+        #input_video { transform: scaleX(-1); width: 100%; height: 100%; object-fit: cover; }
         
-        th, td { 
-            padding: clamp(10px, 1.5vw, 20px); 
-            text-align: center; 
-            border-bottom: 2px solid #ddd; 
+        #hand-cursor {
+            position: fixed; width: 50px; height: 50px;
+            border: 4px solid #ff3333; border-radius: 50%;
+            transform: translate(-50%, -50%); pointer-events: none; z-index: 999;
+            background: rgba(255, 255, 255, 0.3); display: none;
         }
-        
-        th { 
-            background-color: var(--primary-color); 
-            color: white; 
-            font-size: clamp(1.1rem, 2vw, 1.5rem);
-        }
-        
-        .winner-row { 
-            background-color: #fff9c4; 
-            font-weight: bold; 
-            border: 3px solid #fbc02d; 
-        }
+        #hand-cursor.grabbing { background: rgba(255, 51, 51, 0.5); transform: translate(-50%, -50%) scale(0.8); }
 
-        /* Utility */
-        .hidden { 
-            display: none !important; 
-        }
-        
-        /* Responsive Adjustments */
-        @media (max-width: 1024px) {
-            .answers-grid {
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(3, 1fr);
-                gap: 15px;
-            }
-            
-            .question-container {
-                font-size: clamp(1.3rem, 3.5vw, 2.2rem);
-                padding: 20px;
-                max-height: 22vh;
-            }
-            
-            .answer-card {
-                font-size: clamp(0.9rem, 2.2vw, 1.6rem);
-            }
-            
-            .game-header {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 8px;
-            }
-            
-            .stats-box {
-                min-width: min(110px, 28vw);
-                font-size: clamp(0.9rem, 2vw, 1.3rem);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .setup-container { 
-                grid-template-columns: 1fr; 
-                padding: 20px;
-                gap: 15px;
-            }
-            
-            .full-width {
-                grid-column: span 1;
-            }
-            
-            .answers-grid { 
-                grid-template-columns: 1fr;
-                grid-template-rows: repeat(6, 1fr);
-                gap: 10px;
-            }
-            
-            .question-container { 
-                font-size: clamp(1.2rem, 4vw, 1.8rem); 
-                padding: 15px;
-                max-height: 20vh;
-                margin-bottom: 10px;
-            }
-            
-            .answer-card { 
-                font-size: clamp(0.9rem, 2.5vw, 1.3rem); 
-                padding: 12px 8px;
-                min-height: 60px;
-            }
-            
-            .game-header {
-                padding: 8px 12px;
-                flex-direction: column;
-                align-items: center;
-                gap: 6px;
-                min-height: 80px;
-            }
-            
-            .stats-box {
-                width: 100%;
-                max-width: 250px;
-                min-width: auto;
-                font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-            }
-            
-            button {
-                padding: 12px 24px;
-                font-size: 1.1rem;
-            }
-            
-            #camera-container {
-                width: 120px;
-                height: 90px;
-                bottom: 10px;
-                right: 10px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .screen {
-                padding: 10px;
-            }
-            
-            .question-container {
-                font-size: clamp(1rem, 3.5vw, 1.5rem);
-                padding: 12px;
-                max-height: 18vh;
-            }
-            
-            .answer-card {
-                font-size: clamp(0.8rem, 2.2vw, 1.1rem);
-                padding: 10px 6px;
-                min-height: 50px;
-            }
-            
-            .game-header {
-                min-height: 70px;
-            }
-            
-            .stats-box {
-                font-size: clamp(0.8rem, 2.2vw, 1rem);
-                padding: 6px 10px;
-            }
-            
-            .setup-container {
-                padding: 15px;
-            }
-            
-            h1 {
-                font-size: clamp(1.5rem, 4vw, 2rem);
-            }
-            
-            h2 {
-                font-size: clamp(1.1rem, 3vw, 1.5rem);
-            }
-            
-            #camera-container {
-                width: 100px;
-                height: 75px;
-            }
-        }
-        
-        @media (orientation: landscape) and (max-height: 600px) {
-            .game-main-content {
-                flex-direction: row;
-                gap: 15px;
-                height: calc(100% - 60px);
-            }
-            
-            .question-container {
-                width: 45%;
-                height: 100%;
-                max-height: 100%;
-                margin-bottom: 0;
-            }
-            
-            .answers-grid-container {
-                width: 55%;
-                height: 100%;
-            }
-            
-            .answers-grid {
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(3, 1fr);
-            }
-        }
-        
-        /* Đảm bảo không có thanh cuộn */
-        .setup-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .setup-container::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.1);
-            border-radius: 3px;
-        }
-        
-        .setup-container::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 3px;
-        }
+        /* RESULTS */
+        .score-final { font-size: 4rem; color: var(--primary-btn); margin-bottom: 20px; font-weight: 900; }
     </style>
 </head>
-<body class="theme-spring">
+<body class="theme-summer">
 
     <audio id="bg-music" loop></audio>
-
-    <div id="hand-cursor">
-        <div class="cursor-circle">
-            <div class="cursor-progress" id="cursor-loader"></div>
-        </div>
-    </div>
-
-    <div id="camera-container">
-        <video id="input_video" autoplay muted playsinline></video>
-    </div>
+    <div id="hand-cursor"></div>
+    <div id="camera-container"><video id="input_video" autoplay muted playsinline></video></div>
 
     <div id="screen-home" class="screen active">
-        <h1>🌱 Let's Play 🎮</h1>
         <div class="setup-container">
-            <div class="full-width">
-                <h2>1. Content</h2>
-                <div class="file-input-wrapper" onclick="document.getElementById('docx-upload').click()">
-                    <span>📂 Click to upload .docx</span>
-                    <input type="file" id="docx-upload" accept=".docx" style="display: none;" onchange="handleFileUpload(this)">
-                </div>
-                <p style="text-align:center; margin:10px; font-size:clamp(0.9rem, 1.8vw, 1.1rem);">OR Paste Text Below:</p>
-                <textarea id="text-input" placeholder="apple : quả táo&#10;banana : quả chuối&#10;cat : con mèo&#10;dog : con chó&#10;elephant : con voi&#10;fish : con cá"></textarea>
+            <h1>🫧 Bubble Pop 🫧</h1>
+            
+            <div class="section-title">🎨 Theme:</div>
+            <div class="theme-selector">
+                <div class="theme-btn" style="background:#a1c4fd" onclick="setTheme('spring')" title="Xuân"></div>
+                <div class="theme-btn" style="background:#f6d365" onclick="setTheme('summer')" title="Hạ"></div>
+                <div class="theme-btn" style="background:#ffcc33" onclick="setTheme('autumn')" title="Thu"></div>
+                <div class="theme-btn" style="background:#8ec5fc" onclick="setTheme('winter')" title="Đông"></div>
             </div>
 
-            <div>
-                <h2>2. Game Mode</h2>
-                <select id="player-mode" style="padding: 12px; width: 100%; border-radius: 12px; border: 3px solid var(--primary-color); font-size: clamp(1rem, 2vw, 1.2rem);">
-                    <option value="1">One Player</option>
-                    <option value="2">Two Players (Turn-based)</option>
-                </select>
-            </div>
+            <div class="section-title">📝 Vocabulary:</div>
+            <label class="btn-upload">📂 Tải file Word (.docx)
+                <input type="file" id="docx-upload" accept=".docx" style="display: none;" onchange="handleFileUpload(this)">
+            </label>
+            <textarea id="text-input" placeholder="Ví dụ:&#10;Hello : Xin chào&#10;Apple : Quả táo&#10;Book : Quyển sách"></textarea>
 
-            <div>
-                <h2>3. Music</h2>
-                <input type="file" id="music-upload" accept="audio/*" onchange="handleMusicUpload(this)" style="font-size:clamp(0.9rem, 1.8vw, 1.1rem); width:100%;">
-                <p id="music-status" style="font-size:clamp(0.8rem, 1.6vw, 1rem); color:gray; margin-top:5px;">No file selected</p>
-            </div>
+            <div class="section-title">🎵 Background music:</div>
+            <label class="btn-upload">🎼 Tải file nhạc (.mp3)
+                <input type="file" id="music-upload" accept="audio/*" style="display: none;" onchange="handleMusicUpload(this)">
+            </label>
+            <div id="music-name" style="font-size:0.8rem; color:#666; margin-bottom:10px; font-style:italic;"></div>
 
-            <div class="full-width">
-                <h2>4. Theme</h2>
-                <div class="theme-selector">
-                    <div class="theme-btn" style="background:#a5d6a7" onclick="setTheme('spring')" title="Spring"></div>
-                    <div class="theme-btn" style="background:#fff176" onclick="setTheme('summer')" title="Summer"></div>
-                    <div class="theme-btn" style="background:#ffcc80" onclick="setTheme('autumn')" title="Autumn"></div>
-                    <div class="theme-btn" style="background:#90caf9" onclick="setTheme('winter')" title="Winter"></div>
-                </div>
-            </div>
-
-            <div class="full-width" style="text-align: center; margin-top: 10px;">
-                <button onclick="initializeGame()">Start Game ▶</button>
-            </div>
+            <button class="btn-start" onclick="startGame()">LET'S START ▶</button>
         </div>
     </div>
 
     <div id="screen-game" class="screen">
         <div class="game-header">
-            <button class="btn-secondary" onclick="toggleMute()">🎵 Mute</button>
-            <div class="stats-box">Player: <span id="current-player-display">1</span></div>
-            <div class="stats-box">Score: <span id="score-display">0</span></div>
-            <div class="stats-box">Round: <span id="round-display">1/10</span></div>
+            <button class="btn-mute" onclick="toggleMute()">🔊 Nhạc: BẬT</button>
+            <div class="stat-box">Điểm: <span id="score-val">0</span></div>
+            <div class="stat-box"><span id="round-val">1/10</span></div>
         </div>
-
-        <div class="game-main-content">
-            <div class="question-container" id="question-text">
-                Loading...
-            </div>
-
-            <div class="answers-grid-container">
-                <div class="answers-grid" id="answers-container">
-                    <!-- Answer cards will be generated here -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="overlay-turn" class="overlay">
-        <h1 style="font-size:clamp(2rem, 6vw, 4rem);">Player <span id="next-player-name">1</span></h1>
-        <h2 style="font-size:clamp(1.5rem, 4vw, 2.5rem); margin-bottom:20px;">Are you ready?</h2>
-        <button onclick="startRound()">Start Round</button>
+        <div id="question-display">...</div>
     </div>
 
     <div id="screen-results" class="screen">
-        <h1>🎉 Game Over! 🎉</h1>
-        <div style="background: white; padding: clamp(15px, 3vw, 30px); border-radius: 20px; width: 95%; max-width: 800px; max-height: 70vh; overflow-y: auto;">
-            <table id="results-table">
-                <thead>
-                    <tr>
-                        <th>Player</th>
-                        <th>Correct</th>
-                        <th>Avg Time</th>
-                        <th>Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Results will be populated here -->
-                </tbody>
-            </table>
-        </div>
-        <button onclick="location.reload()" style="margin-top: 20px;">Play Again 🔄</button>
+        <h1>HOÀN THÀNH!</h1>
+        <div class="score-final" id="final-score">0</div>
+        <button class="btn-start" onclick="location.reload()">CHƠI LẠI 🔄</button>
     </div>
 
     <script>
-        // --- STATE MANAGEMENT ---
         const APP = {
-            questions: [],
-            players: [
-                { id: 1, score: 0, correct: 0, totalTime: 0, rounds: 0 },
-                { id: 2, score: 0, correct: 0, totalTime: 0, rounds: 0 }
-            ],
-            mode: 1, // 1 or 2 players
-            currentPlayerIdx: 0,
-            currentQuestionIdx: 0,
-            currentQuestionStartTime: 0,
-            isGameActive: false,
-            isRoundActive: false,
-            audio: document.getElementById('bg-music')
+            data: [], currentIndex: 0, score: 0,
+            isRoundActive: false, bubbles: [],
+            hand: { x: 0, y: 0, isFist: false }
         };
 
-        // --- THEME SYSTEM ---
-        function setTheme(season) {
-            document.body.className = `theme-${season}`;
+        // --- COLORS FOR BUBBLES (Pastel/Clear colors for glossy effect) ---
+        const BUBBLE_COLORS = [
+            { main: 'rgba(255, 183, 178, 0.7)', border: '#ff9aa2' }, // Pink
+            { main: 'rgba(181, 234, 215, 0.7)', border: '#a5d6a7' }, // Green
+            { main: 'rgba(226, 240, 203, 0.7)', border: '#c5e1a5' }, // Lime
+            { main: 'rgba(199, 206, 234, 0.7)', border: '#90caf9' }, // Blue
+            { main: 'rgba(255, 255, 216, 0.7)', border: '#fff59d' }, // Yellow
+            { main: 'rgba(224, 187, 228, 0.7)', border: '#ce93d8' }  // Purple
+        ];
+
+        // --- AUDIO & THEME ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playPopSound(isCorrect) {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            
+            if (isCorrect) {
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+            } else {
+                osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.2);
+            }
+
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.2);
         }
 
-        // --- INPUT HANDLING ---
-        function handleFileUpload(input) {
-            const file = input.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                mammoth.extractRawText({arrayBuffer: event.target.result})
-                    .then(result => {
-                        document.getElementById('text-input').value = result.value;
-                    })
-                    .catch(err => alert("Error reading .docx: " + err.message));
-            };
-            reader.readAsArrayBuffer(file);
+        function setTheme(season) {
+            document.body.className = `theme-${season}`;
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
         }
 
         function handleMusicUpload(input) {
             const file = input.files[0];
             if (file) {
-                document.getElementById('music-status').innerText = "Loaded: " + file.name;
-                APP.audio.src = URL.createObjectURL(file);
+                const audio = document.getElementById('bg-music');
+                audio.src = URL.createObjectURL(file);
+                document.getElementById('music-name').innerText = "🎵 " + file.name;
             }
         }
 
         function toggleMute() {
-            APP.audio.muted = !APP.audio.muted;
-            const btn = document.querySelector('.game-header button');
-            btn.innerText = APP.audio.muted ? "🔇 Unmute" : "🎵 Mute";
+            const audio = document.getElementById('bg-music');
+            const btn = document.querySelector('.btn-mute');
+            audio.muted = !audio.muted;
+            btn.innerText = audio.muted ? "🔇 Nhạc: TẮT" : "🔊 Nhạc: BẬT";
         }
 
-        function parseContent() {
-            const raw = document.getElementById('text-input').value;
-            const lines = raw.split('\n');
-            const parsed = [];
+        // --- EFFECT FUNCTIONS ---
+        function createPaperFlowerEffect(x, y) {
+            const colors = ['#ff6b6b', '#ffd93d', '#6bcf7f', '#4d96ff', '#9d4edd'];
+            for (let i = 0; i < 15; i++) {
+                const flower = document.createElement('div');
+                flower.className = 'paper-flower';
+                
+                const angle = (i * 24) * Math.PI / 180;
+                const distance = 80 + Math.random() * 100;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance - 50;
+                
+                flower.style.setProperty('--tx', tx + 'px');
+                flower.style.setProperty('--ty', ty + 'px');
+                flower.style.left = x + 'px';
+                flower.style.top = y + 'px';
+                flower.style.background = `linear-gradient(45deg, ${colors[i % colors.length]}, ${colors[(i+1) % colors.length]})`;
+                flower.style.width = `${15 + Math.random() * 15}px`;
+                flower.style.height = flower.style.width;
+                flower.style.animationDelay = `${i * 0.05}s`;
+                
+                document.getElementById('screen-game').appendChild(flower);
+                setTimeout(() => flower.remove(), 1500);
+            }
+        }
 
-            lines.forEach(line => {
-                let cleanLine = line.replace(/^[\d\-\.\•\*]+\s*/, '').trim();
-                if(!cleanLine) return;
-
-                const parts = cleanLine.split(':');
-                if (parts.length >= 2) {
-                    parsed.push({
-                        q: parts[0].trim(),
-                        a: parts.slice(1).join(':').trim()
-                    });
-                }
-            });
-            return parsed;
+        function createSadFaceEffect(x, y) {
+            const sadFace = document.createElement('div');
+            sadFace.className = 'sad-face';
+            sadFace.innerHTML = '😢';
+            sadFace.style.left = x + 'px';
+            sadFace.style.top = y + 'px';
+            
+            document.getElementById('screen-game').appendChild(sadFace);
+            setTimeout(() => sadFace.remove(), 1000);
         }
 
         // --- GAME LOGIC ---
-        function initializeGame() {
-            const data = parseContent();
-            if (data.length < 4) {
-                alert("Please add at least 4 vocabulary items to play.");
-                return;
-            }
+        function handleFileUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                mammoth.extractRawText({arrayBuffer: event.target.result})
+                    .then(result => document.getElementById('text-input').value = result.value)
+                    .catch(err => alert("Lỗi: " + err.message));
+            };
+            reader.readAsArrayBuffer(file);
+        }
 
-            // Shuffle full dataset
-            APP.questions = data.sort(() => 0.5 - Math.random());
-            APP.mode = parseInt(document.getElementById('player-mode').value);
-            
-            // Switch Screens
+        function startGame() {
+            const raw = document.getElementById('text-input').value;
+            const data = raw.split('\n')
+                .map(l => l.replace(/^[\d\.\-\*\•\+\s]+/, '').trim())
+                .filter(l => l.includes(':'))
+                .map(l => { const p = l.split(':'); return { q: p[0].trim(), a: p.slice(1).join(':').trim() }})
+                .sort(() => Math.random() - 0.5);
+
+            if (data.length < 3) return alert("Cần ít nhất 3 từ vựng!");
+
+            APP.data = data;
+            APP.currentIndex = 0;
+            APP.score = 0;
+
             document.getElementById('screen-home').classList.remove('active');
             document.getElementById('screen-game').classList.add('active');
-
-            // Audio
-            if(APP.audio.src) APP.audio.play().catch(e => console.log("Audio autoplay blocked"));
-
-            // Setup MediaPipe
-            initHandTracking();
-
-            prepareTurn();
-        }
-
-        function prepareTurn() {
-            if (APP.currentQuestionIdx >= APP.questions.length) {
-                endGame();
-                return;
-            }
-
-            const pId = (APP.currentQuestionIdx % APP.mode) + 1;
-            APP.currentPlayerIdx = pId - 1;
             
-            document.getElementById('current-player-display').innerText = pId;
-            document.getElementById('score-display').innerText = APP.players[APP.currentPlayerIdx].score;
-            document.getElementById('round-display').innerText = `${APP.currentQuestionIdx + 1} / ${APP.questions.length}`;
+            const audio = document.getElementById('bg-music');
+            if(audio.src) audio.play().catch(e => console.log("Cần tương tác"));
 
-            if (APP.mode === 2) {
-                document.getElementById('next-player-name').innerText = pId;
-                document.getElementById('overlay-turn').classList.add('active');
-                APP.isRoundActive = false;
-            } else {
-                startRound();
-            }
+            initCamera();
+            nextRound();
+            requestAnimationFrame(gameLoop);
         }
 
-        function startRound() {
-            document.getElementById('overlay-turn').classList.remove('active');
-            renderRound();
-            APP.currentQuestionStartTime = Date.now();
+        function nextRound() {
+            if(APP.currentIndex >= APP.data.length) return endGame();
+
             APP.isRoundActive = true;
-        }
-
-        function renderRound() {
-            const qData = APP.questions[APP.currentQuestionIdx];
-            document.getElementById('question-text').innerText = qData.q;
-
-            // Generate Distractors
-            const answers = [qData.a];
-            const others = APP.questions.filter(i => i.a !== qData.a);
+            const qData = APP.data[APP.currentIndex];
             
-            // Fill up to 6 answers
-            while(answers.length < 6) {
-                if(others.length > 0) {
-                    const randomIdx = Math.floor(Math.random() * others.length);
-                    answers.push(others[randomIdx].a);
-                    others.splice(randomIdx, 1);
-                } else {
-                    answers.push(answers[Math.floor(Math.random() * answers.length)]);
-                }
-            }
+            document.getElementById('question-display').innerText = qData.q;
+            document.getElementById('round-val').innerText = `${APP.currentIndex + 1}/${APP.data.length}`;
+            
+            document.querySelectorAll('.answer-bubble').forEach(b => b.remove());
+            APP.bubbles = [];
 
-            // Shuffle Answers
-            answers.sort(() => 0.5 - Math.random());
+            const answers = [{ text: qData.a, correct: true }];
+            const others = APP.data.filter(d => d.a !== qData.a).sort(() => Math.random()-0.5).slice(0, 3);
+            others.forEach(o => answers.push({ text: o.a, correct: false }));
+            answers.sort(() => Math.random()-0.5);
 
-            const container = document.getElementById('answers-container');
-            container.innerHTML = '';
-
-            answers.forEach(ans => {
-                const card = document.createElement('div');
-                card.className = 'answer-card';
-                card.innerText = ans;
+            const container = document.getElementById('screen-game');
+            
+            answers.forEach((ans) => {
+                const el = document.createElement('div');
+                const theme = BUBBLE_COLORS[Math.floor(Math.random() * BUBBLE_COLORS.length)];
                 
-                card.onclick = () => handleAnswer(ans === qData.a, card);
-                card.dataset.isCorrect = (ans === qData.a);
-                
-                container.appendChild(card);
+                el.className = 'answer-bubble';
+                el.innerText = ans.text;
+                el.style.setProperty('--bubble-color', theme.main);
+                el.style.setProperty('--bubble-border', theme.border);
+                el.dataset.correct = ans.correct;
+
+                const bubble = {
+                    el: el,
+                    x: Math.random() * 60 + 20,
+                    y: Math.random() * 50 + 30,
+                    vx: (Math.random() - 0.5) * 0.4, // Tốc độ
+                    vy: (Math.random() - 0.5) * 0.4,
+                    popped: false
+                };
+                APP.bubbles.push(bubble);
+                container.appendChild(el);
             });
         }
 
-        function handleAnswer(isCorrect, element) {
-            if (!APP.isRoundActive) return;
-            APP.isRoundActive = false;
-
-            const timeTaken = (Date.now() - APP.currentQuestionStartTime) / 1000;
-            const player = APP.players[APP.currentPlayerIdx];
-
-            // Scoring
-            if (isCorrect) {
-                element.classList.add('correct');
-                const timePenalty = Math.floor(timeTaken * 5);
-                const score = Math.max(20, 100 - timePenalty);
-                player.score += score;
-                player.correct++;
-            } else {
-                element.classList.add('incorrect');
-                // Highlight real answer
-                const cards = document.querySelectorAll('.answer-card');
-                cards.forEach(c => {
-                    if (c.dataset.isCorrect === 'true') c.classList.add('correct');
+        function gameLoop() {
+            if(APP.isRoundActive) {
+                APP.bubbles.forEach(b => {
+                    if(b.popped) return;
+                    b.x += b.vx; b.y += b.vy;
+                    if(b.x < 5 || b.x > 80) b.vx *= -1;
+                    if(b.y < 15 || b.y > 80) b.vy *= -1;
+                    b.el.style.left = b.x + 'vw';
+                    b.el.style.top = b.y + 'vh';
+                    checkCollision(b);
                 });
             }
+            requestAnimationFrame(gameLoop);
+        }
 
-            player.rounds++;
-            player.totalTime += timeTaken;
+        function checkCollision(b) {
+            const rect = b.el.getBoundingClientRect();
+            if(APP.hand.x > rect.left && APP.hand.x < rect.right && 
+               APP.hand.y > rect.top && APP.hand.y < rect.bottom && APP.hand.isFist) {
+                popBubble(b);
+            }
+        }
 
-            // Update UI
-            document.getElementById('score-display').innerText = player.score;
+        function popBubble(b) {
+            if(b.popped) return;
+            b.popped = true;
+            APP.isRoundActive = false;
+            
+            const isCorrect = b.el.dataset.correct === 'true';
+            playPopSound(isCorrect);
+            b.el.classList.add('pop-animation');
+            
+            // Tạo hiệu ứng đặc biệt
+            const rect = b.el.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            if(isCorrect) {
+                // Hiệu ứng hoa giấy cho đáp án đúng
+                createPaperFlowerEffect(centerX, centerY);
+                APP.score += 100;
+                document.getElementById('score-val').innerText = APP.score;
+            } else {
+                // Hiệu ứng mặt buồn cho đáp án sai
+                createSadFaceEffect(centerX, centerY);
+            }
 
-            // Next Round Delay
-            setTimeout(() => {
-                APP.currentQuestionIdx++;
-                prepareTurn();
-            }, 2000);
+            setTimeout(() => { APP.currentIndex++; nextRound(); }, 1200);
         }
 
         function endGame() {
             document.getElementById('screen-game').classList.remove('active');
             document.getElementById('screen-results').classList.add('active');
-
-            const tbody = document.querySelector('#results-table tbody');
-            tbody.innerHTML = '';
-
-            let highestScore = -1;
-            let winnerId = -1;
-
-            APP.players.slice(0, APP.mode).forEach(p => {
-                if (p.score > highestScore) {
-                    highestScore = p.score;
-                    winnerId = p.id;
-                }
-            });
-
-            APP.players.slice(0, APP.mode).forEach(p => {
-                const avgTime = p.rounds > 0 ? (p.totalTime / p.rounds).toFixed(1) + 's' : '0s';
-                const row = document.createElement('tr');
-                if (APP.mode === 2 && p.id === winnerId) row.className = 'winner-row';
-                
-                row.innerHTML = `
-                    <td>Player ${p.id} ${APP.mode === 2 && p.id === winnerId ? '👑' : ''}</td>
-                    <td>${p.correct} / ${p.rounds}</td>
-                    <td>${avgTime}</td>
-                    <td>${p.score}</td>
-                `;
-                tbody.appendChild(row);
-            });
+            document.getElementById('final-score').innerText = APP.score;
+            document.getElementById('bg-music').pause();
         }
 
-        // --- HAND TRACKING & INTERACTION ---
-        let handCursor = { x: 0, y: 0, active: false, grabbing: false, pointing: false };
-        let hoverTarget = null;
-        let hoverStartTime = 0;
-        let animationFrameId;
-
-        async function initHandTracking() {
+        // --- HAND TRACKING ---
+        function initCamera() {
             const videoElement = document.getElementById('input_video');
-            
-            const hands = new Hands({locateFile: (file) => {
-                return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
-            }});
+            const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
+            hands.setOptions({ maxNumHands: 1, modelComplexity: 0, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+            hands.onResults(results => {
+                const cursor = document.getElementById('hand-cursor');
+                if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+                    const lm = results.multiHandLandmarks[0];
+                    APP.hand.x = (1 - lm[8].x) * window.innerWidth;
+                    APP.hand.y = lm[8].y * window.innerHeight;
+                    APP.hand.isFist = lm[8].y > lm[6].y && lm[12].y > lm[10].y && lm[16].y > lm[14].y;
 
-            hands.setOptions({
-                maxNumHands: 1,
-                modelComplexity: 1,
-                minDetectionConfidence: 0.5,
-                minTrackingConfidence: 0.5
+                    cursor.style.display = 'block';
+                    cursor.style.left = APP.hand.x + 'px';
+                    cursor.style.top = APP.hand.y + 'px';
+                    
+                    if(APP.hand.isFist) cursor.classList.add('grabbing');
+                    else cursor.classList.remove('grabbing');
+                } else {
+                    cursor.style.display = 'none';
+                    APP.hand.isFist = false;
+                }
             });
-
-            hands.onResults(onHandsResults);
-
+            
             const camera = new Camera(videoElement, {
-                onFrame: async () => {
-                    await hands.send({image: videoElement});
-                },
-                width: 320,
-                height: 240
+                onFrame: async () => { await hands.send({image: videoElement}); },
+                width: 320, height: 240
             });
             camera.start();
-
-            requestAnimationFrame(processGestures);
         }
-
-        function onHandsResults(results) {
-            const cursorEl = document.getElementById('hand-cursor');
-            
-            if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-                const landmarks = results.multiHandLandmarks[0];
-                
-                // Use Index Finger Tip (8) as cursor
-                const x = (1 - landmarks[8].x) * window.innerWidth;
-                const y = landmarks[8].y * window.innerHeight;
-
-                handCursor.x = x;
-                handCursor.y = y;
-                handCursor.active = true;
-
-                // Detect Fist (Grab)
-                const isFist = 
-                    landmarks[8].y > landmarks[6].y && 
-                    landmarks[12].y > landmarks[10].y && 
-                    landmarks[16].y > landmarks[14].y && 
-                    landmarks[20].y > landmarks[18].y;
-
-                // Detect Pointing Gesture (index finger extended, others curled)
-                const isPointing = 
-                    landmarks[8].y < landmarks[6].y - 0.05 && // Index finger extended
-                    landmarks[12].y > landmarks[10].y + 0.03 && // Middle finger curled
-                    landmarks[16].y > landmarks[14].y + 0.03 && // Ring finger curled
-                    landmarks[20].y > landmarks[18].y + 0.03;   // Pinky curled
-
-                handCursor.grabbing = isFist;
-                handCursor.pointing = isPointing;
-
-                // Update Visuals
-                cursorEl.style.display = 'block';
-                cursorEl.style.left = `${x}px`;
-                cursorEl.style.top = `${y}px`;
-
-                if (isFist) {
-                    cursorEl.classList.add('grabbing');
-                    cursorEl.classList.remove('pointing');
-                } else if (isPointing) {
-                    cursorEl.classList.add('pointing');
-                    cursorEl.classList.remove('grabbing');
-                } else {
-                    cursorEl.classList.remove('grabbing', 'pointing');
-                }
-
-            } else {
-                handCursor.active = false;
-                cursorEl.style.display = 'none';
-            }
-        }
-
-        function processGestures() {
-            if (!APP.isRoundActive || !handCursor.active) {
-                requestAnimationFrame(processGestures);
-                return;
-            }
-
-            // Collision Detection
-            const targets = document.querySelectorAll('.answer-card');
-            let foundTarget = null;
-
-            targets.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                if (
-                    handCursor.x >= rect.left &&
-                    handCursor.x <= rect.right &&
-                    handCursor.y >= rect.top &&
-                    handCursor.y <= rect.bottom
-                ) {
-                    foundTarget = el;
-                }
-            });
-
-            const loader = document.getElementById('cursor-loader');
-            
-            // Logic: Must be hovering AND (Grabbing OR Pointing)
-            if (foundTarget && foundTarget === hoverTarget && (handCursor.grabbing || handCursor.pointing)) {
-                const elapsed = Date.now() - hoverStartTime;
-                const progress = Math.min(100, (elapsed / 500) * 100);
-                
-                // Draw circular progress
-                loader.style.transform = `rotate(${progress * 3.6}deg)`;
-                loader.style.borderTopColor = handCursor.pointing ? '#FF9800' : 'var(--secondary-color)';
-                loader.style.borderRightColor = progress > 25 ? (handCursor.pointing ? '#FF9800' : 'var(--secondary-color)') : 'transparent';
-                loader.style.borderBottomColor = progress > 50 ? (handCursor.pointing ? '#FF9800' : 'var(--secondary-color)') : 'transparent';
-                loader.style.borderLeftColor = progress > 75 ? (handCursor.pointing ? '#FF9800' : 'var(--secondary-color)') : 'transparent';
-
-                if (elapsed >= 500) {
-                    // Click!
-                    foundTarget.click();
-                    hoverTarget = null;
-                }
-            } else {
-                // Reset if target changed or gesture released
-                if (foundTarget !== hoverTarget || (!handCursor.grabbing && !handCursor.pointing)) {
-                    hoverTarget = foundTarget;
-                    hoverStartTime = Date.now();
-                    // Reset Loader CSS
-                    loader.style.borderColor = 'transparent';
-                    loader.style.borderTopColor = handCursor.pointing ? '#FF9800' : 'var(--secondary-color)';
-                }
-            }
-
-            requestAnimationFrame(processGestures);
-        }
-
     </script>
 </body>
 </html>
