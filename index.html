@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>⚔️ Word Slasher | Be Heard</title>
+<title>⚔️ Word Slasher — Chém Từ Vựng</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Rajdhani:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root {
   --p1: #00eeff;
@@ -23,7 +23,7 @@ html, body {
   width:100%; height:100%; overflow:hidden;
   background:var(--bg);
   color:var(--text);
-  font-family:'Rajdhani',sans-serif;
+  font-family:'Nunito', sans-serif; /* Thay đổi font chữ hỗ trợ tiếng Việt tốt hơn */
   touch-action:none;
   -webkit-tap-highlight-color:transparent;
 }
@@ -133,7 +133,7 @@ html, body {
   border:2px solid var(--border);
   border-radius:12px;
   color:var(--dim);
-  font-family:'Rajdhani',sans-serif;
+  font-family:'Nunito',sans-serif;
   font-size:.95rem;
   font-weight:600;
   cursor:pointer;
@@ -168,7 +168,7 @@ html, body {
   border:1px solid var(--border);
   border-radius:10px;
   color:var(--text);
-  font-family:'Rajdhani',sans-serif;
+  font-family:'Nunito',sans-serif;
   font-size:.9rem;
   line-height:1.6;
   padding:12px 14px;
@@ -200,7 +200,7 @@ html, body {
   border:1px dashed rgba(255,255,255,.15);
   border-radius:8px;
   color:var(--dim);
-  font-family:'Rajdhani',sans-serif;
+  font-family:'Nunito',sans-serif;
   font-size:.85rem;
   font-weight:600;
   cursor:pointer;
@@ -386,7 +386,7 @@ input[type=file] { display:none; }
   background:rgba(8,8,16,.95);
   z-index:150;
   color:var(--p1);
-  font-family:'Rajdhani',sans-serif;
+  font-family:'Nunito',sans-serif;
 }
 
 #camLoading .cam-icon { font-size:3rem; animation:spin 2s linear infinite; }
@@ -396,7 +396,6 @@ input[type=file] { display:none; }
 </head>
 <body>
 
-<!-- ===== SETUP SCREEN ===== -->
 <div id="setupScreen">
   <div class="setup-card">
     <div class="game-logo">
@@ -450,18 +449,15 @@ Sleep: Ngủ"></textarea>
   </div>
 </div>
 
-<!-- ===== CAMERA LOADING ===== -->
 <div id="camLoading">
   <div class="cam-icon">📷</div>
   <strong style="font-size:1.3rem;letter-spacing:2px">Đang khởi động camera...</strong>
   <p>Cho phép truy cập camera để tiếp tục</p>
 </div>
 
-<!-- ===== GAME ===== -->
 <video id="camVideo" playsinline autoplay muted></video>
 <canvas id="gameCanvas"></canvas>
 
-<!-- ===== GAME OVER ===== -->
 <div id="gameoverScreen">
   <div class="go-title" id="goTitle" style="color:var(--p1)">GAME OVER</div>
   <div class="score-cards">
@@ -484,7 +480,6 @@ Sleep: Ngủ"></textarea>
   </div>
 </div>
 
-<!-- External libs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
@@ -507,7 +502,7 @@ const COLORS = {
   correctGold: '#ffdd00',
 };
 
-const WORD_BASE_RADIUS = 52; // base; adjusted per screen
+const WORD_BASE_RADIUS = 52; // base min radius
 const MAX_LIVES = 3;
 const SPAWN_DELAY_FRAMES = 70;
 
@@ -615,7 +610,11 @@ let floatTexts   = [];        // floating score popup texts
 let handsMP    = null;
 let cameraMP   = null;
 
-let wordRadius = WORD_BASE_RADIUS;
+// Hand-lock system: once a hand is first detected its player assignment is
+// frozen for the entire game — it never re-evaluates based on X position.
+let handAssignment = {};   // { handIndex: playerNum }  — set once, immutable
+let handLockAnim   = {};   // { handIndex: framesLeft } — drives the "LOCKED" pop animation
+
 let animFrame  = null;
 
 // ============================================================
@@ -736,6 +735,7 @@ function launchGame(qs) {
   gs = {
     p1: createPlayer(1, shuffled.slice(0, mid)),
     p2: createPlayer(2, shuffled.slice(mid)),
+    timeLeft: 90, // Đếm ngược 90 giây
     running: true,
     over: false
   };
@@ -745,7 +745,9 @@ function launchGame(qs) {
   handPositions = [];
   bonusBubbles = [];
   floatTexts   = [];
-  bubbleTimer  = Math.floor(BUBBLE_INTERVAL * .5); // first bubble spawns at half interval
+  bubbleTimer  = Math.floor(BUBBLE_INTERVAL * .5);
+  handAssignment = {};   // clear locks so new game re-assigns hands
+  handLockAnim   = {};
 
   if (gameMode === 'touch') {
     setupTouchEvents();
@@ -757,6 +759,7 @@ function launchGame(qs) {
   }
 
   if (animFrame) cancelAnimationFrame(animFrame);
+  lastTS = performance.now();
   animFrame = requestAnimationFrame(gameLoop);
 }
 
@@ -816,7 +819,6 @@ function stopCamera() {
 function resizeCanvas() {
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
-  wordRadius = Math.max(38, Math.min(WORD_BASE_RADIUS, canvas.width * 0.07));
 }
 
 window.addEventListener('resize', () => {
@@ -842,11 +844,20 @@ function spawnWordsForPlayer(p) {
   const [zL, zR] = playerZone(p.num, W);
   const zW = zR - zL;
 
+  // Cố định cỡ chữ và tính toán độ dài
+  const baseFontSize = Math.max(16, Math.min(22, canvas.width * 0.018));
+  ctx.font = `700 ${baseFontSize}px Nunito`;
+
   p.words = choices.map((text, i) => {
     const col = (i + 1) / (choices.length + 1);
     const jitter = (Math.random() - .5) * zW * .12;
     const x = zL + zW * col + jitter;
-    const startY = H + wordRadius + 30 + Math.random() * 100;
+    
+    // Đo chiều rộng text và tự động cho kích cỡ bong bóng lớn lên
+    const tw = ctx.measureText(text).width;
+    const r = Math.max(WORD_BASE_RADIUS, tw / 2 + 18);
+    
+    const startY = H + r + 30 + Math.random() * 100;
     const speed = 1.3 + Math.random() * 1.1;
     const vx = (Math.random() - .5) * 0.9;
 
@@ -855,6 +866,8 @@ function spawnWordsForPlayer(p) {
       isCorrect: text === q.a,
       x, y: startY,
       vx, vy: -speed,
+      radius: r,
+      fontSize: baseFontSize,
       slashed: false,
       wrongAnim: 0,
       wobble: Math.random() * Math.PI * 2,
@@ -990,6 +1003,8 @@ function onHandResults(results) {
   handPositions = [];
 
   if (!results.multiHandLandmarks || results.multiHandLandmarks.length === 0) {
+    // All hands lost — clear histories but KEEP assignments
+    // (same person will re-enter the frame)
     handHistory[0] = [];
     handHistory[1] = [];
     return;
@@ -1001,37 +1016,60 @@ function onHandResults(results) {
     if (i > 1) return;
     const tip = landmarks[8]; // index finger tip
 
-    // Mirror flip for natural interaction
+    // Mirror flip so left hand appears on left of screen
     const sx = (1 - tip.x) * canvas.width;
     const sy = tip.y * canvas.height;
-    const player = sx < canvas.width / 2 ? 1 : 2;
 
-    handPositions[i] = { x: sx, y: sy, player };
+    // ── HAND-LOCK ASSIGNMENT ──────────────────────────────────
+    // First time this hand index is seen: assign based on X and freeze.
+    if (handAssignment[i] === undefined) {
+      handAssignment[i] = sx < canvas.width / 2 ? 1 : 2;
+      handLockAnim[i]   = 80; // frames for the lock pop animation
+    }
+    const player = handAssignment[i]; // always use the frozen assignment
+    // ──────────────────────────────────────────────────────────
 
+    // Store for rendering (include whether hand is "out of zone")
+    const inZone = player === 1 ? sx < canvas.width / 2 : sx >= canvas.width / 2;
+    handPositions[i] = { x: sx, y: sy, player, inZone };
+
+    // Tick lock animation
+    if (handLockAnim[i] > 0) handLockAnim[i]--;
+
+    // History for velocity
     const hist = handHistory[i];
     const prev = hist[hist.length - 1];
     hist.push({ x: sx, y: sy, t: now });
     if (hist.length > 20) hist.shift();
 
-    // Check slash velocity
+    // Check slash velocity — checkSlashLine clips to player's zone internally
     if (prev) {
       const dx = sx - prev.x, dy = sy - prev.y;
-      const speed = Math.sqrt(dx*dx + dy*dy);
+      const speed = Math.sqrt(dx * dx + dy * dy);
       const dt = now - prev.t;
-      const px = dt > 0 ? speed / dt * 16 : 0; // pixels per frame @60fps
+      const px = dt > 0 ? speed / dt * 16 : 0;
       if (px > 20) {
         checkSlashLine(prev.x, prev.y, sx, sy, player);
       }
     }
 
-    // Slash trail
+    // Slash trail — only draw while in correct zone
     const key = 'h' + i;
     if (!slashTrails[key]) {
-      slashTrails[key] = { points: [], player, color: player===1 ? COLORS.p1 : COLORS.p2, fading:false };
+      slashTrails[key] = {
+        points: [], player,
+        color: player === 1 ? COLORS.p1 : COLORS.p2,
+        fading: false
+      };
     }
-    slashTrails[key].points.push({ x: sx, y: sy, t: now });
-    if (slashTrails[key].points.length > 18) slashTrails[key].points.shift();
-    slashTrails[key].fading = false;
+    if (inZone) {
+      slashTrails[key].points.push({ x: sx, y: sy, t: now });
+      if (slashTrails[key].points.length > 18) slashTrails[key].points.shift();
+      slashTrails[key].fading = false;
+    } else {
+      // Hand is in wrong zone — fade out the trail
+      slashTrails[key].fading = true;
+    }
   });
 }
 
@@ -1040,17 +1078,36 @@ function onHandResults(results) {
 // ============================================================
 function checkSlashLine(x1, y1, x2, y2, player) {
   if (!gs || !gs.running) return;
+
+  // ── Zone guard: clip segment to the player's own half ────────
+  const W    = canvas.width;
+  const zMin = player === 1 ? 0     : W / 2;
+  const zMax = player === 1 ? W / 2 : W;
+  let tMin = 0, tMax = 1;
+  const dx = x2 - x1;
+  if (Math.abs(dx) > 0.001) {
+    const ta = (zMin - x1) / dx;
+    const tb = (zMax - x1) / dx;
+    tMin = Math.max(tMin, Math.min(ta, tb));
+    tMax = Math.min(tMax, Math.max(ta, tb));
+  } else {
+    if (x1 < zMin || x1 > zMax) return;
+  }
+  if (tMin >= tMax) return;
+  const cx1 = x1 + tMin * dx,  cy1 = y1 + tMin * (y2 - y1);
+  const cx2 = x1 + tMax * dx,  cy2 = y1 + tMax * (y2 - y1);
+  // ──────────────────────────────────────────────────────────────
+
   const p = player === 1 ? gs.p1 : gs.p2;
   if (!p.done && p.spawnDelay <= 0 && !p.needsSpawn) {
     for (const w of p.words) {
       if (w.slashed || w.wrongAnim > 0) continue;
-      if (segmentCircle(x1, y1, x2, y2, w.x, w.y, wordRadius)) {
+      if (segmentCircle(cx1, cy1, cx2, cy2, w.x, w.y, w.radius)) {
         doSlash(w, p);
       }
     }
   }
-  // Bonus bubbles can be slashed by any player on their side
-  checkBubbleSlash(x1, y1, x2, y2, player);
+  checkBubbleSlash(cx1, cy1, cx2, cy2, player);
 }
 
 function segmentCircle(ax, ay, bx, by, cx, cy, r) {
@@ -1175,7 +1232,7 @@ function spawnBonusBubble() {
     life: 1,
     slashed: false,
     pulse: 0,
-    radius: wordRadius * .82,
+    radius: Math.max(38, canvas.width * 0.05),
   });
 }
 
@@ -1238,7 +1295,7 @@ function gameLoop(ts) {
   lastTS = ts;
   const dt = Math.min(rawDt / 16.67, 3);
 
-  update(dt);
+  update(dt, rawDt);
   render();
 
   if (!gs.over) animFrame = requestAnimationFrame(gameLoop);
@@ -1247,7 +1304,18 @@ function gameLoop(ts) {
 // ============================================================
 //  UPDATE
 // ============================================================
-function update(dt) {
+function update(dt, rawDt) {
+  // Timer countdown
+  if (gs.timeLeft > 0) {
+    gs.timeLeft -= rawDt / 1000;
+    if (gs.timeLeft <= 0) {
+      gs.timeLeft = 0;
+      gs.p1.done = true;
+      gs.p2.done = true;
+      checkGameOver();
+    }
+  }
+
   updatePlayer(gs.p1, dt);
   updatePlayer(gs.p2, dt);
 
@@ -1298,6 +1366,11 @@ function update(dt) {
   if (gs.p2.flashErr > 0) gs.p2.flashErr -= dt;
   if (gs.p2.comboDisplay > 0) gs.p2.comboDisplay -= dt;
 
+  // Hand-lock pop animation counters (driven by update, not onHandResults)
+  for (const k in handLockAnim) {
+    if (handLockAnim[k] > 0) handLockAnim[k] = Math.max(0, handLockAnim[k] - dt);
+  }
+
   // Trim slash trails
   const now = performance.now();
   for (const key in slashTrails) {
@@ -1333,12 +1406,12 @@ function updatePlayer(p, dt) {
     w.y += w.vy * dt;
 
     // Horizontal bounce within zone
-    if (w.x - wordRadius < zL) { w.vx =  Math.abs(w.vx); w.x = zL + wordRadius; }
-    if (w.x + wordRadius > zR) { w.vx = -Math.abs(w.vx); w.x = zR - wordRadius; }
+    if (w.x - w.radius < zL) { w.vx =  Math.abs(w.vx); w.x = zL + w.radius; }
+    if (w.x + w.radius > zR) { w.vx = -Math.abs(w.vx); w.x = zR - w.radius; }
 
     // Respawn at bottom when off-screen top
-    if (w.y + wordRadius < -20) {
-      w.y  = H + wordRadius + Math.random() * 60;
+    if (w.y + w.radius < -20) {
+      w.y  = H + w.radius + Math.random() * 60;
       w.x  = zL + (zR-zL) * (.15 + Math.random() * .7);
       w.vy = -(1.3 + Math.random() * 1.0);
     }
@@ -1484,13 +1557,13 @@ function drawPlayerWords(p) {
     ctx.shadowBlur  = 22;
 
     // Orb gradient
-    const gr = ctx.createRadialGradient(0, -wordRadius*.15, 0, 0, 0, wordRadius);
+    const gr = ctx.createRadialGradient(0, -w.radius*.15, 0, 0, 0, w.radius);
     gr.addColorStop(0,   hexAlpha(col, .3));
     gr.addColorStop(.6,  hexAlpha(col, .12));
     gr.addColorStop(1,   hexAlpha(col, .03));
 
     ctx.beginPath();
-    ctx.arc(0, 0, wordRadius, 0, Math.PI*2);
+    ctx.arc(0, 0, w.radius, 0, Math.PI*2);
     ctx.fillStyle = gr;
     ctx.fill();
 
@@ -1504,19 +1577,17 @@ function drawPlayerWords(p) {
     ctx.strokeStyle = hexAlpha('#ffffff', .2);
     ctx.lineWidth   = 1;
     ctx.beginPath();
-    ctx.arc(-wordRadius*.2, -wordRadius*.3, wordRadius*.4, Math.PI*1.2, Math.PI*1.9);
+    ctx.arc(-w.radius*.2, -w.radius*.3, w.radius*.4, Math.PI*1.2, Math.PI*1.9);
     ctx.stroke();
 
-    // Text
-    const maxW = wordRadius * 1.75;
-    const fs   = adaptFontSize(w.text, maxW);
-    ctx.font   = `700 ${fs}px Rajdhani`;
+    // Text (Cố định chữ, không co lại theo adaptFontSize nữa)
+    ctx.font   = `700 ${w.fontSize}px Nunito`;
     ctx.textAlign    = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle    = '#ffffff';
     ctx.shadowColor  = col;
     ctx.shadowBlur   = 8;
-    ctx.fillText(w.text, 0, 0, maxW);
+    ctx.fillText(w.text, 0, 0);
     ctx.shadowBlur = 0;
 
     // Wrong X overlay
@@ -1525,7 +1596,7 @@ function drawPlayerWords(p) {
       ctx.strokeStyle = `rgba(255,50,50,${xa})`;
       ctx.lineWidth   = 4;
       ctx.lineCap     = 'round';
-      const sz = wordRadius * .55;
+      const sz = w.radius * .55;
       ctx.beginPath();
       ctx.moveTo(-sz,-sz); ctx.lineTo(sz,sz);
       ctx.moveTo(sz,-sz);  ctx.lineTo(-sz,sz);
@@ -1534,14 +1605,6 @@ function drawPlayerWords(p) {
 
     ctx.restore();
   }
-}
-
-function adaptFontSize(text, maxW) {
-  const len = text.length;
-  if (len <= 5)  return Math.min(28, wordRadius * .56);
-  if (len <= 10) return Math.min(24, wordRadius * .50);
-  if (len <= 16) return Math.min(20, wordRadius * .44);
-  return Math.min(17, wordRadius * .38);
 }
 
 // ---------- Bonus Bubbles ----------
@@ -1586,7 +1649,7 @@ function drawBonusBubbles() {
     ctx.fillText(b.icon, 0, -4);
 
     // Label
-    ctx.font      = `700 ${Math.round(b.radius * .32)}px Rajdhani`;
+    ctx.font      = `800 ${Math.round(b.radius * .32)}px Nunito`;
     ctx.fillStyle = b.color;
     ctx.shadowColor = b.color;
     ctx.shadowBlur  = 6;
@@ -1603,7 +1666,7 @@ function drawFloatTexts() {
     ctx.globalAlpha  = Math.max(0, ft.life);
     ctx.textAlign    = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font         = `700 ${ft.text.length > 6 ? 18 : 26}px Rajdhani`;
+    ctx.font         = `800 ${ft.text.length > 6 ? 18 : 26}px Nunito`;
     ctx.fillStyle    = ft.color;
     ctx.shadowColor  = ft.color;
     ctx.shadowBlur   = 14;
@@ -1670,41 +1733,127 @@ function drawSlashTrails() {
   }
 }
 
-// ---------- Hand cursors ----------
+// ---------- Hand cursors (with lock-state visuals) ----------
 function drawHandCursors() {
-  for (const h of handPositions) {
+  for (let i = 0; i < handPositions.length; i++) {
+    const h = handPositions[i];
     if (!h) continue;
-    const col = h.player === 1 ? COLORS.p1 : COLORS.p2;
+
+    const col      = h.player === 1 ? COLORS.p1 : COLORS.p2;
+    const inZone   = h.inZone;
+    const lockAnim = handLockAnim[i] || 0;
+    const isNew    = lockAnim > 0;                     // still showing lock-pop
+    const lockT    = 1 - lockAnim / 80;                // 0→1 as animation plays out
+
     ctx.save();
-    ctx.strokeStyle = col;
-    ctx.fillStyle   = hexAlpha(col, .15);
-    ctx.shadowColor = col;
-    ctx.shadowBlur  = 25;
-    ctx.lineWidth   = 2;
+
+    // ── Cursor ring ──────────────────────────────────────────
+    const baseR = 20;
+    // Pop: ring briefly scales up then settles on first detection
+    const popScale = isNew
+      ? 1 + Math.sin(lockT * Math.PI) * 0.8
+      : 1;
+
+    if (inZone) {
+      // Normal — bright ring in player color
+      ctx.strokeStyle = col;
+      ctx.fillStyle   = hexAlpha(col, .15);
+      ctx.shadowColor = col;
+      ctx.shadowBlur  = 28;
+      ctx.globalAlpha = 1;
+    } else {
+      // Out-of-zone — dim red warning ring
+      ctx.strokeStyle = '#ff4040';
+      ctx.fillStyle   = 'rgba(255,40,40,.08)';
+      ctx.shadowColor = '#ff4040';
+      ctx.shadowBlur  = 16;
+      ctx.globalAlpha = 0.55;
+    }
+
+    ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.arc(h.x, h.y, 18, 0, Math.PI*2);
+    ctx.arc(h.x, h.y, baseR * popScale, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
+
     // Center dot
-    ctx.fillStyle = col;
-    ctx.shadowBlur = 0;
+    ctx.shadowBlur  = 0;
+    ctx.fillStyle   = inZone ? col : '#ff4040';
+    ctx.globalAlpha = inZone ? 1 : 0.5;
     ctx.beginPath();
-    ctx.arc(h.x, h.y, 4, 0, Math.PI*2);
+    ctx.arc(h.x, h.y, 4, 0, Math.PI * 2);
     ctx.fill();
+
+    // ── Lock-pop label (shown for first 80 frames after detection) ──
+    if (isNew && lockT < 0.85) {
+      const labelAlpha = lockT < 0.15
+        ? lockT / 0.15
+        : lockT > 0.7 ? 1 - (lockT - 0.7) / 0.15 : 1;
+
+      ctx.globalAlpha  = labelAlpha;
+      ctx.font         = `800 ${Math.round(14 + 6 * Math.sin(lockT * Math.PI))}px Nunito`;
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle    = col;
+      ctx.shadowColor  = col;
+      ctx.shadowBlur   = 18;
+      ctx.fillText(`🔒 P${h.player} LOCKED`, h.x, h.y - baseR - 18);
+      ctx.shadowBlur   = 0;
+    }
+
+    // ── Out-of-zone warning ─────────────────────────────────
+    if (!inZone) {
+      ctx.globalAlpha  = 0.75;
+      ctx.font         = '800 13px Nunito';
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle    = '#ff4040';
+      ctx.shadowColor  = '#ff4040';
+      ctx.shadowBlur   = 10;
+      ctx.fillText('⛔ SAI VÙNG', h.x, h.y - baseR - 14);
+      ctx.shadowBlur   = 0;
+    }
+
+    ctx.globalAlpha = 1;
     ctx.restore();
   }
 }
 
 // ---------- HUD ----------
 function drawHUD(W, H) {
-  // P1 — top left
   drawPlayerHUD(gs.p1, 18, 14, 'left');
-  // P2 — top right
   drawPlayerHUD(gs.p2, W - 18, 14, 'right');
-
-  // Progress
   drawProgress(gs.p1, W/4, 10);
   drawProgress(gs.p2, W*3/4, 10);
+  drawTimer(W, H);
+
+  // Camera mode: show hand-lock status at the bottom of each zone
+  if (gameMode === 'camera') drawHandLockStatus(W, H);
+}
+
+function drawHandLockStatus(W, H) {
+  // Count how many hands are assigned to each player
+  const assigned = { 1: false, 2: false };
+  for (const idx in handAssignment) {
+    assigned[handAssignment[idx]] = true;
+  }
+
+  [1, 2].forEach(num => {
+    const col  = num === 1 ? COLORS.p1 : COLORS.p2;
+    const cx   = num === 1 ? W / 4 : W * 3 / 4;
+    const cy   = H - 100;
+    const isOk = assigned[num];
+
+    ctx.save();
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font         = '700 12px Nunito';
+    ctx.fillStyle    = isOk ? hexAlpha(col, .7) : hexAlpha('#ffffff', .2);
+    ctx.shadowColor  = isOk ? col : 'transparent';
+    ctx.shadowBlur   = isOk ? 8 : 0;
+    ctx.fillText(isOk ? `🔒 P${num} tay đã khóa` : `✋ P${num} giơ tay lên`, cx, cy);
+    ctx.restore();
+  });
 }
 
 function drawPlayerHUD(p, x, y, align) {
@@ -1759,9 +1908,32 @@ function drawProgress(p, x, y) {
   ctx.save();
   ctx.textAlign    = 'center';
   ctx.textBaseline = 'top';
-  ctx.font         = '700 13px Rajdhani';
+  ctx.font         = '700 13px Nunito';
   ctx.fillStyle    = hexAlpha(col, .55);
   ctx.fillText(label, x, y + 2);
+  ctx.restore();
+}
+
+function drawTimer(W, H) {
+  if (!gs || gs.over) return;
+  const t = Math.ceil(Math.max(0, gs.timeLeft));
+  const m = Math.floor(t / 60);
+  const s = t % 60;
+  const str = `${m}:${s.toString().padStart(2, '0')}`;
+
+  ctx.save();
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.font = 'bold 42px Bangers';
+  ctx.fillStyle = t <= 10 ? '#ff4040' : '#ffffff';
+  if (t <= 10) {
+    ctx.shadowColor = '#ff4040';
+    ctx.shadowBlur = 15;
+  } else {
+    ctx.shadowColor = '#ffffff';
+    ctx.shadowBlur = 5;
+  }
+  ctx.fillText(str, W / 2, 20);
   ctx.restore();
 }
 
@@ -1783,7 +1955,7 @@ function drawQuestionBox(p, cx, cy, maxW, h, col) {
   ctx.save();
 
   // Box background
-  const bw = Math.min(maxW, measureTextWidth(qText, '700 24px Rajdhani') + 60);
+  const bw = Math.min(maxW, measureTextWidth(qText, '700 24px Nunito') + 60);
   roundRect(ctx, cx - bw/2, cy, bw, h, 12);
   ctx.fillStyle   = 'rgba(0,0,0,.72)';
   ctx.fill();
@@ -1792,14 +1964,14 @@ function drawQuestionBox(p, cx, cy, maxW, h, col) {
   ctx.stroke();
 
   // "Q:" badge
-  ctx.font         = '700 14px Rajdhani';
+  ctx.font         = '800 14px Nunito';
   ctx.fillStyle    = hexAlpha(col, .7);
   ctx.textAlign    = 'left';
   ctx.textBaseline = 'middle';
   ctx.fillText('Q:', cx - bw/2 + 12, cy + h/2);
 
   // Question text
-  ctx.font         = '700 24px Rajdhani';
+  ctx.font         = '800 24px Nunito';
   ctx.fillStyle    = '#ffffff';
   ctx.textAlign    = 'center';
   ctx.textBaseline = 'middle';
@@ -1840,7 +2012,7 @@ function drawDoneOverlay(playerNum, W, H) {
   ctx.fillText(msg, ox + W/4, H/2 - 24);
 
   ctx.shadowBlur  = 0;
-  ctx.font        = `700 ${Math.min(24,W*.028)}px Rajdhani`;
+  ctx.font        = `700 ${Math.min(24,W*.028)}px Nunito`;
   ctx.fillStyle   = 'rgba(255,255,255,.7)';
   ctx.fillText(`${p.score} điểm`, ox + W/4, H/2 + 28);
 
@@ -1852,9 +2024,9 @@ function drawDoneOverlay(playerNum, W, H) {
 // ============================================================
 function checkGameOver() {
   if (!gs) return;
-  // Check if both players are done, or only one with no more actions
+  // Check if both players are done, or time is up
   const bothDone = gs.p1.done && gs.p2.done;
-  if (!bothDone) return;
+  if (!bothDone && gs.timeLeft > 0) return;
 
   gs.running = false;
   gs.over    = true;
