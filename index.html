@@ -66,23 +66,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* ══ 1P GAME ══════════════════════════════════════════════════ */
 #game{padding:0;}
 .top-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
-.round-badge{font-size:11px;color:var(--muted);white-space:nowrap;}
+.round-badge{font-size:13px;color:var(--muted);white-space:nowrap;}
 .progress-wrap{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
 .progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s ease;}
-.score-badge{font-size:12px;font-weight:700;color:var(--gold);white-space:nowrap;}
+.score-badge{font-size:14px;font-weight:700;color:var(--gold);white-space:nowrap;}
 
 .listen-zone{display:flex;flex-direction:column;align-items:center;padding:18px 20px 8px;gap:8px;flex-shrink:0;}
-.listen-btn{width:66px;height:66px;border-radius:50%;background:rgba(124,108,255,.14);border:2.5px solid var(--accent);color:var(--accent);font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .12s;}
+.listen-btn{width:80px;height:80px;border-radius:50%;background:rgba(124,108,255,.14);border:2.5px solid var(--accent);color:var(--accent);font-size:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .12s;}
 .listen-btn:hover{background:rgba(124,108,255,.26);transform:scale(1.06);}
 .listen-btn.playing{animation:pulse .55s ease infinite alternate;}
 @keyframes pulse{from{box-shadow:0 0 0 0 rgba(124,108,255,.5);}to{box-shadow:0 0 0 12px rgba(124,108,255,0);}}
-.listen-hint{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.listen-hint{font-size:13px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
 .bre-badge{font-size:10px;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2px 8px;letter-spacing:1px;}
 
 /* puzzle display */
-.puzzle-wrap{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:5px;padding:6px 14px 2px;min-height:52px;flex-shrink:0;}
-.puz-sym{font-family:var(--ipa);font-size:20px;color:var(--muted);padding:2px 1px;}
-.puz-slot{min-width:36px;height:40px;border-radius:8px;border:2px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;font-family:var(--ipa);font-size:16px;color:var(--text);padding:0 5px;transition:border-color .15s,background .15s;cursor:default;}
+.puzzle-wrap{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;padding:12px 14px 6px;min-height:70px;flex-shrink:0;}
+.puz-sym{font-family:var(--ipa);font-size:28px;color:var(--muted);padding:2px 3px;font-weight:600;}
+.puz-slot{min-width:48px;height:52px;border-radius:10px;border:2.5px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;font-family:var(--ipa);font-size:20px;color:var(--text);padding:0 8px;transition:border-color .15s,background .15s;cursor:default;font-weight:700;}
 .puz-slot.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,108,255,.2);background:rgba(124,108,255,.07);}
 .puz-slot.filled{border-color:var(--accent);background:rgba(124,108,255,.1);color:var(--accent);cursor:pointer;}
 .puz-slot.filled:hover{background:rgba(124,108,255,.2);}
@@ -97,20 +97,20 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .slot-dot.done{background:var(--green);}
 
 .action-row{display:flex;gap:8px;justify-content:center;padding:3px 14px 5px;flex-shrink:0;}
-.btn-check{background:var(--accent);color:#fff;border:none;border-radius:var(--r);padding:10px 24px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;transition:opacity .15s;}
+.btn-check{background:var(--accent);color:#fff;border:none;border-radius:var(--r);padding:12px 28px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s;}
 .btn-check:disabled{opacity:.3;cursor:default;}
 .btn-clear{background:var(--card);color:var(--muted);border:1.5px solid var(--border);border-radius:var(--r);padding:10px 12px;font-family:var(--font);font-size:13px;cursor:pointer;}
 .btn-clear:hover{border-color:var(--red);color:var(--red);}
 
 .feedback-strip{min-height:20px;display:flex;align-items:center;justify-content:center;padding:0 14px 2px;flex-shrink:0;}
-.feedback-msg{font-size:12px;font-weight:600;}
+.feedback-msg{font-size:14px;font-weight:600;}
 .feedback-msg.ok{color:var(--green);}
 .feedback-msg.err{color:var(--red);}
 
 .kb-wrap{flex:1;overflow-y:auto;padding:5px 10px 14px;display:flex;flex-direction:column;gap:6px;}
 .kb-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
 .kb-row{display:flex;flex-wrap:wrap;gap:5px;}
-.kb-btn{min-width:38px;height:40px;border-radius:8px;background:var(--card);border:1.5px solid var(--border);color:var(--text);font-family:var(--ipa);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 5px;transition:border-color .12s,background .12s,transform .1s;}
+.kb-btn{min-width:44px;height:48px;border-radius:9px;background:var(--card);border:1.5px solid var(--border);color:var(--text);font-family:var(--ipa);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 7px;transition:border-color .12s,background .12s,transform .1s;}
 .kb-btn:hover{border-color:var(--accent);background:rgba(124,108,255,.1);transform:scale(1.04);}
 .kb-btn:active{transform:scale(.95);}
 
@@ -434,41 +434,85 @@ function tokenizeIPA(raw){
 }
 
 // ══════════════════════════════════════════════
-// FETCH IPA — dictionaryapi.dev + Groq fallback
+// FETCH IPA — 3-tier: dictionaryapi.dev → Wiktionary → Groq RP
 // ══════════════════════════════════════════════
+
+// Tier 1: dictionaryapi.dev — prefer phonetic with uk audio URL
 async function fetchIPADict(word){
   try{
     const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
     if(!res.ok) return null;
     const data = await res.json();
-    // prefer BrE phonetic (usually first entry, first phonetic without audio or marked uk)
     const entry = data[0];
-    // try phonetics array: prefer one with text + no audio (BrE usually no audio in free API)
-    // or just take first phonetic with text
+    if(!entry) return null;
     let raw = null;
-    if(entry.phonetics){
-      // prefer entry with audio containing 'uk' or no audio
-      const uk = entry.phonetics.find(p=>p.text && p.audio && p.audio.includes('uk'));
-      const any = entry.phonetics.find(p=>p.text && p.text.trim());
-      raw = (uk||any)?.text || null;
+    if(entry.phonetics && entry.phonetics.length){
+      // Priority 1: has text + audio URL containing 'uk'
+      const ukAudio = entry.phonetics.find(p => p.text && p.audio && p.audio.includes('-uk'));
+      // Priority 2: has text + no audio (BrE entries often lack audio in free tier)
+      const noAudio = entry.phonetics.find(p => p.text && !p.audio);
+      // Priority 3: any with text
+      const anyText = entry.phonetics.find(p => p.text && p.text.trim());
+      raw = ukAudio?.text || noAudio?.text || anyText?.text || null;
     }
     if(!raw && entry.phonetic) raw = entry.phonetic;
-    return raw;
+    return raw || null;
   } catch(e){ return null; }
 }
 
-async function fetchIPAGroq(word, apiKey){
+// Tier 2: Wiktionary REST API — highly accurate, community-maintained
+// Parses {{IPA|en|/…/}} template from wikitext
+async function fetchIPAWiktionary(word){
   try{
+    const res = await fetch(`https://en.wiktionary.org/w/rest.php/v1/page/${encodeURIComponent(word)}`);
+    if(!res.ok) return null;
+    const data = await res.json();
+    const source = data.source || '';
+    // Match {{IPA|en|/ʃɪp/}} or {{IPA|en|/ʃɪp/|/ʃɪp/}}
+    const m = source.match(/\{\{IPA\|en\|([^}]+)\}\}/i);
+    if(!m) return null;
+    // Extract first /…/ group
+    const ipaMatch = m[1].match(/\/([^\/]+)\//);
+    return ipaMatch ? '/'+ipaMatch[1]+'/' : null;
+  } catch(e){ return null; }
+}
+
+// Tier 3: Groq — Received Pronunciation, strict symbol whitelist, with retry
+const IPA_VALID_CHARS = new Set([
+  'ɪ','e','æ','ʌ','ɒ','ʊ','ə','i','ː','ɑ','ɔ','u','ɜ',
+  'e','ɪ','a','ɔ','ə','ʊ','a','ʊ','ɪ','ə','e','ə','ʊ','ə',
+  'p','t','k','b','d','g','f','v','θ','ð','s','z','ʃ','ʒ',
+  'tʃ','dʒ','h','m','n','ŋ','l','r','j','w',
+  '/','ˈ','ˌ','.'
+]);
+function isValidIPA(str){
+  // Remove slashes and stress markers, check remaining chars are IPA
+  const clean = str.replace(/[\/ˈˌ. ]/g,'');
+  // Allow any unicode in IPA range (basic check)
+  return /^[a-zæɑɒɔəɛɜɪɐɓɗɖɠɣɦɧɨɬɭɮɯɰɱɲɳɴɵɶɷɸɹɺɻɼɽɾɿʀʁʂʃʄʅʆʇʈʉʊʋʌʍʎʏʐʑʒʓʔʕʖʗʘʙʚʛʜʝʞʟʠʡʢʣʤʥʦʧʨʩʪʫʬʭʮʯː]+$/i.test(clean);
+}
+
+async function fetchIPAGroq(word, apiKey){
+  const makePrompt = (w, correction='') => `You are a British English phonetician specialising in Received Pronunciation (RP).
+Give the RP IPA transcription for the word "${w}".${correction}
+
+Allowed vowels: ɪ e æ ʌ ɒ ʊ ə iː ɑː ɔː uː ɜː eɪ aɪ ɔɪ əʊ aʊ ɪə eə ʊə
+Allowed consonants: p t k b d g f v θ ð s z ʃ ʒ tʃ dʒ h m n ŋ l r j w
+Rules:
+- Non-rhotic: no /r/ unless before a vowel (e.g. "bird" = /bɜːd/ not /bɜːrd/)
+- "bath/dance/grass" use /ɑː/ not /æ/
+- "lot/hot" use /ɒ/
+- Reply with ONLY the IPA between forward slashes, e.g. /ʃɪp/
+- No stress marks, no syllable dots, no explanation`;
+
+  const callGroq = async (prompt) => {
     const res = await fetch('https://api.groq.com/openai/v1/chat/completions',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
       body: JSON.stringify({
-        model:'llama-3.3-70b-versatile',
-        max_tokens:60,
-        messages:[{
-          role:'user',
-          content:`Give ONLY the British English IPA transcription for the word "${word}". Reply with just the IPA in slashes like /wɜːld/. No explanation.`
-        }]
+        model:'llama-3.3-70b-versatile', max_tokens:40,
+        temperature:0,
+        messages:[{role:'user', content:prompt}]
       })
     });
     if(!res.ok) return null;
@@ -476,6 +520,17 @@ async function fetchIPAGroq(word, apiKey){
     const text = data.choices?.[0]?.message?.content?.trim()||'';
     const m = text.match(/\/([^\/]+)\//);
     return m ? '/'+m[1]+'/' : null;
+  };
+
+  try{
+    let result = await callGroq(makePrompt(word));
+    if(!result) return null;
+    // Validate — if contains suspicious chars, retry with correction hint
+    if(!isValidIPA(result)){
+      const correction = ` Your previous answer contained invalid characters. Use ONLY the symbols listed.`;
+      result = await callGroq(makePrompt(word, correction));
+    }
+    return result;
   } catch(e){ return null; }
 }
 
@@ -525,12 +580,17 @@ async function handleStart(){
   compiledQuestions = [];
 
   for(const word of words){
-    log(`🔍 Tra phiên âm: <b>${word}</b>...`);
+    log(`🔍 <b>${word}</b>...`);
     let raw_ipa = await fetchIPADict(word);
     if(raw_ipa){
-      log(`&nbsp;&nbsp;✓ Dict: ${raw_ipa}`);
-    } else if(groqKey){
-      log(`&nbsp;&nbsp;⚠ Không có trong dict, dùng Groq...`);
+      log(`&nbsp;&nbsp;✓ dictionaryapi: ${raw_ipa}`);
+    } else {
+      log(`&nbsp;&nbsp;→ Thử Wiktionary...`);
+      raw_ipa = await fetchIPAWiktionary(word);
+      if(raw_ipa) log(`&nbsp;&nbsp;✓ Wiktionary: ${raw_ipa}`);
+    }
+    if(!raw_ipa && groqKey){
+      log(`&nbsp;&nbsp;→ Thử Groq RP...`);
       raw_ipa = await fetchIPAGroq(word, groqKey);
       if(raw_ipa) log(`&nbsp;&nbsp;✓ Groq: ${raw_ipa}`);
     }
@@ -582,21 +642,21 @@ function replayGame(){
 function renderPuzzle(containerId, puzzle, inp, activeSlotIdx, onSlotClick){
   const wrap = document.getElementById(containerId);
   wrap.innerHTML='';
-  puzzle.ipa.forEach((sym,i)=>{
-    if(puzzle.blanks.includes(sym=puzzle.ipa[i], false) && puzzle.blanks.indexOf(i)>=0){
-      // it's a blank
-      const blankIdx = puzzle.blanks.indexOf(i);
+  puzzle.ipa.forEach((sym, i)=>{
+    const blankIdx = puzzle.blanks.indexOf(i);
+    if(blankIdx >= 0){
       const div = document.createElement('div');
       let cls='puz-slot';
-      if(inp[blankIdx]!==undefined) cls+=' filled';
-      if(blankIdx===activeSlotIdx) cls+=' active';
+      if(inp[blankIdx] !== undefined) cls+=' filled';
+      if(blankIdx === activeSlotIdx) cls+=' active';
       div.className=cls;
-      div.textContent=inp[blankIdx]||'';
+      div.textContent = inp[blankIdx] !== undefined ? '/'+inp[blankIdx]+'/' : '';
       div.onclick=()=>onSlotClick(blankIdx);
       wrap.appendChild(div);
     } else {
       const span=document.createElement('span');
-      span.className='puz-sym'; span.textContent=sym;
+      span.className='puz-sym';
+      span.textContent='/'+sym+'/';
       wrap.appendChild(span);
     }
   });
@@ -683,11 +743,12 @@ function check1P(){
   const correct=cur1P.answers;
   const ok=inp1.every((s,i)=>s===correct[i]);
   // flash slots
+  const snapInp1=[...inp1];
   const slots=document.querySelectorAll('#puzzleWrap .puz-slot');
   let si=0;
   slots.forEach(s=>{
     s.classList.remove('filled','active');
-    s.classList.add(inp1[si]===correct[si]?'correct':'wrong');
+    s.classList.add(snapInp1[si]===correct[si]?'correct':'wrong');
     si++;
   });
   if(ok){
@@ -812,8 +873,13 @@ function checkPanel(p){
       setTimeout(()=>loadPanel(p),700);
     }
   } else {
+    // snapshot before reset for coloring
+    const snapInp=[...st.inp];
     document.getElementById(fbId).textContent='✗ Thử lại!';
     document.getElementById(fbId).className='panel-feedback err';
+    const slots2=document.querySelectorAll('#'+puzzId+' .puz-slot');
+    let si2=0;
+    slots2.forEach(s=>{ s.classList.remove('filled','active'); s.classList.add(snapInp[si2]===correct[si2]?'correct':'wrong'); si2++; });
     setTimeout(()=>{
       st.inp=new Array(st.q.blanks.length).fill(undefined); st.active=0;
       document.getElementById(fbId).textContent='';
