@@ -65,13 +65,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 /* ══ 1P GAME ══════════════════════════════════════════════════ */
 #game{padding:0;}
-.top-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
+.top-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
 .round-badge{font-size:13px;color:var(--muted);white-space:nowrap;}
 .progress-wrap{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
 .progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s ease;}
 .score-badge{font-size:14px;font-weight:700;color:var(--gold);white-space:nowrap;}
 
-.listen-zone{display:flex;flex-direction:column;align-items:center;padding:18px 20px 8px;gap:8px;flex-shrink:0;}
+.listen-zone{display:flex;flex-direction:column;align-items:center;padding:12px 20px 6px;gap:6px;flex-shrink:0;}
 .listen-btn{width:80px;height:80px;border-radius:50%;background:rgba(124,108,255,.14);border:2.5px solid var(--accent);color:var(--accent);font-size:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .12s;}
 .listen-btn:hover{background:rgba(124,108,255,.26);transform:scale(1.06);}
 .listen-btn.playing{animation:pulse .55s ease infinite alternate;}
@@ -80,7 +80,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .bre-badge{font-size:10px;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2px 8px;letter-spacing:1px;}
 
 /* puzzle display */
-.puzzle-wrap{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;padding:12px 14px 6px;min-height:70px;flex-shrink:0;}
+.puzzle-wrap{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;padding:6px 14px 4px;min-height:60px;flex-shrink:0;}
 .puz-sym{font-family:var(--ipa);font-size:28px;color:var(--muted);padding:2px 3px;font-weight:600;}
 .puz-slot{min-width:48px;height:52px;border-radius:10px;border:2.5px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;font-family:var(--ipa);font-size:20px;color:var(--text);padding:0 8px;transition:border-color .15s,background .15s;cursor:default;font-weight:700;}
 .puz-slot.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,108,255,.2);background:rgba(124,108,255,.07);}
@@ -96,84 +96,102 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .slot-dot.active{background:var(--accent);}
 .slot-dot.done{background:var(--green);}
 
-.action-row{display:flex;gap:8px;justify-content:center;padding:3px 14px 5px;flex-shrink:0;}
+.action-row{display:flex;gap:8px;justify-content:center;padding:2px 14px 4px;flex-shrink:0;}
 .btn-check{background:var(--accent);color:#fff;border:none;border-radius:var(--r);padding:12px 28px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s;}
 .btn-check:disabled{opacity:.3;cursor:default;}
 .btn-clear{background:var(--card);color:var(--muted);border:1.5px solid var(--border);border-radius:var(--r);padding:10px 12px;font-family:var(--font);font-size:13px;cursor:pointer;}
 .btn-clear:hover{border-color:var(--red);color:var(--red);}
 
-.feedback-strip{min-height:20px;display:flex;align-items:center;justify-content:center;padding:0 14px 2px;flex-shrink:0;}
+.feedback-strip{min-height:18px;display:flex;align-items:center;justify-content:center;padding:0 14px 1px;flex-shrink:0;}
 .feedback-msg{font-size:14px;font-weight:600;}
 .feedback-msg.ok{color:var(--green);}
 .feedback-msg.err{color:var(--red);}
 
-.kb-wrap{flex:1;overflow-y:auto;padding:5px 10px 14px;display:flex;flex-direction:column;gap:6px;}
+.kb-wrap{flex:1;overflow-y:auto;padding:6px 10px 10px;display:flex;flex-direction:column;gap:5px;}
 .kb-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
 .kb-row{display:flex;flex-wrap:wrap;gap:5px;}
-.kb-btn{min-width:44px;height:48px;border-radius:9px;background:var(--card);border:1.5px solid var(--border);color:var(--text);font-family:var(--ipa);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 7px;transition:border-color .12s,background .12s,transform .1s;}
+.kb-btn{flex:1;min-width:40px;height:clamp(42px,6vw,54px);border-radius:9px;background:var(--card);border:1.5px solid var(--border);color:var(--text);font-family:var(--ipa);font-size:clamp(16px,2.5vw,22px);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:border-color .12s,background .12s,transform .1s;touch-action:manipulation;}
 .kb-btn:hover{border-color:var(--accent);background:rgba(124,108,255,.1);transform:scale(1.04);}
 .kb-btn:active{transform:scale(.95);}
 
-/* ══ 2P GAME ══════════════════════════════════════════════════ */
-#game2{padding:0;}
-.top-bar-2p{display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
-.split-arena{flex:1;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;}
-.panel{display:flex;flex-direction:column;overflow:hidden;position:relative;}
-.panel.p1-panel{border-right:2px solid var(--border);}
-.panel-header{display:flex;align-items:center;gap:5px;padding:6px 8px 4px;flex-shrink:0;}
-.panel-name{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+/* ══ 2P GAME — stacked vertically, P2 rotated 180° ═══════════ */
+#game2{padding:0;overflow:hidden;}
+/* Hide default scrollbar on game2 */
+#game2::-webkit-scrollbar{display:none;}
+
+/* Two panels stacked, each exactly 50vh */
+.split-arena{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.panel{display:flex;flex-direction:column;overflow:hidden;position:relative;height:50%;}
+.panel.p2-panel{transform:rotate(180deg);border-top:2px solid var(--border);}
+
+/* Panel header — tight */
+.panel-header{display:flex;align-items:center;gap:6px;padding:4px 10px 3px;flex-shrink:0;}
+.panel-name{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
 .p1-panel .panel-name{color:var(--p1);}
 .p2-panel .panel-name{color:var(--p2);}
 .panel-prog-wrap{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
 .panel-prog-fill{height:100%;border-radius:2px;transition:width .35s;}
 .p1-panel .panel-prog-fill{background:var(--p1);}
 .p2-panel .panel-prog-fill{background:var(--p2);}
-.panel-round{font-size:9px;font-weight:700;}
+.panel-round{font-size:10px;font-weight:700;}
 .p1-panel .panel-round{color:var(--p1);}
 .p2-panel .panel-round{color:var(--p2);}
 
-.panel-listen{display:flex;align-items:center;justify-content:center;padding:6px 8px 3px;flex-shrink:0;gap:6px;}
-.panel-listen-btn{width:40px;height:40px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-width:2px;border-style:solid;transition:transform .12s;}
+/* Compact listen + puzzle + actions row */
+.panel-top-row{display:flex;align-items:center;gap:8px;padding:3px 10px 2px;flex-shrink:0;}
+.panel-listen-btn{width:36px;height:36px;border-radius:50%;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-width:2px;border-style:solid;transition:transform .12s;flex-shrink:0;}
 .p1-panel .panel-listen-btn{background:var(--p1d);border-color:var(--p1);color:var(--p1);}
 .p2-panel .panel-listen-btn{background:var(--p2d);border-color:var(--p2);color:var(--p2);}
-.panel-listen-btn:hover{transform:scale(1.07);}
+.panel-listen-btn:active{transform:scale(.93);}
 .p1-panel .panel-listen-btn.playing{animation:pulseP1 .55s ease infinite alternate;}
 .p2-panel .panel-listen-btn.playing{animation:pulseP2 .55s ease infinite alternate;}
-@keyframes pulseP1{from{box-shadow:0 0 0 0 rgba(0,200,255,.4);}to{box-shadow:0 0 0 8px rgba(0,200,255,0);}}
-@keyframes pulseP2{from{box-shadow:0 0 0 0 rgba(255,159,67,.4);}to{box-shadow:0 0 0 8px rgba(255,159,67,0);}}
+@keyframes pulseP1{from{box-shadow:0 0 0 0 rgba(0,200,255,.4);}to{box-shadow:0 0 0 7px rgba(0,200,255,0);}}
+@keyframes pulseP2{from{box-shadow:0 0 0 0 rgba(255,159,67,.4);}to{box-shadow:0 0 0 7px rgba(255,159,67,0);}}
 
-.panel-puzzle{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:3px;padding:2px 5px;min-height:42px;flex-shrink:0;}
-.panel-puzzle .puz-sym{font-size:15px;}
-.panel-puzzle .puz-slot{min-width:28px;height:34px;font-size:13px;padding:0 3px;border-radius:6px;}
-.p1-panel .puz-slot.active{border-color:var(--p1);box-shadow:0 0 0 2px rgba(0,200,255,.2);}
+/* Puzzle inline */
+.panel-puzzle{display:flex;align-items:center;flex-wrap:wrap;gap:4px;flex:1;}
+.panel-puzzle .puz-sym{font-family:var(--ipa);font-size:16px;color:var(--muted);font-weight:600;}
+.panel-puzzle .puz-slot{min-width:34px;height:36px;font-size:14px;padding:0 4px;border-radius:7px;
+  border:2px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;
+  font-family:var(--ipa);cursor:pointer;transition:border-color .12s,background .12s;}
+.p1-panel .puz-slot.active{border-color:var(--p1);box-shadow:0 0 0 2px rgba(0,200,255,.25);}
 .p1-panel .puz-slot.filled{border-color:var(--p1);background:var(--p1d);color:var(--p1);}
-.p2-panel .puz-slot.active{border-color:var(--p2);box-shadow:0 0 0 2px rgba(255,159,67,.2);}
+.p2-panel .puz-slot.active{border-color:var(--p2);box-shadow:0 0 0 2px rgba(255,159,67,.25);}
 .p2-panel .puz-slot.filled{border-color:var(--p2);background:var(--p2d);color:var(--p2);}
 
-.panel-slot-nav{display:flex;gap:4px;justify-content:center;padding:1px 0 2px;flex-shrink:0;}
-.panel-slot-nav .slot-dot{width:6px;height:6px;}
-
-.panel-actions{display:flex;gap:4px;padding:2px 6px 2px;flex-shrink:0;}
-.panel-check{color:#fff;border:none;border-radius:7px;padding:6px 0;font-family:var(--font);font-size:10px;font-weight:700;cursor:pointer;flex:1;transition:opacity .15s;}
+/* Actions row */
+.panel-actions{display:flex;gap:5px;padding:2px 10px 2px;flex-shrink:0;}
+.panel-check{color:#fff;border:none;border-radius:8px;padding:7px 0;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;flex:1;transition:opacity .15s;}
 .p1-panel .panel-check{background:var(--p1);}
 .p2-panel .panel-check{background:var(--p2);}
 .panel-check:disabled{opacity:.28;cursor:default;}
-.panel-clear{background:var(--card);color:var(--muted);border:1.5px solid var(--border);border-radius:7px;padding:6px 8px;font-family:var(--font);font-size:10px;cursor:pointer;}
-.panel-clear:hover{border-color:var(--red);color:var(--red);}
-.panel-feedback{min-height:16px;text-align:center;font-size:10px;font-weight:600;padding:0 4px 1px;}
+.panel-clear{background:var(--card);color:var(--muted);border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-family:var(--font);font-size:12px;cursor:pointer;}
+.panel-feedback{min-height:15px;text-align:center;font-size:11px;font-weight:600;padding:0 6px 1px;flex-shrink:0;}
 .panel-feedback.ok{color:var(--green);}
 .panel-feedback.err{color:var(--red);}
-.panel-kb{flex:1;overflow-y:auto;padding:3px 6px 8px;display:flex;flex-direction:column;gap:4px;}
-.panel-kb .kb-label{font-size:7px;}
-.panel-kb .kb-row{gap:3px;}
-.panel-kb .kb-btn{min-width:26px;height:30px;font-size:11px;padding:0 3px;border-radius:5px;}
-.p1-panel .kb-btn:hover{border-color:var(--p1);background:var(--p1d);}
-.p2-panel .kb-btn:hover{border-color:var(--p2);background:var(--p2d);}
+
+/* KB — takes remaining space, uses CSS grid for uniform sizing */
+.panel-kb{flex:1;overflow:hidden;padding:3px 8px 6px;display:flex;flex-direction:column;gap:3px;}
+.panel-kb .kb-label{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.panel-kb .kb-row{display:flex;flex-wrap:wrap;gap:4px;}
+/* KB buttons: large touch targets, fill width proportionally */
+.panel-kb .kb-btn{
+  flex:1;min-width:0;height:clamp(32px,5.5vw,44px);
+  border-radius:7px;background:var(--card);border:1.5px solid var(--border);
+  color:var(--text);font-family:var(--ipa);font-size:clamp(13px,2.2vw,18px);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  padding:0;transition:border-color .1s,background .1s,transform .08s;
+  touch-action:manipulation;
+}
+.panel-kb .kb-btn:active{transform:scale(.92);}
+.p1-panel .kb-btn:active{border-color:var(--p1);background:var(--p1d);}
+.p2-panel .kb-btn:active{border-color:var(--p2);background:var(--p2d);}
+
 .panel-win-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;z-index:10;backdrop-filter:blur(4px);}
-.p1-panel .panel-win-overlay{background:rgba(0,200,255,.15);}
-.p2-panel .panel-win-overlay{background:rgba(255,159,67,.15);}
-.win-icon{font-size:44px;}
-.win-label{font-size:15px;font-weight:700;}
+.p1-panel .panel-win-overlay{background:rgba(0,200,255,.18);}
+.p2-panel .panel-win-overlay{background:rgba(255,159,67,.18);}
+.win-icon{font-size:40px;}
+.win-label{font-size:14px;font-weight:700;}
 .p1-panel .win-label{color:var(--p1);}
 .p2-panel .win-label{color:var(--p2);}
 
@@ -275,29 +293,23 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
   <div class="kb-wrap" id="kbWrap"></div>
 </div>
 
-<!-- ══ 2P GAME ══════════════════════════════════════════════════ -->
+<!-- ══ 2P GAME — P1 top (normal), P2 bottom (rotated 180°) ══ -->
 <div id="game2" class="screen">
-  <div class="top-bar-2p">
-    <span style="font-size:11px;color:var(--muted);">IPA Blitz · 2P</span>
-    <div style="flex:1"></div>
-    <div class="bre-badge" style="font-size:9px;">🇬🇧 BrE</div>
-  </div>
   <div class="split-arena">
+    <!-- P1 — sits at top, reads normally -->
     <div class="panel p1-panel" id="p1Panel">
       <div class="panel-header">
-        <div class="panel-name">P1</div>
+        <div class="panel-name">P1 🇬🇧</div>
         <div class="panel-prog-wrap"><div class="panel-prog-fill" id="p1Prog" style="width:0%"></div></div>
         <div class="panel-round" id="p1Round">1/10</div>
       </div>
-      <div class="panel-listen">
-        <button class="panel-listen-btn" id="p1ListenBtn" onclick="playWord(p1.q,'p1ListenBtn')">🔊</button>
-        <div style="font-size:9px;color:var(--muted);">Nghe từ</div>
+      <div class="panel-top-row">
+        <button class="panel-listen-btn" id="p1ListenBtn">🔊</button>
+        <div class="panel-puzzle" id="p1Puzzle"></div>
       </div>
-      <div class="panel-puzzle" id="p1Puzzle"></div>
-      <div class="panel-slot-nav" id="p1SlotNav"></div>
       <div class="panel-actions">
-        <button class="panel-clear" onclick="clearPanel(1)">✕</button>
-        <button class="panel-check" id="p1Check" onclick="checkPanel(1)" disabled>Kiểm tra</button>
+        <button class="panel-clear" onclick="clearPanel(1)">✕ Xóa</button>
+        <button class="panel-check" id="p1Check" onclick="checkPanel(1)" disabled>Kiểm tra ✓</button>
       </div>
       <div class="panel-feedback" id="p1FB"></div>
       <div class="panel-kb" id="p1KB"></div>
@@ -305,21 +317,20 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
         <div class="win-icon">🏆</div><div class="win-label">P1 thắng!</div>
       </div>
     </div>
+    <!-- P2 — sits at bottom, rotated 180° so they face each other -->
     <div class="panel p2-panel" id="p2Panel">
       <div class="panel-header">
-        <div class="panel-name">P2</div>
+        <div class="panel-name">P2 🇬🇧</div>
         <div class="panel-prog-wrap"><div class="panel-prog-fill" id="p2Prog" style="width:0%"></div></div>
         <div class="panel-round" id="p2Round">1/10</div>
       </div>
-      <div class="panel-listen">
-        <button class="panel-listen-btn" id="p2ListenBtn" onclick="playWord(p2.q,'p2ListenBtn')">🔊</button>
-        <div style="font-size:9px;color:var(--muted);">Nghe từ</div>
+      <div class="panel-top-row">
+        <button class="panel-listen-btn" id="p2ListenBtn">🔊</button>
+        <div class="panel-puzzle" id="p2Puzzle"></div>
       </div>
-      <div class="panel-puzzle" id="p2Puzzle"></div>
-      <div class="panel-slot-nav" id="p2SlotNav"></div>
       <div class="panel-actions">
-        <button class="panel-clear" onclick="clearPanel(2)">✕</button>
-        <button class="panel-check" id="p2Check" onclick="checkPanel(2)" disabled>Kiểm tra</button>
+        <button class="panel-clear" onclick="clearPanel(2)">✕ Xóa</button>
+        <button class="panel-check" id="p2Check" onclick="checkPanel(2)" disabled>Kiểm tra ✓</button>
       </div>
       <div class="panel-feedback" id="p2FB"></div>
       <div class="panel-kb" id="p2KB"></div>
@@ -687,6 +698,32 @@ function buildKB(containerId, onSym){
   });
 }
 
+// Touch-optimised KB for 2P panels — touchstart fires instantly,
+// preventDefault stops ghost click, each touch tracked independently
+function buildKBTouch(containerId, onSym){
+  const wrap=document.getElementById(containerId); wrap.innerHTML='';
+  KB.forEach(g=>{
+    const lbl=document.createElement('div'); lbl.className='kb-label'; lbl.textContent=g.label; wrap.appendChild(lbl);
+    const row=document.createElement('div'); row.className='kb-row';
+    g.syms.forEach(sym=>{
+      const btn=document.createElement('button'); btn.className='kb-btn';
+      btn.textContent='/'+sym+'/';
+      // touchstart: instant, no 300ms delay, multi-touch safe
+      btn.addEventListener('touchstart', e=>{
+        e.preventDefault(); // prevent ghost click & scroll
+        e.stopPropagation();
+        btn.style.transform='scale(0.92)';
+        onSym(sym);
+        setTimeout(()=>btn.style.transform='', 120);
+      }, {passive:false});
+      // fallback click for mouse/desktop
+      btn.addEventListener('click', e=>{ onSym(sym); });
+      row.appendChild(btn);
+    });
+    wrap.appendChild(row);
+  });
+}
+
 function allFilled(inp, numBlanks){ return inp.filter(x=>x!==undefined).length===numBlanks; }
 
 // ══════════════════════════════════════════════
@@ -789,6 +826,16 @@ function start2P(){
   p2={pool:pool2_2,idx:0,inp:[],active:0,score:0,done:false,q:pool2_2[0]};
   document.getElementById('p1Win').style.display='none';
   document.getElementById('p2Win').style.display='none';
+  // Wire check/clear with touchstart for instant 2P response
+  ['p1Check','p2Check'].forEach(id=>{
+    const el=document.getElementById(id);
+    const p=id.startsWith('p1')?1:2;
+    el.ontouchstart=(e)=>{e.preventDefault();e.stopPropagation();checkPanel(p);};
+  });
+  ['p1','p2'].forEach((px,i)=>{
+    const el=document.querySelector(`.p${i+1}-panel .panel-clear`);
+    if(el) el.ontouchstart=(e)=>{e.preventDefault();e.stopPropagation();clearPanel(i+1);};
+  });
   showScreen('game2');
   loadPanel(1); loadPanel(2);
 }
@@ -802,25 +849,26 @@ function loadPanel(p){
   const roundId=p===1?'p1Round':'p2Round';
   const fbId=p===1?'p1FB':'p2FB';
   const chkId=p===1?'p1Check':'p2Check';
+  const listenId=p===1?'p1ListenBtn':'p2ListenBtn';
+  const kbId=p===1?'p1KB':'p2KB';
   document.getElementById(progId).style.width=(st.idx/TOTAL*100)+'%';
   document.getElementById(roundId).textContent=(st.idx+1)+'/'+TOTAL;
   document.getElementById(fbId).textContent='';
   document.getElementById(fbId).className='panel-feedback';
   document.getElementById(chkId).disabled=true;
+  // Wire listen btn with touchstart for instant response
+  const lBtn=document.getElementById(listenId);
+  lBtn.ontouchstart=lBtn.onclick=(e)=>{ e.preventDefault(); playWord(st.q,listenId); };
   renderPanel(p);
-  const kbId=p===1?'p1KB':'p2KB';
-  buildKB(kbId, sym=>enterPanel(p,sym));
-  const listenId=p===1?'p1ListenBtn':'p2ListenBtn';
+  buildKBTouch(kbId, sym=>enterPanel(p,sym));
   setTimeout(()=>playWord(st.q,listenId), p===1?300:500);
 }
 
 function renderPanel(p){
   const st=p===1?p1:p2;
   const puzzId=p===1?'p1Puzzle':'p2Puzzle';
-  const navId=p===1?'p1SlotNav':'p2SlotNav';
   const chkId=p===1?'p1Check':'p2Check';
   renderPuzzle(puzzId,st.q,st.inp,st.active,i=>{ if(!st.done&&!gameOver2){st.active=i;renderPanel(p);} });
-  renderNavDots(navId,st.q,st.inp,st.active,i=>{ if(!st.done&&!gameOver2){st.active=i;renderPanel(p);} });
   document.getElementById(chkId).disabled=!allFilled(st.inp,st.q.blanks.length);
 }
 
