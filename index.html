@@ -64,14 +64,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .loading-log{width:100%;max-width:360px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:11px;color:var(--muted);max-height:160px;overflow-y:auto;text-align:left;line-height:1.8;font-family:monospace;}
 
 /* ══ 1P GAME ══════════════════════════════════════════════════ */
-#game{padding:0;}
+#game{padding:0;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 .top-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
 .round-badge{font-size:13px;color:var(--muted);white-space:nowrap;}
 .progress-wrap{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
 .progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s ease;}
 .score-badge{font-size:14px;font-weight:700;color:var(--gold);white-space:nowrap;}
 
-.listen-zone{display:flex;flex-direction:column;align-items:center;padding:12px 20px 6px;gap:6px;flex-shrink:0;}
+.listen-zone{display:flex;flex-direction:column;align-items:center;padding:10px 20px 4px;gap:5px;flex-shrink:0;}
 .listen-btn{width:72px;height:72px;border-radius:50%;background:rgba(124,108,255,.14);border:2.5px solid var(--accent);color:var(--accent);font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .12s;}
 .listen-btn:hover{background:rgba(124,108,255,.26);transform:scale(1.06);}
 .listen-btn.playing{animation:pulse .55s ease infinite alternate;}
@@ -80,10 +80,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .bre-badge{font-size:10px;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2px 8px;letter-spacing:1px;}
 
 /* puzzle display */
-.puzzle-wrap{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:10px;padding:14px 12px 10px;min-height:120px;flex-shrink:0;}
-.puz-sym{font-family:var(--ipa);font-size:clamp(32px,7vw,64px);color:var(--muted);padding:0 2px;font-weight:600;line-height:1;}
-.puz-slot{min-width:clamp(56px,12vw,100px);height:clamp(64px,13vw,110px);border-radius:14px;border:3px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;font-family:var(--ipa);font-size:clamp(28px,6vw,52px);color:var(--text);padding:0 10px;transition:border-color .15s,background .15s;cursor:default;font-weight:700;}
+.puzzle-wrap{flex:1;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;padding:12px;}
+.puz-sym{font-family:var(--ipa);font-size:clamp(44px,9vw,80px);color:var(--muted);padding:0 3px;font-weight:600;line-height:1;white-space:nowrap;}
+.puz-slot{min-width:clamp(72px,14vw,120px);height:clamp(80px,16vw,130px);border-radius:16px;border:3px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;font-family:var(--ipa);font-size:clamp(36px,7.5vw,64px);color:var(--text);padding:0 12px;transition:border-color .15s,background .15s;cursor:default;font-weight:700;white-space:nowrap;}
 .puz-slot.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,108,255,.2);background:rgba(124,108,255,.07);}
+.puz-bracket{font-family:var(--ipa);font-size:clamp(44px,9vw,80px);color:var(--border);font-weight:300;line-height:1;padding:0 2px;}
 .puz-slot.filled{border-color:var(--accent);background:rgba(124,108,255,.1);color:var(--accent);cursor:pointer;}
 .puz-slot.filled:hover{background:rgba(124,108,255,.2);}
 .puz-slot.correct{border-color:var(--green)!important;background:rgba(6,214,160,.12)!important;color:var(--green)!important;}
@@ -91,23 +92,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
 
 /* slot nav dots */
-.slot-nav{display:flex;gap:6px;justify-content:center;padding:2px 0 4px;flex-shrink:0;}
+.slot-nav{display:flex;gap:8px;justify-content:center;padding:4px 0;flex-shrink:0;}
 .slot-dot{width:8px;height:8px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .15s;}
 .slot-dot.active{background:var(--accent);}
 .slot-dot.done{background:var(--green);}
 
-.action-row{display:flex;gap:8px;justify-content:center;padding:2px 14px 4px;flex-shrink:0;}
+.action-row{display:flex;gap:10px;justify-content:center;padding:4px 14px 8px;flex-shrink:0;}
 .btn-check{background:var(--accent);color:#fff;border:none;border-radius:var(--r);padding:12px 28px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s;}
 .btn-check:disabled{opacity:.3;cursor:default;}
 .btn-clear{background:var(--card);color:var(--muted);border:1.5px solid var(--border);border-radius:var(--r);padding:10px 12px;font-family:var(--font);font-size:13px;cursor:pointer;}
 .btn-clear:hover{border-color:var(--red);color:var(--red);}
 
-.feedback-strip{min-height:18px;display:flex;align-items:center;justify-content:center;padding:0 14px 1px;flex-shrink:0;}
+.feedback-strip{min-height:22px;display:flex;align-items:center;justify-content:center;padding:0 14px 2px;flex-shrink:0;}
 .feedback-msg{font-size:14px;font-weight:600;}
 .feedback-msg.ok{color:var(--green);}
 .feedback-msg.err{color:var(--red);}
 
-.kb-wrap{flex:1;overflow-y:auto;padding:6px 10px 10px;display:flex;flex-direction:column;gap:5px;}
+.kb-wrap{flex-shrink:0;overflow-y:auto;padding:4px 10px 10px;display:flex;flex-direction:column;gap:4px;max-height:42vh;}
 .kb-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
 .kb-row{display:flex;flex-wrap:wrap;gap:5px;}
 .kb-btn{flex:1;min-width:40px;height:clamp(42px,6vw,54px);border-radius:9px;background:var(--card);border:1.5px solid var(--border);color:var(--text);font-family:var(--ipa);font-size:clamp(16px,2.5vw,22px);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:border-color .12s,background .12s,transform .1s;touch-action:manipulation;}
@@ -134,7 +135,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .p2-panel .panel-round{color:var(--p2);}
 
 /* Listen + puzzle row */
-.panel-top-row{display:flex;flex-direction:column;align-items:center;gap:6px;padding:4px 6px 2px;flex-shrink:0;}
+.panel-top-row{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 6px 4px;flex-shrink:0;}
 .panel-listen-btn{width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;border-width:2px;border-style:solid;
   transition:transform .1s;flex-shrink:0;touch-action:manipulation;}
@@ -147,9 +148,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 @keyframes pulseP2{from{box-shadow:0 0 0 0 rgba(255,159,67,.4);}to{box-shadow:0 0 0 7px rgba(255,159,67,0);}}
 
 /* Puzzle */
-.panel-puzzle{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:5px;width:100%;min-height:50px;}
-.panel-puzzle .puz-sym{font-family:var(--ipa);font-size:clamp(18px,3.5vw,28px);color:var(--muted);font-weight:600;line-height:1;}
-.panel-puzzle .puz-slot{min-width:clamp(38px,7vw,60px);height:clamp(44px,8vw,68px);font-size:clamp(18px,3.2vw,28px);padding:0 6px;border-radius:9px;
+.panel-puzzle{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px;width:100%;min-height:60px;}
+.panel-puzzle .puz-sym{font-family:var(--ipa);font-size:clamp(22px,4vw,34px);color:var(--muted);font-weight:600;line-height:1;}
+.panel-puzzle .puz-slot{min-width:clamp(48px,9vw,72px);height:clamp(54px,10vw,80px);font-size:clamp(22px,4vw,34px);padding:0 8px;border-radius:10px;
   border:2.5px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;
   font-family:var(--ipa);font-weight:700;cursor:pointer;transition:border-color .12s,background .12s;}
 .p1-panel .puz-slot.active{border-color:var(--p1);box-shadow:0 0 0 2px rgba(0,200,255,.25);}
@@ -171,7 +172,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .panel-feedback.err{color:var(--red);}
 
 /* KB — fills all remaining vertical space, buttons fill width */
-.panel-kb{flex:1;overflow:hidden;padding:3px 6px 6px;display:flex;flex-direction:column;gap:3px;}
+.panel-kb{flex:1;overflow:hidden;padding:2px 5px 5px;display:flex;flex-direction:column;gap:2px;}
 .panel-kb .kb-label{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);line-height:1.4;}
 .panel-kb .kb-row{display:flex;gap:3px;}
 .panel-kb .kb-btn{
@@ -573,27 +574,26 @@ Rules:
 // ══════════════════════════════════════════════
 // BUILD PUZZLE from tokenized IPA
 // blanks: 2 if len<=3, else 3, but max len-1
-// pick positions that aren't adjacent
+// Never blank a single member of an affricate pair
 // ══════════════════════════════════════════════
+const AFFRICATES = new Set(['tʃ','dʒ']);
+
 function buildPuzzle(word, ipaTokens){
   const len = ipaTokens.length;
-  if(len < 2) return null; // too short
+  if(len < 2) return null;
   const numBlanks = Math.min(len<=3 ? 2 : 3, len-1);
-  // pick random non-adjacent indices
-  const indices = Array.from({length:len},(_,i)=>i);
+  // All positions are valid blanks — affricates are single tokens so no splitting issue
+  // (tokenizer already guarantees tʃ/dʒ are one token)
+  const indices = shuffle(Array.from({length:len},(_,i)=>i));
   const picked = [];
-  const shuffled = shuffle(indices);
-  for(const idx of shuffled){
-    if(picked.length>=numBlanks) break;
-    // not adjacent to already picked
-    if(picked.every(p=>Math.abs(p-idx)>1)) picked.push(idx);
+  for(const idx of indices){
+    if(picked.length >= numBlanks) break;
+    if(picked.every(p => Math.abs(p-idx) > 1)) picked.push(idx);
   }
-  // if couldn't find non-adjacent, just pick any
-  if(picked.length < numBlanks){
-    for(const idx of shuffled){
-      if(picked.length>=numBlanks) break;
-      if(!picked.includes(idx)) picked.push(idx);
-    }
+  // fallback if not enough non-adjacent
+  for(const idx of indices){
+    if(picked.length >= numBlanks) break;
+    if(!picked.includes(idx)) picked.push(idx);
   }
   picked.sort((a,b)=>a-b);
   return { word, ipa:ipaTokens, blanks:picked, answers:picked.map(i=>ipaTokens[i]) };
@@ -642,7 +642,7 @@ async function handleStart(){
     const puzzle = buildPuzzle(word, tokens);
     if(puzzle){
       compiledQuestions.push(puzzle);
-      log(`&nbsp;&nbsp;📝 Puzzle: /${tokens.join('')}/ — ${puzzle.blanks.length} chỗ trống`);
+      log(`&nbsp;&nbsp;📝 /${tokens.join('/')} / — ${puzzle.blanks.length} chỗ trống: [${tokens.join(', ')}]`);
     }
   }
 
@@ -686,13 +686,15 @@ function renderPuzzle(containerId, puzzle, inp, activeSlotIdx, onSlotClick){
       if(inp[blankIdx] !== undefined) cls+=' filled';
       if(blankIdx === activeSlotIdx) cls+=' active';
       div.className=cls;
-      div.textContent = inp[blankIdx] !== undefined ? '/'+inp[blankIdx]+'/' : '';
+      div.textContent = inp[blankIdx] !== undefined ? inp[blankIdx] : '';
       div.onclick=()=>onSlotClick(blankIdx);
       wrap.appendChild(div);
     } else {
+      // Wrap each fixed sym in its own span — no slashes, white-space:nowrap ensures
+      // multi-char tokens like dʒ tʃ render as one visual unit
       const span=document.createElement('span');
       span.className='puz-sym';
-      span.textContent='/'+sym+'/';
+      span.textContent=sym;
       wrap.appendChild(span);
     }
   });
@@ -778,6 +780,11 @@ function load1P(){
 }
 function render1P(){
   renderPuzzle('puzzleWrap', cur1P, inp1, activeSlot1, i=>{ activeSlot1=i; render1P(); });
+  // add / … / brackets around puzzle for IPA notation clarity
+  const wrap=document.getElementById('puzzleWrap');
+  const makeBracket=t=>{ const s=document.createElement('span'); s.className='puz-bracket'; s.textContent=t; return s; };
+  wrap.insertBefore(makeBracket('/'), wrap.firstChild);
+  wrap.appendChild(makeBracket('/'));
   renderNavDots('slotNav', cur1P, inp1, activeSlot1, i=>{ activeSlot1=i; render1P(); });
   document.getElementById('checkBtn').disabled=!allFilled(inp1,cur1P.blanks.length);
 }
