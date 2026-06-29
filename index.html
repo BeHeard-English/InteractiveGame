@@ -16,112 +16,141 @@
   --font:'Space Grotesk',sans-serif;--ipa:'Noto Sans',sans-serif;
   --r:11px;
 }
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;user-select:none;-webkit-tap-highlight-color:transparent;}
-.screen{display:none;min-height:100vh;flex-direction:column;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);
+  height:100vh;overflow:hidden;user-select:none;-webkit-tap-highlight-color:transparent;}
+
+/* ── SCREENS ─────────────────────────────────────── */
+.screen{display:none;height:100vh;flex-direction:column;overflow:hidden;}
 .screen.active{display:flex;}
 
-/* ══ SETUP ══════════════════════════════════════════════════ */
-#setup{padding:28px 20px 36px;gap:18px;overflow-y:auto;}
-.setup-logo{text-align:center;}
-.logo{font-size:42px;font-weight:700;letter-spacing:-2px;background:linear-gradient(135deg,#00c8ff,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+/* ── SETUP ───────────────────────────────────────── */
+#setup{overflow-y:auto;height:auto;min-height:100vh;padding:24px 20px 36px;gap:16px;}
+.logo{font-size:40px;font-weight:700;letter-spacing:-2px;
+  background:linear-gradient(135deg,#00c8ff,var(--accent),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .logo-sub{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);}
+.setup-logo{text-align:center;margin-bottom:4px;}
 .setup-section{display:flex;flex-direction:column;gap:8px;}
 .setup-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
-.setup-textarea{width:100%;min-height:110px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);color:var(--text);font-family:var(--font);font-size:13px;padding:12px 14px;resize:vertical;outline:none;transition:border-color .15s;line-height:1.6;}
+.setup-textarea{width:100%;min-height:100px;background:var(--card);border:1.5px solid var(--border);
+  border-radius:var(--r);color:var(--text);font-family:var(--font);font-size:13px;
+  padding:11px 14px;resize:vertical;outline:none;transition:border-color .15s;line-height:1.6;}
 .setup-textarea:focus{border-color:var(--accent);}
 .setup-textarea::placeholder{color:var(--muted);}
-.setup-input{width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);color:var(--text);font-family:var(--font);font-size:13px;padding:11px 14px;outline:none;transition:border-color .15s;}
+.setup-input{width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);
+  color:var(--text);font-family:var(--font);font-size:13px;padding:11px 14px;outline:none;transition:border-color .15s;}
 .setup-input:focus{border-color:var(--accent);}
 .setup-input::placeholder{color:var(--muted);}
 .setup-hint{font-size:11px;color:var(--muted);line-height:1.5;}
 .setup-hint a{color:var(--accent);text-decoration:none;}
-
 .pill-row{display:flex;gap:8px;flex-wrap:wrap;}
-.pill{background:var(--card);border:2px solid var(--border);border-radius:30px;padding:7px 18px;font-size:12px;font-weight:600;cursor:pointer;transition:border-color .15s,background .15s,color .15s;color:var(--muted);}
+.pill{background:var(--card);border:2px solid var(--border);border-radius:30px;padding:7px 18px;
+  font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);
+  transition:border-color .15s,background .15s,color .15s;}
 .pill:hover{border-color:var(--accent);color:var(--text);}
 .pill.sel{border-color:var(--accent);background:rgba(124,108,255,.12);color:var(--text);}
-
-.mode-cards{display:flex;gap:10px;flex-wrap:wrap;}
-.mode-card{flex:1;min-width:110px;background:var(--card);border:2px solid var(--border);border-radius:12px;padding:14px 10px;cursor:pointer;transition:border-color .18s,transform .15s;text-align:center;}
+.mode-cards{display:flex;gap:10px;}
+.mode-card{flex:1;background:var(--card);border:2px solid var(--border);border-radius:12px;
+  padding:14px 10px;cursor:pointer;text-align:center;transition:border-color .18s,transform .15s;}
 .mode-card:hover{border-color:var(--accent);transform:translateY(-2px);}
 .mode-card.sel{border-color:var(--accent);background:rgba(124,108,255,.1);}
 .mode-icon{font-size:22px;margin-bottom:4px;}
 .mode-label{font-size:12px;font-weight:700;}
 .mode-desc{font-size:10px;color:var(--muted);margin-top:2px;}
-
-.btn-primary{width:100%;background:var(--accent);color:#fff;border:none;border-radius:var(--r);padding:15px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-primary{width:100%;background:var(--accent);color:#fff;border:none;border-radius:var(--r);
+  padding:15px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s;}
 .btn-primary:hover{opacity:.88;}
 .btn-primary:disabled{opacity:.4;cursor:default;}
-.btn-ghost{background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 24px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:border-color .15s,color .15s;}
+.btn-ghost{background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:12px 24px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:border-color .15s,color .15s;}
 .btn-ghost:hover{border-color:var(--accent);color:var(--text);}
 
-/* ══ LOADING ══════════════════════════════════════════════════ */
+/* ── LOADING ─────────────────────────────────────── */
 #loading{align-items:center;justify-content:center;gap:20px;text-align:center;padding:40px;}
-.spinner{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
+.spinner{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--accent);
+  border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-title{font-size:18px;font-weight:700;}
 .loading-sub{font-size:13px;color:var(--muted);}
-.loading-log{width:100%;max-width:360px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:11px;color:var(--muted);max-height:160px;overflow-y:auto;text-align:left;line-height:1.8;font-family:monospace;}
+.loading-log{width:100%;max-width:380px;background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:12px 14px;font-size:11px;color:var(--muted);
+  max-height:180px;overflow-y:auto;text-align:left;line-height:1.8;font-family:monospace;}
 
-/* ══ 1P GAME ══════════════════════════════════════════════════ */
-#game{padding:0;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
-.top-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
+/* ── 1P GAME ─────────────────────────────────────── */
+/* top bar */
+.top-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;
+  background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
 .round-badge{font-size:13px;color:var(--muted);white-space:nowrap;}
 .progress-wrap{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
 .progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s ease;}
 .score-badge{font-size:14px;font-weight:700;color:var(--gold);white-space:nowrap;}
 
-.listen-zone{display:flex;flex-direction:column;align-items:center;padding:10px 20px 4px;gap:5px;flex-shrink:0;}
-.listen-btn{width:72px;height:72px;border-radius:50%;background:rgba(124,108,255,.14);border:2.5px solid var(--accent);color:var(--accent);font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .12s;}
+/* listen zone */
+.listen-zone{display:flex;flex-direction:column;align-items:center;padding:10px 20px 6px;gap:5px;flex-shrink:0;}
+.listen-btn{width:68px;height:68px;border-radius:50%;background:rgba(124,108,255,.14);
+  border:2.5px solid var(--accent);color:var(--accent);font-size:26px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background .15s,transform .12s;touch-action:manipulation;}
 .listen-btn:hover{background:rgba(124,108,255,.26);transform:scale(1.06);}
 .listen-btn.playing{animation:pulse .55s ease infinite alternate;}
 @keyframes pulse{from{box-shadow:0 0 0 0 rgba(124,108,255,.5);}to{box-shadow:0 0 0 12px rgba(124,108,255,0);}}
-.listen-hint{font-size:13px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
-.bre-badge{font-size:10px;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2px 8px;letter-spacing:1px;}
+.listen-hint{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.bre-badge{font-size:10px;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2px 8px;}
 
-/* puzzle display */
-.puzzle-wrap{flex:1;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;padding:12px;}
-.puz-sym{font-family:var(--ipa);font-size:clamp(44px,9vw,80px);color:var(--muted);padding:0 3px;font-weight:600;line-height:1;white-space:nowrap;}
-.puz-slot{min-width:clamp(72px,14vw,120px);height:clamp(80px,16vw,130px);border-radius:16px;border:3px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;font-family:var(--ipa);font-size:clamp(36px,7.5vw,64px);color:var(--text);padding:0 12px;transition:border-color .15s,background .15s;cursor:default;font-weight:700;white-space:nowrap;}
-.puz-slot.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,108,255,.2);background:rgba(124,108,255,.07);}
-.puz-bracket{font-family:var(--ipa);font-size:clamp(44px,9vw,80px);color:var(--border);font-weight:300;line-height:1;padding:0 2px;}
-.puz-slot.filled{border-color:var(--accent);background:rgba(124,108,255,.1);color:var(--accent);cursor:pointer;}
-.puz-slot.filled:hover{background:rgba(124,108,255,.2);}
+/* PUZZLE — hero zone, flex:1, centered */
+.puzzle-zone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 12px;}
+.puzzle-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;}
+.puz-bracket{font-family:var(--ipa);font-size:clamp(48px,10vw,88px);color:var(--border);font-weight:300;line-height:1;padding:0 2px;flex-shrink:0;}
+.puz-sym{font-family:var(--ipa);font-size:clamp(48px,10vw,88px);color:var(--muted);font-weight:600;line-height:1;white-space:nowrap;flex-shrink:0;}
+.puz-slot{
+  min-width:clamp(70px,14vw,120px);height:clamp(80px,16vw,130px);
+  border-radius:16px;border:3px solid var(--border);background:var(--card);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--ipa);font-size:clamp(36px,7.5vw,64px);color:var(--muted);
+  padding:0 10px;transition:border-color .15s,background .15s;cursor:pointer;font-weight:700;white-space:nowrap;flex-shrink:0;}
+.puz-slot.active{border-color:var(--accent);box-shadow:0 0 0 4px rgba(124,108,255,.2);background:rgba(124,108,255,.07);color:var(--text);}
+.puz-slot.filled{border-color:var(--accent);background:rgba(124,108,255,.1);color:var(--accent);}
 .puz-slot.correct{border-color:var(--green)!important;background:rgba(6,214,160,.12)!important;color:var(--green)!important;}
 .puz-slot.wrong{border-color:var(--red)!important;background:rgba(255,107,107,.12)!important;color:var(--red)!important;animation:shake .35s ease;}
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
 
-/* slot nav dots */
-.slot-nav{display:flex;gap:8px;justify-content:center;padding:4px 0;flex-shrink:0;}
-.slot-dot{width:8px;height:8px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .15s;}
+/* nav dots */
+.slot-nav{display:flex;gap:8px;justify-content:center;padding:6px 0 2px;flex-shrink:0;}
+.slot-dot{width:9px;height:9px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .15s;}
 .slot-dot.active{background:var(--accent);}
 .slot-dot.done{background:var(--green);}
 
-.action-row{display:flex;gap:10px;justify-content:center;padding:4px 14px 8px;flex-shrink:0;}
-.btn-check{background:var(--accent);color:#fff;border:none;border-radius:var(--r);padding:12px 28px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s;}
+/* action + feedback */
+.action-row{display:flex;gap:10px;justify-content:center;padding:4px 14px 2px;flex-shrink:0;}
+.btn-check{background:var(--accent);color:#fff;border:none;border-radius:var(--r);
+  padding:12px 28px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;
+  transition:opacity .15s;touch-action:manipulation;}
 .btn-check:disabled{opacity:.3;cursor:default;}
-.btn-clear{background:var(--card);color:var(--muted);border:1.5px solid var(--border);border-radius:var(--r);padding:10px 12px;font-family:var(--font);font-size:13px;cursor:pointer;}
+.btn-clear{background:var(--card);color:var(--muted);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:12px 14px;font-family:var(--font);font-size:13px;cursor:pointer;touch-action:manipulation;}
 .btn-clear:hover{border-color:var(--red);color:var(--red);}
-
-.feedback-strip{min-height:22px;display:flex;align-items:center;justify-content:center;padding:0 14px 2px;flex-shrink:0;}
+.feedback-strip{min-height:22px;display:flex;align-items:center;justify-content:center;padding:2px 14px 4px;flex-shrink:0;}
 .feedback-msg{font-size:14px;font-weight:600;}
 .feedback-msg.ok{color:var(--green);}
 .feedback-msg.err{color:var(--red);}
 
-.kb-wrap{flex-shrink:0;overflow-y:auto;padding:4px 10px 10px;display:flex;flex-direction:column;gap:4px;max-height:42vh;}
+/* KB */
+.kb-wrap{flex-shrink:0;padding:4px 10px 10px;display:flex;flex-direction:column;gap:4px;max-height:40vh;overflow-y:auto;}
 .kb-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
-.kb-row{display:flex;flex-wrap:wrap;gap:5px;}
-.kb-btn{flex:1;min-width:40px;height:clamp(42px,6vw,54px);border-radius:9px;background:var(--card);border:1.5px solid var(--border);color:var(--text);font-family:var(--ipa);font-size:clamp(16px,2.5vw,22px);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:border-color .12s,background .12s,transform .1s;touch-action:manipulation;}
-.kb-btn:hover{border-color:var(--accent);background:rgba(124,108,255,.1);transform:scale(1.04);}
-.kb-btn:active{transform:scale(.95);}
+.kb-row{display:flex;gap:5px;}
+.kb-btn{flex:1;min-width:0;height:clamp(40px,5.5vh,52px);border-radius:8px;background:var(--card);
+  border:1.5px solid var(--border);color:var(--text);font-family:var(--ipa);
+  font-size:clamp(15px,2.2vh,20px);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  padding:0;transition:border-color .1s,background .1s,transform .08s;touch-action:manipulation;}
+.kb-btn:hover{border-color:var(--accent);background:rgba(124,108,255,.1);}
+.kb-btn:active{transform:scale(.93);border-color:var(--accent);background:rgba(124,108,255,.15);}
 
-/* ══ 2P GAME — left/right split, full height each panel ══════ */
-#game2{padding:0;overflow:hidden;}
-.split-arena{flex:1;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;}
-.panel{display:flex;flex-direction:column;overflow:hidden;position:relative;}
-.panel.p1-panel{border-right:2px solid var(--border);}
+/* ── 2P GAME ─────────────────────────────────────── */
+#game2{display:none;height:100vh;flex-direction:column;overflow:hidden;}
+#game2.active{display:flex;}
+.split-arena{flex:1;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;min-height:0;}
+.panel{display:flex;flex-direction:column;overflow:hidden;position:relative;min-height:0;}
+.p1-panel{border-right:2px solid var(--border);}
 
-/* Panel header */
 .panel-header{display:flex;align-items:center;gap:5px;padding:5px 8px 3px;flex-shrink:0;}
 .panel-name{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
 .p1-panel .panel-name{color:var(--p1);}
@@ -134,32 +163,34 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .p1-panel .panel-round{color:var(--p1);}
 .p2-panel .panel-round{color:var(--p2);}
 
-/* Listen + puzzle row */
-.panel-top-row{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 6px 4px;flex-shrink:0;}
+.panel-listen{display:flex;align-items:center;justify-content:center;padding:6px 8px 2px;flex-shrink:0;gap:6px;}
 .panel-listen-btn{width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;border-width:2px;border-style:solid;
-  transition:transform .1s;flex-shrink:0;touch-action:manipulation;}
+  display:flex;align-items:center;justify-content:center;border-width:2px;border-style:solid;touch-action:manipulation;}
 .p1-panel .panel-listen-btn{background:var(--p1d);border-color:var(--p1);color:var(--p1);}
 .p2-panel .panel-listen-btn{background:var(--p2d);border-color:var(--p2);color:var(--p2);}
-.panel-listen-btn:active{transform:scale(.9);}
 .p1-panel .panel-listen-btn.playing{animation:pulseP1 .55s ease infinite alternate;}
 .p2-panel .panel-listen-btn.playing{animation:pulseP2 .55s ease infinite alternate;}
 @keyframes pulseP1{from{box-shadow:0 0 0 0 rgba(0,200,255,.4);}to{box-shadow:0 0 0 7px rgba(0,200,255,0);}}
 @keyframes pulseP2{from{box-shadow:0 0 0 0 rgba(255,159,67,.4);}to{box-shadow:0 0 0 7px rgba(255,159,67,0);}}
 
-/* Puzzle */
-.panel-puzzle{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px;width:100%;min-height:60px;}
-.panel-puzzle .puz-sym{font-family:var(--ipa);font-size:clamp(22px,4vw,34px);color:var(--muted);font-weight:600;line-height:1;}
-.panel-puzzle .puz-slot{min-width:clamp(48px,9vw,72px);height:clamp(54px,10vw,80px);font-size:clamp(22px,4vw,34px);padding:0 8px;border-radius:10px;
-  border:2.5px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;
-  font-family:var(--ipa);font-weight:700;cursor:pointer;transition:border-color .12s,background .12s;}
-.p1-panel .puz-slot.active{border-color:var(--p1);box-shadow:0 0 0 2px rgba(0,200,255,.25);}
-.p1-panel .puz-slot.filled{border-color:var(--p1);background:var(--p1d);color:var(--p1);}
-.p2-panel .puz-slot.active{border-color:var(--p2);box-shadow:0 0 0 2px rgba(255,159,67,.25);}
-.p2-panel .puz-slot.filled{border-color:var(--p2);background:var(--p2d);color:var(--p2);}
+/* 2P puzzle zone — flex:1 hero */
+.panel-puzzle-zone{flex:1;display:flex;align-items:center;justify-content:center;padding:4px 6px;min-height:0;}
+.panel-puzzle-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:5px;}
+.panel-puzzle-row .puz-sym{font-family:var(--ipa);font-size:clamp(20px,4vw,32px);color:var(--muted);font-weight:600;white-space:nowrap;}
+.panel-puzzle-row .puz-slot{
+  min-width:clamp(40px,8vw,64px);height:clamp(46px,9vw,72px);
+  border-radius:10px;border:2.5px solid var(--border);background:var(--card);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--ipa);font-size:clamp(18px,3.5vw,28px);color:var(--muted);
+  padding:0 6px;font-weight:700;white-space:nowrap;cursor:pointer;transition:border-color .12s,background .12s;}
+.p1-panel .panel-puzzle-row .puz-slot.active{border-color:var(--p1);box-shadow:0 0 0 2px rgba(0,200,255,.25);color:var(--text);}
+.p1-panel .panel-puzzle-row .puz-slot.filled{border-color:var(--p1);background:var(--p1d);color:var(--p1);}
+.p2-panel .panel-puzzle-row .puz-slot.active{border-color:var(--p2);box-shadow:0 0 0 2px rgba(255,159,67,.25);color:var(--text);}
+.p2-panel .panel-puzzle-row .puz-slot.filled{border-color:var(--p2);background:var(--p2d);color:var(--p2);}
+.panel-puzzle-row .puz-slot.correct{border-color:var(--green)!important;background:rgba(6,214,160,.12)!important;color:var(--green)!important;}
+.panel-puzzle-row .puz-slot.wrong{border-color:var(--red)!important;background:rgba(255,107,107,.12)!important;color:var(--red)!important;animation:shake .35s ease;}
 
-/* Actions */
-.panel-actions{display:flex;gap:4px;padding:2px 7px 2px;flex-shrink:0;}
+.panel-actions{display:flex;gap:4px;padding:2px 7px 3px;flex-shrink:0;}
 .panel-check{color:#fff;border:none;border-radius:7px;padding:7px 0;font-family:var(--font);
   font-size:11px;font-weight:700;cursor:pointer;flex:1;transition:opacity .15s;touch-action:manipulation;}
 .p1-panel .panel-check{background:var(--p1);}
@@ -167,27 +198,19 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .panel-check:disabled{opacity:.28;cursor:default;}
 .panel-clear{background:var(--card);color:var(--muted);border:1.5px solid var(--border);
   border-radius:7px;padding:7px 8px;font-family:var(--font);font-size:11px;cursor:pointer;touch-action:manipulation;}
-.panel-feedback{min-height:16px;text-align:center;font-size:11px;font-weight:600;padding:0 4px 1px;flex-shrink:0;}
+.panel-feedback{min-height:16px;text-align:center;font-size:11px;font-weight:600;padding:0 4px 2px;flex-shrink:0;}
 .panel-feedback.ok{color:var(--green);}
 .panel-feedback.err{color:var(--red);}
 
-/* KB — fills all remaining vertical space, buttons fill width */
-.panel-kb{flex:1;overflow:hidden;padding:2px 5px 5px;display:flex;flex-direction:column;gap:2px;}
-.panel-kb .kb-label{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);line-height:1.4;}
+/* 2P KB */
+.panel-kb{flex-shrink:0;padding:2px 5px 6px;display:flex;flex-direction:column;gap:2px;max-height:44vh;overflow:hidden;}
+.panel-kb .kb-label{font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);line-height:1.4;}
 .panel-kb .kb-row{display:flex;gap:3px;}
-.panel-kb .kb-btn{
-  flex:1;min-width:0;
-  height:clamp(34px,4.2vh,48px);
-  border-radius:6px;background:var(--card);border:1.5px solid var(--border);
-  color:var(--text);font-family:var(--ipa);
-  font-size:clamp(14px,1.8vh,20px);
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  padding:0;transition:border-color .1s,background .1s,transform .08s;
-  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
-}
-.panel-kb .kb-btn:active{transform:scale(.9);}
-.p1-panel .kb-btn:active,.p1-panel .kb-btn.pressed{border-color:var(--p1);background:var(--p1d);color:var(--p1);}
-.p2-panel .kb-btn:active,.p2-panel .kb-btn.pressed{border-color:var(--p2);background:var(--p2d);color:var(--p2);}
+.panel-kb .kb-btn{flex:1;min-width:0;height:clamp(30px,4vh,44px);border-radius:6px;background:var(--card);
+  border:1.5px solid var(--border);color:var(--text);font-family:var(--ipa);font-size:clamp(12px,1.7vh,18px);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;touch-action:manipulation;}
+.p1-panel .panel-kb .kb-btn:active{border-color:var(--p1);background:var(--p1d);color:var(--p1);}
+.p2-panel .panel-kb .kb-btn:active{border-color:var(--p2);background:var(--p2d);color:var(--p2);}
 
 .panel-win-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:6px;z-index:10;backdrop-filter:blur(4px);}
@@ -198,15 +221,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .p1-panel .win-label{color:var(--p1);}
 .p2-panel .win-label{color:var(--p2);}
 
-/* ══ RESULT ══════════════════════════════════════════════════ */
-#result{align-items:center;justify-content:center;gap:20px;padding:40px 24px;text-align:center;}
-.result-emoji{font-size:56px;line-height:1;}
-.result-title{font-size:25px;font-weight:700;}
+/* ── RESULT ──────────────────────────────────────── */
+#result{align-items:center;justify-content:center;gap:20px;padding:40px 24px;text-align:center;overflow-y:auto;}
+.result-emoji{font-size:56px;}
+.result-title{font-size:26px;font-weight:700;}
 .result-sub{font-size:13px;color:var(--muted);}
 .stat-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
-.stat-card{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:16px 20px;min-width:100px;}
+.stat-card{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:16px 22px;min-width:100px;}
 .stat-card.winner{border-color:var(--gold);}
-.stat-val{font-size:30px;font-weight:700;}
+.stat-val{font-size:32px;font-weight:700;}
 .stat-label{font-size:10px;color:var(--muted);margin-top:3px;}
 .winner-tag{font-size:10px;font-weight:700;color:var(--gold);margin-top:4px;letter-spacing:1px;}
 .btn-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
@@ -215,58 +238,39 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
 </head>
 <body>
 
-<!-- ══ SETUP ══════════════════════════════════════════════════ -->
+<!-- SETUP -->
 <div id="setup" class="screen active">
-  <div class="setup-logo">
-    <div class="logo">IPA Blitz</div>
-    <div class="logo-sub">Phonetic Builder · BrE</div>
-  </div>
-
+  <div class="setup-logo"><div class="logo">IPA Blitz</div><div class="logo-sub">Phonetic Builder · BrE</div></div>
   <div class="setup-section">
     <div class="setup-label">Danh sách từ cần luyện</div>
-    <textarea class="setup-textarea" id="wordInput"
-      placeholder="Dán từ vào đây, mỗi từ 1 dòng hoặc cách nhau bằng dấu phẩy/space&#10;Ví dụ:&#10;ship, think, judge&#10;bird mouth nurse"></textarea>
-    <div class="setup-hint">Hệ thống sẽ tự tra phiên âm BrE và tạo câu đố điền chỗ trống.</div>
+    <textarea class="setup-textarea" id="wordInput" placeholder="Dán từ vào đây, mỗi từ 1 dòng hoặc cách nhau bằng dấu phẩy&#10;Ví dụ: ship, think, judge, bird, church"></textarea>
+    <div class="setup-hint">Hệ thống tự tra phiên âm BrE và tạo câu đố điền chỗ trống.</div>
   </div>
-
   <div class="setup-section">
     <div class="setup-label">Groq API Key (fallback)</div>
     <input class="setup-input" id="groqKey" type="password" placeholder="gsk_...">
-    <div class="setup-hint">Dùng khi dictionaryapi.dev không tìm được từ. Lấy key miễn phí tại <a href="https://console.groq.com" target="_blank">console.groq.com</a></div>
+    <div class="setup-hint">Dùng khi dictionaryapi.dev không có từ. Lấy key tại <a href="https://console.groq.com" target="_blank">console.groq.com</a></div>
   </div>
-
   <div class="setup-section">
     <div class="setup-label">Số câu mỗi ván</div>
     <div class="pill-row">
-      <div class="pill" onclick="selPill(this,5,'rounds')">5</div>
-      <div class="pill sel" onclick="selPill(this,10,'rounds')">10</div>
-      <div class="pill" onclick="selPill(this,15,'rounds')">15</div>
-      <div class="pill" onclick="selPill(this,0,'rounds')">Tất cả</div>
+      <div class="pill" onclick="selPill(this,5)">5</div>
+      <div class="pill sel" onclick="selPill(this,10)">10</div>
+      <div class="pill" onclick="selPill(this,15)">15</div>
+      <div class="pill" onclick="selPill(this,0)">Tất cả</div>
     </div>
   </div>
-
   <div class="setup-section">
     <div class="setup-label">Chế độ chơi</div>
     <div class="mode-cards">
-      <div class="mode-card sel" data-mode="1p" onclick="selMode('1p',this)">
-        <div class="mode-icon">🧑</div>
-        <div class="mode-label">1 người</div>
-        <div class="mode-desc">Tự luyện tập</div>
-      </div>
-      <div class="mode-card" data-mode="2p" onclick="selMode('2p',this)">
-        <div class="mode-icon">👥</div>
-        <div class="mode-label">2 người</div>
-        <div class="mode-desc">Ai xong trước thắng</div>
-      </div>
+      <div class="mode-card sel" onclick="selMode('1p',this)"><div class="mode-icon">🧑</div><div class="mode-label">1 người</div><div class="mode-desc">Tự luyện tập</div></div>
+      <div class="mode-card" onclick="selMode('2p',this)"><div class="mode-icon">👥</div><div class="mode-label">2 người</div><div class="mode-desc">Ai xong trước thắng</div></div>
     </div>
   </div>
-
-  <button class="btn-primary" id="startBtn" onclick="handleStart()">
-    <span>Tạo bài & Bắt đầu ⚡</span>
-  </button>
+  <button class="btn-primary" onclick="handleStart()">Tạo bài & Bắt đầu ⚡</button>
 </div>
 
-<!-- ══ LOADING ══════════════════════════════════════════════════ -->
+<!-- LOADING -->
 <div id="loading" class="screen">
   <div class="spinner"></div>
   <div class="loading-title">Đang tra phiên âm...</div>
@@ -274,7 +278,7 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
   <div class="loading-log" id="loadingLog"></div>
 </div>
 
-<!-- ══ 1P GAME ══════════════════════════════════════════════════ -->
+<!-- 1P GAME -->
 <div id="game" class="screen">
   <div class="top-bar">
     <div class="round-badge">Câu <span id="rNum">1</span>/<span id="rTotal">10</span></div>
@@ -283,11 +287,13 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
   </div>
   <div class="listen-zone">
     <button class="listen-btn" id="listenBtn" onclick="playWord(cur1P,'listenBtn')">🔊</button>
-    <div class="listen-hint">Bấm để nghe từ</div>
-    <div class="bre-badge">🇬🇧 BrE</div>
+    <div class="listen-hint">Bấm để nghe từ &nbsp;·&nbsp; 🇬🇧 BrE</div>
   </div>
-  <div class="puzzle-wrap" id="puzzleWrap"></div>
-  <div class="slot-nav" id="slotNav"></div>
+  <!-- PUZZLE HERO -->
+  <div class="puzzle-zone">
+    <div class="puzzle-row" id="puzzleRow"></div>
+    <div class="slot-nav" id="slotNav"></div>
+  </div>
   <div class="action-row">
     <button class="btn-clear" onclick="clear1P()">✕ Xóa</button>
     <button class="btn-check" id="checkBtn" onclick="check1P()" disabled>Kiểm tra →</button>
@@ -296,7 +302,7 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
   <div class="kb-wrap" id="kbWrap"></div>
 </div>
 
-<!-- ══ 2P GAME — left/right split ══════════════════════════════ -->
+<!-- 2P GAME -->
 <div id="game2" class="screen">
   <div class="split-arena">
     <div class="panel p1-panel" id="p1Panel">
@@ -305,19 +311,18 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
         <div class="panel-prog-wrap"><div class="panel-prog-fill" id="p1Prog" style="width:0%"></div></div>
         <div class="panel-round" id="p1Round">1/10</div>
       </div>
-      <div class="panel-top-row">
+      <div class="panel-listen">
         <button class="panel-listen-btn" id="p1ListenBtn">🔊</button>
-        <div class="panel-puzzle" id="p1Puzzle"></div>
+        <div style="font-size:9px;color:var(--muted)">Nghe từ · 🇬🇧</div>
       </div>
+      <div class="panel-puzzle-zone"><div class="panel-puzzle-row" id="p1PuzzleRow"></div></div>
       <div class="panel-actions">
-        <button class="panel-clear" onclick="clearPanel(1)">✕</button>
-        <button class="panel-check" id="p1Check" onclick="checkPanel(1)" disabled>Kiểm tra</button>
+        <button class="panel-clear" id="p1ClearBtn">✕</button>
+        <button class="panel-check" id="p1Check" disabled>Kiểm tra</button>
       </div>
       <div class="panel-feedback" id="p1FB"></div>
       <div class="panel-kb" id="p1KB"></div>
-      <div class="panel-win-overlay" id="p1Win" style="display:none">
-        <div class="win-icon">🏆</div><div class="win-label">P1 thắng!</div>
-      </div>
+      <div class="panel-win-overlay" id="p1Win" style="display:none"><div class="win-icon">🏆</div><div class="win-label">P1 thắng!</div></div>
     </div>
     <div class="panel p2-panel" id="p2Panel">
       <div class="panel-header">
@@ -325,24 +330,23 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
         <div class="panel-prog-wrap"><div class="panel-prog-fill" id="p2Prog" style="width:0%"></div></div>
         <div class="panel-round" id="p2Round">1/10</div>
       </div>
-      <div class="panel-top-row">
+      <div class="panel-listen">
         <button class="panel-listen-btn" id="p2ListenBtn">🔊</button>
-        <div class="panel-puzzle" id="p2Puzzle"></div>
+        <div style="font-size:9px;color:var(--muted)">Nghe từ · 🇬🇧</div>
       </div>
+      <div class="panel-puzzle-zone"><div class="panel-puzzle-row" id="p2PuzzleRow"></div></div>
       <div class="panel-actions">
-        <button class="panel-clear" onclick="clearPanel(2)">✕</button>
-        <button class="panel-check" id="p2Check" onclick="checkPanel(2)" disabled>Kiểm tra</button>
+        <button class="panel-clear" id="p2ClearBtn">✕</button>
+        <button class="panel-check" id="p2Check" disabled>Kiểm tra</button>
       </div>
       <div class="panel-feedback" id="p2FB"></div>
       <div class="panel-kb" id="p2KB"></div>
-      <div class="panel-win-overlay" id="p2Win" style="display:none">
-        <div class="win-icon">🏆</div><div class="win-label">P2 thắng!</div>
-      </div>
+      <div class="panel-win-overlay" id="p2Win" style="display:none"><div class="win-icon">🏆</div><div class="win-label">P2 thắng!</div></div>
     </div>
   </div>
 </div>
 
-<!-- ══ RESULT ══════════════════════════════════════════════════ -->
+<!-- RESULT -->
 <div id="result" class="screen">
   <canvas class="confetti" id="confettiCanvas"></canvas>
   <div class="result-emoji" id="resEmoji">🎉</div>
@@ -350,15 +354,15 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
   <div class="result-sub" id="resSub"></div>
   <div class="stat-row" id="statRow"></div>
   <div class="btn-row">
-    <button class="btn-primary" style="width:auto" onclick="replayGame()">Chơi lại</button>
+    <button class="btn-primary" style="width:auto;padding:14px 32px" onclick="replayGame()">Chơi lại</button>
     <button class="btn-ghost" onclick="showScreen('setup')">Thiết lập lại</button>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════════
-// KB
-// ══════════════════════════════════════════════
+// ═══════════════════════════════════════
+// KB DATA
+// ═══════════════════════════════════════
 const KB = [
   { label:'Nguyên âm ngắn', syms:['ɪ','e','æ','ʌ','ɒ','ʊ','ə'] },
   { label:'Nguyên âm dài',  syms:['iː','ɑː','ɔː','uː','ɜː'] },
@@ -368,405 +372,256 @@ const KB = [
   { label:'Mũi / Tiếp xúc', syms:['m','n','ŋ','l','r','j','w'] },
 ];
 
-// ══════════════════════════════════════════════
-// SETTINGS STATE
-// ══════════════════════════════════════════════
-let TOTAL = 10;
-let gameMode = '1p';
-let compiledQuestions = []; // [{word, ipa:[], blanks:[idxA,idxB], answer:[sym,sym]}]
+// ═══════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════
+let TOTAL = 10, gameMode = '1p', compiledQuestions = [], masterPool = [];
 
-function selPill(el, val, group){
+function selPill(el, val){
   document.querySelectorAll('.pill').forEach(p=>p.classList.remove('sel'));
-  el.classList.add('sel');
-  if(group==='rounds') TOTAL = val;
+  el.classList.add('sel'); TOTAL = val;
 }
 function selMode(m, el){
   gameMode = m;
   document.querySelectorAll('.mode-card').forEach(c=>c.classList.remove('sel'));
   el.classList.add('sel');
 }
-
-// ══════════════════════════════════════════════
-// HELPERS
-// ══════════════════════════════════════════════
-function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
-function shuffle(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b; }
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function shuffle(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b; }
 function log(msg){ const el=document.getElementById('loadingLog'); el.innerHTML+=msg+'<br>'; el.scrollTop=el.scrollHeight; }
 
-// ══════════════════════════════════════════════
+// ═══════════════════════════════════════
 // BrE VOICE
-// ══════════════════════════════════════════════
-let breVoice = null;
+// ═══════════════════════════════════════
+let breVoice=null;
 function loadVoices(){
-  const v = speechSynthesis.getVoices();
-  breVoice = v.find(x=>/google uk english/i.test(x.name))
-    || v.find(x=>x.name==='Daniel')
-    || v.find(x=>x.name==='Martha')
-    || v.find(x=>x.lang==='en-GB') || null;
+  const v=speechSynthesis.getVoices();
+  breVoice=v.find(x=>/google uk english/i.test(x.name))||v.find(x=>x.name==='Daniel')||v.find(x=>x.name==='Martha')||v.find(x=>x.lang==='en-GB')||null;
 }
-speechSynthesis.onvoiceschanged = loadVoices;
-loadVoices();
-
-function playWord(q, btnId){
+speechSynthesis.onvoiceschanged=loadVoices; loadVoices();
+function playWord(q,btnId){
   if(!q) return;
-  const btn = document.getElementById(btnId);
+  const btn=document.getElementById(btnId);
   if(btn) btn.classList.add('playing');
-  const u = new SpeechSynthesisUtterance(q.word);
+  const u=new SpeechSynthesisUtterance(q.word);
   u.lang='en-GB'; u.rate=0.78;
   if(breVoice) u.voice=breVoice;
-  u.onend = u.onerror = ()=>{ if(btn) btn.classList.remove('playing'); };
-  speechSynthesis.cancel();
-  speechSynthesis.speak(u);
+  u.onend=u.onerror=()=>{ if(btn) btn.classList.remove('playing'); };
+  speechSynthesis.cancel(); speechSynthesis.speak(u);
 }
 
-// ══════════════════════════════════════════════
-// IPA TOKENIZER — split raw IPA string into symbols
-// ══════════════════════════════════════════════
-// Ordered longest-first so 'tʃ','dʒ','iː','ɑː' etc match before single chars
-const IPA_TOKENS = [
-  // Affricates FIRST — longest match priority
-  'tʃ','dʒ',
-  // Long vowels & diphthongs
-  'iː','ɑː','ɔː','uː','ɜː',
-  'eɪ','aɪ','ɔɪ','əʊ','aʊ','ɪə','eə','ʊə',
-  // Short vowels
-  'ɪ','e','æ','ʌ','ɒ','ʊ','ə',
-  // Consonants
-  'p','t','k','b','d','g','f','v','θ','ð',
-  's','z','ʃ','ʒ','h','m','n','ŋ','l','r','j','w'
-];
-
-// Unicode ligature normalization map
-// Some APIs/dictionaries return single-char ligatures instead of 2-char sequences
-const IPA_NORMALIZE = {
-  '\u02A4': 'd\u0292', // ʤ → dʒ
-  '\u02A7': 't\u0283', // ʧ → tʃ
-  '\u02A3': 'dz',       // ʣ → dz
-  '\u02A8': 't\u0255', // ʨ → tɕ (rare, normalize best-effort)
-  '\u0263': 'g',        // ɣ → g (approximant, map to nearest)
-  '\u0294': '',         // ʔ glottal stop — skip
-  '\u02D0': '\u02D0',  // ː length mark — keep (part of long vowels)
-};
-
+// ═══════════════════════════════════════
+// IPA TOKENIZER
+// ═══════════════════════════════════════
+const IPA_TOKENS=['tʃ','dʒ','iː','ɑː','ɔː','uː','ɜː','eɪ','aɪ','ɔɪ','əʊ','aʊ','ɪə','eə','ʊə','ɪ','e','æ','ʌ','ɒ','ʊ','ə','p','t','k','b','d','g','f','v','θ','ð','s','z','ʃ','ʒ','h','m','n','ŋ','l','r','j','w'];
+const IPA_NORM={'\u02A4':'d\u0292','\u02A7':'t\u0283','\u02A3':'dz','\u02A8':'t\u0255','\u0263':'g','\u0294':''};
 function tokenizeIPA(raw){
-  // 1. Strip slashes, brackets, stress marks, syllable dots
-  let s = raw.replace(/[\/\[\]ˈˌ.\u02C8\u02CC]/g,'').trim();
-  // 2. Normalize ligature chars to 2-char equivalents
-  for(const [lig, norm] of Object.entries(IPA_NORMALIZE)){
-    s = s.split(lig).join(norm);
+  let s=raw.replace(/[\/\[\]ˈˌ.\u02C8\u02CC]/g,'').trim();
+  for(const [k,v] of Object.entries(IPA_NORM)) s=s.split(k).join(v);
+  const res=[]; let i=0;
+  while(i<s.length){
+    let ok=false;
+    for(const t of IPA_TOKENS){ if(s.startsWith(t,i)){res.push(t);i+=t.length;ok=true;break;} }
+    if(!ok) i++;
   }
-  // 3. Tokenize longest-match first
-  const result = [];
-  let i = 0;
-  while(i < s.length){
-    let matched = false;
-    for(const tok of IPA_TOKENS){
-      if(s.startsWith(tok, i)){
-        result.push(tok); i += tok.length; matched = true; break;
-      }
-    }
-    if(!matched) i++; // skip unknown/unrecognized char
-  }
-  return result;
+  return res;
 }
 
-// ══════════════════════════════════════════════
-// FETCH IPA — 3-tier: dictionaryapi.dev → Wiktionary → Groq RP
-// ══════════════════════════════════════════════
-
-// Tier 1: dictionaryapi.dev — prefer phonetic with uk audio URL
+// ═══════════════════════════════════════
+// FETCH IPA — 3-tier
+// ═══════════════════════════════════════
 async function fetchIPADict(word){
   try{
-    const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
-    if(!res.ok) return null;
-    const data = await res.json();
-    const entry = data[0];
-    if(!entry) return null;
-    let raw = null;
-    if(entry.phonetics && entry.phonetics.length){
-      // Priority 1: has text + audio URL containing 'uk'
-      const ukAudio = entry.phonetics.find(p => p.text && p.audio && p.audio.includes('-uk'));
-      // Priority 2: has text + no audio (BrE entries often lack audio in free tier)
-      const noAudio = entry.phonetics.find(p => p.text && !p.audio);
-      // Priority 3: any with text
-      const anyText = entry.phonetics.find(p => p.text && p.text.trim());
-      raw = ukAudio?.text || noAudio?.text || anyText?.text || null;
+    const r=await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
+    if(!r.ok) return null;
+    const d=await r.json(); const e=d[0]; if(!e) return null;
+    let raw=null;
+    if(e.phonetics?.length){
+      const uk=e.phonetics.find(p=>p.text&&p.audio?.includes('-uk'));
+      const noAud=e.phonetics.find(p=>p.text&&!p.audio);
+      const any=e.phonetics.find(p=>p.text?.trim());
+      raw=uk?.text||noAud?.text||any?.text||null;
     }
-    if(!raw && entry.phonetic) raw = entry.phonetic;
-    return raw || null;
-  } catch(e){ return null; }
+    return raw||(e.phonetic||null);
+  }catch{return null;}
 }
-
-// Tier 2: Wiktionary REST API — highly accurate, community-maintained
-// Parses {{IPA|en|/…/}} template from wikitext
-async function fetchIPAWiktionary(word){
+async function fetchIPAWikt(word){
   try{
-    const res = await fetch(`https://en.wiktionary.org/w/rest.php/v1/page/${encodeURIComponent(word)}`);
-    if(!res.ok) return null;
-    const data = await res.json();
-    const source = data.source || '';
-    // Match {{IPA|en|/ʃɪp/}} or {{IPA|en|/ʃɪp/|/ʃɪp/}}
-    const m = source.match(/\{\{IPA\|en\|([^}]+)\}\}/i);
+    const r=await fetch(`https://en.wiktionary.org/w/rest.php/v1/page/${encodeURIComponent(word)}`);
+    if(!r.ok) return null;
+    const d=await r.json();
+    const m=(d.source||'').match(/\{\{IPA\|en\|([^}]+)\}\}/i);
     if(!m) return null;
-    // Extract first /…/ group
-    const ipaMatch = m[1].match(/\/([^\/]+)\//);
-    return ipaMatch ? '/'+ipaMatch[1]+'/' : null;
-  } catch(e){ return null; }
+    const im=m[1].match(/\/([^\/]+)\//);
+    return im?'/'+im[1]+'/':null;
+  }catch{return null;}
 }
-
-// Tier 3: Groq — Received Pronunciation, strict symbol whitelist, with retry
-const IPA_VALID_CHARS = new Set([
-  'ɪ','e','æ','ʌ','ɒ','ʊ','ə','i','ː','ɑ','ɔ','u','ɜ',
-  'e','ɪ','a','ɔ','ə','ʊ','a','ʊ','ɪ','ə','e','ə','ʊ','ə',
-  'p','t','k','b','d','g','f','v','θ','ð','s','z','ʃ','ʒ',
-  'tʃ','dʒ','h','m','n','ŋ','l','r','j','w',
-  '/','ˈ','ˌ','.'
-]);
-function isValidIPA(str){
-  // Remove slashes and stress markers, check remaining chars are IPA
-  const clean = str.replace(/[\/ˈˌ. ]/g,'');
-  // Allow any unicode in IPA range (basic check)
-  return /^[a-zæɑɒɔəɛɜɪɐɓɗɖɠɣɦɧɨɬɭɮɯɰɱɲɳɴɵɶɷɸɹɺɻɼɽɾɿʀʁʂʃʄʅʆʇʈʉʊʋʌʍʎʏʐʑʒʓʔʕʖʗʘʙʚʛʜʝʞʟʠʡʢʣʤʥʦʧʨʩʪʫʬʭʮʯː]+$/i.test(clean);
-}
-
-async function fetchIPAGroq(word, apiKey){
-  const makePrompt = (w, correction='') => `You are a British English phonetician specialising in Received Pronunciation (RP).
-Give the RP IPA transcription for the word "${w}".${correction}
-
-Allowed vowels: ɪ e æ ʌ ɒ ʊ ə iː ɑː ɔː uː ɜː eɪ aɪ ɔɪ əʊ aʊ ɪə eə ʊə
-Allowed consonants: p t k b d g f v θ ð s z ʃ ʒ tʃ dʒ h m n ŋ l r j w
-Rules:
-- Non-rhotic: no /r/ unless before a vowel (e.g. "bird" = /bɜːd/ not /bɜːrd/)
-- "bath/dance/grass" use /ɑː/ not /æ/
-- "lot/hot" use /ɒ/
-- Reply with ONLY the IPA between forward slashes, e.g. /ʃɪp/
-- No stress marks, no syllable dots, no explanation`;
-
-  const callGroq = async (prompt) => {
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
-      body: JSON.stringify({
-        model:'llama-3.3-70b-versatile', max_tokens:40,
-        temperature:0,
-        messages:[{role:'user', content:prompt}]
-      })
-    });
-    if(!res.ok) return null;
-    const data = await res.json();
-    const text = data.choices?.[0]?.message?.content?.trim()||'';
-    const m = text.match(/\/([^\/]+)\//);
-    return m ? '/'+m[1]+'/' : null;
-  };
-
+async function fetchIPAGroq(word,key){
+  const prompt=`You are a British English phonetician (RP). Give the IPA for "${word}".
+Vowels: ɪ e æ ʌ ɒ ʊ ə iː ɑː ɔː uː ɜː eɪ aɪ ɔɪ əʊ aʊ ɪə eə ʊə
+Consonants: p t k b d g f v θ ð s z ʃ ʒ tʃ dʒ h m n ŋ l r j w
+Non-rhotic. Reply ONLY with /IPA/ e.g. /ʃɪp/`;
   try{
-    let result = await callGroq(makePrompt(word));
-    if(!result) return null;
-    // Validate — if contains suspicious chars, retry with correction hint
-    if(!isValidIPA(result)){
-      const correction = ` Your previous answer contained invalid characters. Use ONLY the symbols listed.`;
-      result = await callGroq(makePrompt(word, correction));
-    }
-    return result;
-  } catch(e){ return null; }
+    const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+      method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:40,temperature:0,messages:[{role:'user',content:prompt}]})
+    });
+    if(!r.ok) return null;
+    const d=await r.json();
+    const t=d.choices?.[0]?.message?.content?.trim()||'';
+    const m=t.match(/\/([^\/]+)\//);
+    return m?'/'+m[1]+'/':null;
+  }catch{return null;}
 }
 
-// ══════════════════════════════════════════════
-// BUILD PUZZLE from tokenized IPA
-// blanks: 2 if len<=3, else 3, but max len-1
-// Never blank a single member of an affricate pair
-// ══════════════════════════════════════════════
-const AFFRICATES = new Set(['tʃ','dʒ']);
-
-function buildPuzzle(word, ipaTokens){
-  const len = ipaTokens.length;
-  if(len < 2) return null;
-  const numBlanks = Math.min(len<=3 ? 2 : 3, len-1);
-  // All positions are valid blanks — affricates are single tokens so no splitting issue
-  // (tokenizer already guarantees tʃ/dʒ are one token)
-  const indices = shuffle(Array.from({length:len},(_,i)=>i));
-  const picked = [];
-  for(const idx of indices){
-    if(picked.length >= numBlanks) break;
-    if(picked.every(p => Math.abs(p-idx) > 1)) picked.push(idx);
+// ═══════════════════════════════════════
+// BUILD PUZZLE
+// ═══════════════════════════════════════
+function buildPuzzle(word,tokens){
+  const len=tokens.length;
+  if(len<2) return null;
+  const num=Math.min(len<=3?2:3,len-1);
+  const idxs=shuffle(Array.from({length:len},(_,i)=>i));
+  const picked=[];
+  for(const i of idxs){
+    if(picked.length>=num) break;
+    if(picked.every(p=>Math.abs(p-i)>1)) picked.push(i);
   }
-  // fallback if not enough non-adjacent
-  for(const idx of indices){
-    if(picked.length >= numBlanks) break;
-    if(!picked.includes(idx)) picked.push(idx);
+  for(const i of idxs){
+    if(picked.length>=num) break;
+    if(!picked.includes(i)) picked.push(i);
   }
   picked.sort((a,b)=>a-b);
-  return { word, ipa:ipaTokens, blanks:picked, answers:picked.map(i=>ipaTokens[i]) };
+  return {word,ipa:tokens,blanks:picked,answers:picked.map(i=>tokens[i])};
 }
 
-// ══════════════════════════════════════════════
-// HANDLE START — parse words, fetch IPA, build puzzles
-// ══════════════════════════════════════════════
+// ═══════════════════════════════════════
+// HANDLE START
+// ═══════════════════════════════════════
 async function handleStart(){
-  const raw = document.getElementById('wordInput').value.trim();
-  const groqKey = document.getElementById('groqKey').value.trim();
-  if(!raw){ alert('Vui lòng nhập danh sách từ!'); return; }
-
-  // parse words
-  const words = raw.split(/[\n,\s]+/).map(w=>w.trim().toLowerCase()).filter(w=>w.length>0);
-  if(words.length===0){ alert('Không tìm thấy từ nào!'); return; }
-
+  const raw=document.getElementById('wordInput').value.trim();
+  const groqKey=document.getElementById('groqKey').value.trim();
+  if(!raw){alert('Vui lòng nhập danh sách từ!');return;}
+  const words=[...new Set(raw.split(/[\n,\s]+/).map(w=>w.trim().toLowerCase()).filter(w=>w.length>0))];
+  if(!words.length){alert('Không tìm thấy từ nào!');return;}
   showScreen('loading');
   document.getElementById('loadingLog').innerHTML='';
-  compiledQuestions = [];
-
+  compiledQuestions=[];
   for(const word of words){
     log(`🔍 <b>${word}</b>...`);
-    let raw_ipa = await fetchIPADict(word);
-    if(raw_ipa){
-      log(`&nbsp;&nbsp;✓ dictionaryapi: ${raw_ipa}`);
-    } else {
-      log(`&nbsp;&nbsp;→ Thử Wiktionary...`);
-      raw_ipa = await fetchIPAWiktionary(word);
-      if(raw_ipa) log(`&nbsp;&nbsp;✓ Wiktionary: ${raw_ipa}`);
+    let ipa=await fetchIPADict(word);
+    if(ipa) log(`&nbsp;&nbsp;✓ Dict: ${ipa}`);
+    if(!ipa){
+      log(`&nbsp;&nbsp;→ Wiktionary...`);
+      ipa=await fetchIPAWikt(word);
+      if(ipa) log(`&nbsp;&nbsp;✓ Wiktionary: ${ipa}`);
     }
-    if(!raw_ipa && groqKey){
-      log(`&nbsp;&nbsp;→ Thử Groq RP...`);
-      raw_ipa = await fetchIPAGroq(word, groqKey);
-      if(raw_ipa) log(`&nbsp;&nbsp;✓ Groq: ${raw_ipa}`);
+    if(!ipa&&groqKey){
+      log(`&nbsp;&nbsp;→ Groq RP...`);
+      ipa=await fetchIPAGroq(word,groqKey);
+      if(ipa) log(`&nbsp;&nbsp;✓ Groq: ${ipa}`);
     }
-    if(!raw_ipa){
-      log(`&nbsp;&nbsp;✗ Bỏ qua (không tìm được phiên âm)`);
-      continue;
-    }
-    const tokens = tokenizeIPA(raw_ipa);
-    if(tokens.length < 2){
-      log(`&nbsp;&nbsp;✗ Bỏ qua (phiên âm quá ngắn: [${tokens.join(',')}])`);
-      continue;
-    }
-    const puzzle = buildPuzzle(word, tokens);
-    if(puzzle){
-      compiledQuestions.push(puzzle);
-      log(`&nbsp;&nbsp;📝 /${tokens.join('/')} / — ${puzzle.blanks.length} chỗ trống: [${tokens.join(', ')}]`);
-    }
+    if(!ipa){log(`&nbsp;&nbsp;✗ Bỏ qua`);continue;}
+    const tokens=tokenizeIPA(ipa);
+    if(tokens.length<2){log(`&nbsp;&nbsp;✗ Quá ngắn: [${tokens}]`);continue;}
+    const puz=buildPuzzle(word,tokens);
+    if(puz){compiledQuestions.push(puz);log(`&nbsp;&nbsp;📝 [${tokens.join(' ')}] — ${puz.blanks.length} chỗ trống`);}
   }
-
-  if(compiledQuestions.length===0){
-    alert('Không tạo được câu đố nào. Hãy kiểm tra lại danh sách từ và API key.');
-    showScreen('setup'); return;
-  }
-  log(`<br>✅ Tạo xong ${compiledQuestions.length} câu đố!`);
-  await new Promise(r=>setTimeout(r,600));
+  if(!compiledQuestions.length){alert('Không tạo được câu đố nào.');showScreen('setup');return;}
+  log(`<br>✅ Tạo xong ${compiledQuestions.length} câu!`);
+  await new Promise(r=>setTimeout(r,500));
   startGame();
 }
 
-// ══════════════════════════════════════════════
-// START GAME
-// ══════════════════════════════════════════════
-let masterPool = [];
 function startGame(){
-  masterPool = shuffle([...compiledQuestions]);
-  const total = TOTAL===0 ? masterPool.length : Math.min(TOTAL, masterPool.length);
-  TOTAL = total;
-  if(gameMode==='2p') start2P();
-  else start1P();
+  masterPool=shuffle([...compiledQuestions]);
+  TOTAL=TOTAL===0?masterPool.length:Math.min(TOTAL,masterPool.length);
+  if(gameMode==='2p') start2P(); else start1P();
 }
-function replayGame(){
-  // re-use same compiled questions, just reshuffle
-  startGame();
-}
+function replayGame(){ startGame(); }
 
-// ══════════════════════════════════════════════
-// PUZZLE RENDERER HELPERS
-// ══════════════════════════════════════════════
-// state for active slot index per context
-function renderPuzzle(containerId, puzzle, inp, activeSlotIdx, onSlotClick){
-  const wrap = document.getElementById(containerId);
+// ═══════════════════════════════════════
+// RENDER HELPERS
+// ═══════════════════════════════════════
+// Renders puzzle into a row container (1P or 2P)
+// Returns array of slot elements for later coloring
+function renderPuzzleRow(containerId, puzzle, inp, activeIdx, onSlotClick){
+  const wrap=document.getElementById(containerId);
   wrap.innerHTML='';
-  puzzle.ipa.forEach((sym, i)=>{
-    const blankIdx = puzzle.blanks.indexOf(i);
-    if(blankIdx >= 0){
-      const div = document.createElement('div');
-      let cls='puz-slot';
-      if(inp[blankIdx] !== undefined) cls+=' filled';
-      if(blankIdx === activeSlotIdx) cls+=' active';
-      div.className=cls;
-      div.textContent = inp[blankIdx] !== undefined ? inp[blankIdx] : '';
-      div.onclick=()=>onSlotClick(blankIdx);
-      wrap.appendChild(div);
+  // opening bracket
+  const b1=document.createElement('span'); b1.className='puz-bracket'; b1.textContent='/'; wrap.appendChild(b1);
+  puzzle.ipa.forEach((sym,i)=>{
+    const bi=puzzle.blanks.indexOf(i);
+    if(bi>=0){
+      const d=document.createElement('div');
+      const filled=inp[bi]!==undefined;
+      d.className='puz-slot'+(filled?' filled':'')+(bi===activeIdx?' active':'');
+      d.textContent=filled?inp[bi]:'';
+      d.onclick=()=>onSlotClick(bi);
+      wrap.appendChild(d);
     } else {
-      // Wrap each fixed sym in its own span — no slashes, white-space:nowrap ensures
-      // multi-char tokens like dʒ tʃ render as one visual unit
-      const span=document.createElement('span');
-      span.className='puz-sym';
-      span.textContent=sym;
-      wrap.appendChild(span);
+      const sp=document.createElement('span');
+      sp.className='puz-sym'; sp.textContent=sym;
+      wrap.appendChild(sp);
     }
   });
+  const b2=document.createElement('span'); b2.className='puz-bracket'; b2.textContent='/'; wrap.appendChild(b2);
 }
 
-function renderNavDots(containerId, puzzle, inp, activeSlotIdx, onDotClick){
-  const wrap=document.getElementById(containerId); wrap.innerHTML='';
+function renderNavDots(cid, puzzle, inp, activeIdx, onDotClick){
+  const wrap=document.getElementById(cid); wrap.innerHTML='';
   puzzle.blanks.forEach((_,i)=>{
     const d=document.createElement('div');
-    d.className='slot-dot'+(i===activeSlotIdx?' active':'')+(inp[i]?' done':'');
+    d.className='slot-dot'+(i===activeIdx?' active':'')+(inp[i]!==undefined?' done':'');
     d.onclick=()=>onDotClick(i);
     wrap.appendChild(d);
   });
 }
 
-function buildKB(containerId, onSym){
-  const wrap=document.getElementById(containerId); wrap.innerHTML='';
+function buildKB(cid, onSym, touch=false){
+  const wrap=document.getElementById(cid); wrap.innerHTML='';
   KB.forEach(g=>{
     const lbl=document.createElement('div'); lbl.className='kb-label'; lbl.textContent=g.label; wrap.appendChild(lbl);
     const row=document.createElement('div'); row.className='kb-row';
     g.syms.forEach(sym=>{
       const btn=document.createElement('button'); btn.className='kb-btn';
       btn.textContent='/'+sym+'/';
-      btn.onclick=()=>onSym(sym);
+      if(touch){
+        // touchstart only — no click listener to avoid double-fire
+        btn.addEventListener('touchstart',e=>{
+          e.preventDefault(); e.stopPropagation();
+          onSym(sym);
+        },{passive:false});
+        // mouse fallback for non-touch devices
+        btn.addEventListener('mousedown',e=>{ e.preventDefault(); onSym(sym); });
+      } else {
+        btn.onclick=()=>onSym(sym);
+      }
       row.appendChild(btn);
     });
     wrap.appendChild(row);
   });
 }
 
-// Touch-optimised KB for 2P panels — touchstart fires instantly,
-// preventDefault stops ghost click, each touch tracked independently
-function buildKBTouch(containerId, onSym){
-  const wrap=document.getElementById(containerId); wrap.innerHTML='';
-  KB.forEach(g=>{
-    const lbl=document.createElement('div'); lbl.className='kb-label'; lbl.textContent=g.label; wrap.appendChild(lbl);
-    const row=document.createElement('div'); row.className='kb-row';
-    g.syms.forEach(sym=>{
-      const btn=document.createElement('button'); btn.className='kb-btn';
-      btn.textContent='/'+sym+'/';
-      // touchstart: instant, no 300ms delay, multi-touch safe
-      btn.addEventListener('touchstart', e=>{
-        e.preventDefault(); // prevent ghost click & scroll
-        e.stopPropagation();
-        btn.style.transform='scale(0.92)';
-        onSym(sym);
-        setTimeout(()=>btn.style.transform='', 120);
-      }, {passive:false});
-      // fallback click for mouse/desktop
-      btn.addEventListener('click', e=>{ onSym(sym); });
-      row.appendChild(btn);
-    });
-    wrap.appendChild(row);
-  });
-}
+function isFull(inp){ return inp.every(x=>x!==undefined); }
 
-function allFilled(inp, numBlanks){ return inp.filter(x=>x!==undefined).length===numBlanks; }
-
-// ══════════════════════════════════════════════
+// ═══════════════════════════════════════
 // 1P
-// ══════════════════════════════════════════════
-let pool1=[], qIdx1=0, cur1P=null, inp1=[], activeSlot1=0, score1=0, miss1=0;
+// ═══════════════════════════════════════
+let pool1=[],qIdx1=0,cur1P=null,inp1=[],active1=0,score1=0,miss1=0;
 
 function start1P(){
-  pool1 = masterPool.slice(0, TOTAL);
-  qIdx1=0; score1=0; miss1=0;
-  showScreen('game');
-  load1P();
+  pool1=masterPool.slice(0,TOTAL);
+  qIdx1=0;score1=0;miss1=0;
+  showScreen('game'); load1P();
 }
 function load1P(){
-  cur1P=pool1[qIdx1]; inp1=new Array(cur1P.blanks.length).fill(undefined);
-  activeSlot1=0;
+  cur1P=pool1[qIdx1];
+  inp1=new Array(cur1P.blanks.length).fill(undefined);
+  active1=0;
   document.getElementById('rNum').textContent=qIdx1+1;
   document.getElementById('rTotal').textContent=TOTAL;
   document.getElementById('progFill').style.width=(qIdx1/TOTAL*100)+'%';
@@ -775,62 +630,55 @@ function load1P(){
   document.getElementById('feedbackMsg').className='feedback-msg';
   document.getElementById('checkBtn').disabled=true;
   render1P();
-  buildKB('kbWrap', sym=>enter1P(sym));
+  buildKB('kbWrap',sym=>enter1P(sym),false);
   setTimeout(()=>playWord(cur1P,'listenBtn'),350);
 }
 function render1P(){
-  renderPuzzle('puzzleWrap', cur1P, inp1, activeSlot1, i=>{ activeSlot1=i; render1P(); });
-  // add / … / brackets around puzzle for IPA notation clarity
-  const wrap=document.getElementById('puzzleWrap');
-  const makeBracket=t=>{ const s=document.createElement('span'); s.className='puz-bracket'; s.textContent=t; return s; };
-  wrap.insertBefore(makeBracket('/'), wrap.firstChild);
-  wrap.appendChild(makeBracket('/'));
-  renderNavDots('slotNav', cur1P, inp1, activeSlot1, i=>{ activeSlot1=i; render1P(); });
-  document.getElementById('checkBtn').disabled=!allFilled(inp1,cur1P.blanks.length);
+  renderPuzzleRow('puzzleRow',cur1P,inp1,active1,i=>{active1=i;render1P();});
+  renderNavDots('slotNav',cur1P,inp1,active1,i=>{active1=i;render1P();});
+  document.getElementById('checkBtn').disabled=!isFull(inp1);
 }
 function enter1P(sym){
-  inp1[activeSlot1]=sym;
-  // advance to next unfilled slot
-  let next=activeSlot1;
+  inp1[active1]=sym;
+  // advance to next empty slot
   for(let i=1;i<=cur1P.blanks.length;i++){
-    const idx=(activeSlot1+i)%cur1P.blanks.length;
-    if(inp1[idx]===undefined){ next=idx; break; }
+    const next=(active1+i)%cur1P.blanks.length;
+    if(inp1[next]===undefined){active1=next;break;}
   }
-  activeSlot1=next;
   document.getElementById('feedbackMsg').textContent='';
   render1P();
-  document.getElementById('checkBtn').disabled=!allFilled(inp1,cur1P.blanks.length);
 }
 function clear1P(){
   inp1=new Array(cur1P.blanks.length).fill(undefined);
-  activeSlot1=0;
+  active1=0;
   document.getElementById('feedbackMsg').textContent='';
   render1P();
-  document.getElementById('checkBtn').disabled=true;
 }
 function check1P(){
+  const snap=[...inp1];
   const correct=cur1P.answers;
-  const ok=inp1.every((s,i)=>s===correct[i]);
-  // flash slots
-  const snapInp1=[...inp1];
-  const slots=document.querySelectorAll('#puzzleWrap .puz-slot');
-  let si=0;
-  slots.forEach(s=>{
-    s.classList.remove('filled','active');
-    s.classList.add(snapInp1[si]===correct[si]?'correct':'wrong');
-    si++;
+  const ok=snap.every((s,i)=>s===correct[i]);
+  // color slots
+  document.querySelectorAll('#puzzleRow .puz-slot').forEach((el,i)=>{
+    el.classList.remove('filled','active');
+    el.classList.add(snap[i]===correct[i]?'correct':'wrong');
   });
   if(ok){
     document.getElementById('feedbackMsg').textContent='✓ Chính xác!';
     document.getElementById('feedbackMsg').className='feedback-msg ok';
     score1++; document.getElementById('scoreBadge').textContent=score1+' ✓';
     document.getElementById('checkBtn').disabled=true;
-    setTimeout(()=>{ qIdx1++; if(qIdx1>=TOTAL) end1P(); else load1P(); },900);
+    setTimeout(()=>{qIdx1++;qIdx1>=TOTAL?end1P():load1P();},900);
   } else {
     miss1++;
     document.getElementById('feedbackMsg').textContent='✗ Chưa đúng — thử lại!';
     document.getElementById('feedbackMsg').className='feedback-msg err';
-    setTimeout(()=>{ inp1=new Array(cur1P.blanks.length).fill(undefined); activeSlot1=0; document.getElementById('feedbackMsg').textContent=''; render1P(); document.getElementById('checkBtn').disabled=true; },900);
+    setTimeout(()=>{
+      inp1=new Array(cur1P.blanks.length).fill(undefined);
+      active1=0;
+      document.getElementById('feedbackMsg').textContent='';
+      render1P();
+    },900);
   }
 }
 function end1P(){
@@ -845,29 +693,38 @@ function end1P(){
   if(pct>=80) launchConfetti(['#7c6cff','#00c8ff','#ffd166','#06d6a0']);
 }
 
-// ══════════════════════════════════════════════
+// ═══════════════════════════════════════
 // 2P
-// ══════════════════════════════════════════════
-let p1={}, p2={}, gameOver2=false;
+// ═══════════════════════════════════════
+let p1={},p2={},gameOver2=false;
 
 function start2P(){
   gameOver2=false;
-  const pool1_2=shuffle([...masterPool]).slice(0,TOTAL);
-  const pool2_2=shuffle([...masterPool]).slice(0,TOTAL);
-  p1={pool:pool1_2,idx:0,inp:[],active:0,score:0,done:false,q:pool1_2[0]};
-  p2={pool:pool2_2,idx:0,inp:[],active:0,score:0,done:false,q:pool2_2[0]};
+  const pa=shuffle([...masterPool]).slice(0,TOTAL);
+  const pb=shuffle([...masterPool]).slice(0,TOTAL);
+  p1={pool:pa,idx:0,inp:[],active:0,score:0,done:false,q:pa[0]};
+  p2={pool:pb,idx:0,inp:[],active:0,score:0,done:false,q:pb[0]};
   document.getElementById('p1Win').style.display='none';
   document.getElementById('p2Win').style.display='none';
-  // Wire check/clear with touchstart for instant 2P response
-  ['p1Check','p2Check'].forEach(id=>{
-    const el=document.getElementById(id);
-    const p=id.startsWith('p1')?1:2;
-    el.ontouchstart=(e)=>{e.preventDefault();e.stopPropagation();checkPanel(p);};
-  });
-  ['p1','p2'].forEach((px,i)=>{
-    const el=document.querySelector(`.p${i+1}-panel .panel-clear`);
-    if(el) el.ontouchstart=(e)=>{e.preventDefault();e.stopPropagation();clearPanel(i+1);};
-  });
+  // wire buttons
+  const p1c=document.getElementById('p1Check');
+  const p2c=document.getElementById('p2Check');
+  const p1cl=document.getElementById('p1ClearBtn');
+  const p2cl=document.getElementById('p2ClearBtn');
+  p1c.onclick=()=>checkPanel(1);
+  p2c.onclick=()=>checkPanel(2);
+  p1cl.onclick=()=>clearPanel(1);
+  p2cl.onclick=()=>clearPanel(2);
+  p1c.addEventListener('touchstart',e=>{e.preventDefault();checkPanel(1);},{passive:false});
+  p2c.addEventListener('touchstart',e=>{e.preventDefault();checkPanel(2);},{passive:false});
+  p1cl.addEventListener('touchstart',e=>{e.preventDefault();clearPanel(1);},{passive:false});
+  p2cl.addEventListener('touchstart',e=>{e.preventDefault();clearPanel(2);},{passive:false});
+  const lb1=document.getElementById('p1ListenBtn');
+  const lb2=document.getElementById('p2ListenBtn');
+  lb1.onclick=()=>playWord(p1.q,'p1ListenBtn');
+  lb2.onclick=()=>playWord(p2.q,'p2ListenBtn');
+  lb1.addEventListener('touchstart',e=>{e.preventDefault();playWord(p1.q,'p1ListenBtn');},{passive:false});
+  lb2.addEventListener('touchstart',e=>{e.preventDefault();playWord(p2.q,'p2ListenBtn');},{passive:false});
   showScreen('game2');
   loadPanel(1); loadPanel(2);
 }
@@ -877,43 +734,33 @@ function loadPanel(p){
   st.q=st.pool[st.idx];
   st.inp=new Array(st.q.blanks.length).fill(undefined);
   st.active=0;
-  const progId=p===1?'p1Prog':'p2Prog';
-  const roundId=p===1?'p1Round':'p2Round';
-  const fbId=p===1?'p1FB':'p2FB';
-  const chkId=p===1?'p1Check':'p2Check';
-  const listenId=p===1?'p1ListenBtn':'p2ListenBtn';
-  const kbId=p===1?'p1KB':'p2KB';
-  document.getElementById(progId).style.width=(st.idx/TOTAL*100)+'%';
-  document.getElementById(roundId).textContent=(st.idx+1)+'/'+TOTAL;
-  document.getElementById(fbId).textContent='';
-  document.getElementById(fbId).className='panel-feedback';
-  document.getElementById(chkId).disabled=true;
-  // Wire listen btn with touchstart for instant response
-  const lBtn=document.getElementById(listenId);
-  lBtn.ontouchstart=lBtn.onclick=(e)=>{ e.preventDefault(); playWord(st.q,listenId); };
+  document.getElementById(p===1?'p1Prog':'p2Prog').style.width=(st.idx/TOTAL*100)+'%';
+  document.getElementById(p===1?'p1Round':'p2Round').textContent=(st.idx+1)+'/'+TOTAL;
+  document.getElementById(p===1?'p1FB':'p2FB').textContent='';
+  document.getElementById(p===1?'p1FB':'p2FB').className='panel-feedback';
+  document.getElementById(p===1?'p1Check':'p2Check').disabled=true;
   renderPanel(p);
-  buildKBTouch(kbId, sym=>enterPanel(p,sym));
-  setTimeout(()=>playWord(st.q,listenId), p===1?300:500);
+  buildKB(p===1?'p1KB':'p2KB',sym=>enterPanel(p,sym),true);
+  setTimeout(()=>playWord(st.q,p===1?'p1ListenBtn':'p2ListenBtn'),p===1?300:500);
 }
 
 function renderPanel(p){
   const st=p===1?p1:p2;
-  const puzzId=p===1?'p1Puzzle':'p2Puzzle';
-  const chkId=p===1?'p1Check':'p2Check';
-  renderPuzzle(puzzId,st.q,st.inp,st.active,i=>{ if(!st.done&&!gameOver2){st.active=i;renderPanel(p);} });
-  document.getElementById(chkId).disabled=!allFilled(st.inp,st.q.blanks.length);
+  const rowId=p===1?'p1PuzzleRow':'p2PuzzleRow';
+  renderPuzzleRow(rowId,st.q,st.inp,st.active,i=>{
+    if(!st.done&&!gameOver2){st.active=i;renderPanel(p);}
+  });
+  document.getElementById(p===1?'p1Check':'p2Check').disabled=!isFull(st.inp);
 }
 
-function enterPanel(p, sym){
+function enterPanel(p,sym){
   const st=p===1?p1:p2;
   if(st.done||gameOver2) return;
   st.inp[st.active]=sym;
-  let next=st.active;
   for(let i=1;i<=st.q.blanks.length;i++){
-    const idx=(st.active+i)%st.q.blanks.length;
-    if(st.inp[idx]===undefined){ next=idx; break; }
+    const next=(st.active+i)%st.q.blanks.length;
+    if(st.inp[next]===undefined){st.active=next;break;}
   }
-  st.active=next;
   document.getElementById(p===1?'p1FB':'p2FB').textContent='';
   renderPanel(p);
 }
@@ -931,37 +778,37 @@ function checkPanel(p){
   if(gameOver2) return;
   const st=p===1?p1:p2;
   if(st.done) return;
+  const snap=[...st.inp];
   const correct=st.q.answers;
-  const ok=st.inp.every((s,i)=>s===correct[i]);
-  const puzzId=p===1?'p1Puzzle':'p2Puzzle';
+  const ok=snap.every((s,i)=>s===correct[i]);
+  const rowId=p===1?'p1PuzzleRow':'p2PuzzleRow';
   const fbId=p===1?'p1FB':'p2FB';
-  const chkId=p===1?'p1Check':'p2Check';
-  const slots=document.querySelectorAll('#'+puzzId+' .puz-slot');
-  let si=0;
-  slots.forEach(s=>{ s.classList.remove('filled','active'); s.classList.add(st.inp[si]===correct[si]?'correct':'wrong'); si++; });
-
+  document.querySelectorAll('#'+rowId+' .puz-slot').forEach((el,i)=>{
+    el.classList.remove('filled','active');
+    el.classList.add(snap[i]===correct[i]?'correct':'wrong');
+  });
   if(ok){
     document.getElementById(fbId).textContent='✓ Đúng!';
     document.getElementById(fbId).className='panel-feedback ok';
     st.score++; st.idx++;
     document.getElementById(p===1?'p1Prog':'p2Prog').style.width=(st.idx/TOTAL*100)+'%';
-    document.getElementById(chkId).disabled=true;
+    document.getElementById(p===1?'p1Check':'p2Check').disabled=true;
     if(st.idx>=TOTAL){
       st.done=true;
-      if(!gameOver2){ gameOver2=true; document.getElementById(p===1?'p1Win':'p2Win').style.display='flex'; setTimeout(()=>end2P(p),1400); }
+      if(!gameOver2){
+        gameOver2=true;
+        document.getElementById(p===1?'p1Win':'p2Win').style.display='flex';
+        setTimeout(()=>end2P(p),1400);
+      }
     } else {
       setTimeout(()=>loadPanel(p),700);
     }
   } else {
-    // snapshot before reset for coloring
-    const snapInp=[...st.inp];
     document.getElementById(fbId).textContent='✗ Thử lại!';
     document.getElementById(fbId).className='panel-feedback err';
-    const slots2=document.querySelectorAll('#'+puzzId+' .puz-slot');
-    let si2=0;
-    slots2.forEach(s=>{ s.classList.remove('filled','active'); s.classList.add(snapInp[si2]===correct[si2]?'correct':'wrong'); si2++; });
     setTimeout(()=>{
-      st.inp=new Array(st.q.blanks.length).fill(undefined); st.active=0;
+      st.inp=new Array(st.q.blanks.length).fill(undefined);
+      st.active=0;
       document.getElementById(fbId).textContent='';
       renderPanel(p);
     },800);
@@ -970,48 +817,39 @@ function checkPanel(p){
 
 function end2P(winP){
   showScreen('result');
+  const s1=p1.score,s2=p2.score;
   document.getElementById('resEmoji').textContent='🏆';
   document.getElementById('resTitle').textContent='Player '+winP+' thắng!';
   document.getElementById('resSub').textContent='Hoàn thành '+TOTAL+' câu trước tiên';
-  const s1=p1.score,s2=p2.score;
   document.getElementById('statRow').innerHTML=`
     <div class="stat-card ${winP===1?'winner':''}">
-      <div class="stat-val" style="color:var(--p1)">${s1}</div>
-      <div class="stat-label">P1 đúng / ${TOTAL}</div>
+      <div class="stat-val" style="color:var(--p1)">${s1}</div><div class="stat-label">P1 / ${TOTAL}</div>
       ${winP===1?'<div class="winner-tag">🥇 Thắng</div>':''}
     </div>
     <div class="stat-card ${winP===2?'winner':''}">
-      <div class="stat-val" style="color:var(--p2)">${s2}</div>
-      <div class="stat-label">P2 đúng / ${TOTAL}</div>
+      <div class="stat-val" style="color:var(--p2)">${s2}</div><div class="stat-label">P2 / ${TOTAL}</div>
       ${winP===2?'<div class="winner-tag">🥇 Thắng</div>':''}
     </div>`;
   launchConfetti(winP===1?['#00c8ff','#7c6cff','#ffd166']:['#ff9f43','#ffd166','#06d6a0']);
 }
 
-// ══════════════════════════════════════════════
+// ═══════════════════════════════════════
 // CONFETTI
-// ══════════════════════════════════════════════
+// ═══════════════════════════════════════
 function launchConfetti(cols){
   const cvs=document.getElementById('confettiCanvas');
   const ctx=cvs.getContext('2d');
   cvs.width=window.innerWidth; cvs.height=window.innerHeight;
-  const pieces=Array.from({length:120},()=>({
-    x:Math.random()*cvs.width,y:Math.random()*cvs.height-cvs.height,
-    r:Math.random()*7+3,d:Math.random()*80+20,
-    c:cols[Math.floor(Math.random()*cols.length)],t:0,ts:Math.random()*.1+.04
-  }));
-  let fr=0,ang=0;
+  const p=Array.from({length:120},()=>({x:Math.random()*cvs.width,y:Math.random()*cvs.height-cvs.height,r:Math.random()*7+3,d:Math.random()*80+20,c:cols[0|Math.random()*cols.length],t:0,ts:Math.random()*.1+.04}));
+  let fr=0,a=0;
   (function draw(){
-    ctx.clearRect(0,0,cvs.width,cvs.height); ang+=.01; fr++;
-    pieces.forEach(p=>{
-      p.t+=p.ts; p.y+=(Math.cos(ang+p.d)+1.4)*1.8; p.x+=Math.sin(ang)*.9;
-      ctx.beginPath(); ctx.lineWidth=p.r; ctx.strokeStyle=p.c;
-      const tl=Math.sin(p.t)*10;
-      ctx.moveTo(p.x+tl+p.r/2,p.y); ctx.lineTo(p.x+tl,p.y+tl+p.r/2); ctx.stroke();
-      if(p.y>cvs.height){p.y=-10;p.x=Math.random()*cvs.width;}
+    ctx.clearRect(0,0,cvs.width,cvs.height);a+=.01;fr++;
+    p.forEach(q=>{q.t+=q.ts;q.y+=(Math.cos(a+q.d)+1.4)*1.8;q.x+=Math.sin(a)*.9;
+      ctx.beginPath();ctx.lineWidth=q.r;ctx.strokeStyle=q.c;
+      const tl=Math.sin(q.t)*10;ctx.moveTo(q.x+tl+q.r/2,q.y);ctx.lineTo(q.x+tl,q.y+tl+q.r/2);ctx.stroke();
+      if(q.y>cvs.height){q.y=-10;q.x=Math.random()*cvs.width;}
     });
-    if(fr<260) requestAnimationFrame(draw);
-    else ctx.clearRect(0,0,cvs.width,cvs.height);
+    if(fr<260) requestAnimationFrame(draw); else ctx.clearRect(0,0,cvs.width,cvs.height);
   })();
 }
 </script>
