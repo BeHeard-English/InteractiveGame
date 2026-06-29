@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -19,11 +19,10 @@
 body{font-family:var(--font);background:var(--bg);color:var(--text);
   height:100vh;overflow:hidden;user-select:none;-webkit-tap-highlight-color:transparent;}
 
-/* ── SCREENS ─────────────────────────────────────── */
 .screen{display:none;height:100vh;flex-direction:column;overflow:hidden;}
 .screen.active{display:flex;}
 
-/* ── SETUP ───────────────────────────────────────── */
+/* SETUP */
 #setup{overflow-y:auto;height:auto;min-height:100vh;padding:24px 20px 36px;gap:16px;}
 .logo{font-size:40px;font-weight:700;letter-spacing:-2px;
   background:linear-gradient(135deg,#00c8ff,var(--accent),var(--gold));
@@ -32,7 +31,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .setup-logo{text-align:center;margin-bottom:4px;}
 .setup-section{display:flex;flex-direction:column;gap:8px;}
 .setup-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
-.setup-textarea{width:100%;min-height:100px;background:var(--card);border:1.5px solid var(--border);
+.setup-textarea{width:100%;min-height:120px;background:var(--card);border:1.5px solid var(--border);
   border-radius:var(--r);color:var(--text);font-family:var(--font);font-size:13px;
   padding:11px 14px;resize:vertical;outline:none;transition:border-color .15s;line-height:1.6;}
 .setup-textarea:focus{border-color:var(--accent);}
@@ -65,7 +64,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
   padding:12px 24px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:border-color .15s,color .15s;}
 .btn-ghost:hover{border-color:var(--accent);color:var(--text);}
 
-/* ── LOADING ─────────────────────────────────────── */
+/* LOADING */
 #loading{align-items:center;justify-content:center;gap:20px;text-align:center;padding:40px;}
 .spinner{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--accent);
   border-radius:50%;animation:spin .8s linear infinite;}
@@ -76,8 +75,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
   border-radius:var(--r);padding:12px 14px;font-size:11px;color:var(--muted);
   max-height:180px;overflow-y:auto;text-align:left;line-height:1.8;font-family:monospace;}
 
-/* ── 1P GAME ─────────────────────────────────────── */
-/* top bar */
+/* 1P GAME */
 .top-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;
   background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
 .round-badge{font-size:13px;color:var(--muted);white-space:nowrap;}
@@ -85,7 +83,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s ease;}
 .score-badge{font-size:14px;font-weight:700;color:var(--gold);white-space:nowrap;}
 
-/* listen zone */
 .listen-zone{display:flex;flex-direction:column;align-items:center;padding:10px 20px 6px;gap:5px;flex-shrink:0;}
 .listen-btn{width:68px;height:68px;border-radius:50%;background:rgba(124,108,255,.14);
   border:2.5px solid var(--accent);color:var(--accent);font-size:26px;cursor:pointer;
@@ -94,9 +91,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .listen-btn.playing{animation:pulse .55s ease infinite alternate;}
 @keyframes pulse{from{box-shadow:0 0 0 0 rgba(124,108,255,.5);}to{box-shadow:0 0 0 12px rgba(124,108,255,0);}}
 .listen-hint{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
-.bre-badge{font-size:10px;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2px 8px;}
 
-/* PUZZLE — hero zone, flex:1, centered */
 .puzzle-zone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 12px;}
 .puzzle-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;}
 .puz-bracket{font-family:var(--ipa);font-size:clamp(48px,10vw,88px);color:var(--border);font-weight:300;line-height:1;padding:0 2px;flex-shrink:0;}
@@ -115,13 +110,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .puz-slot.wrong{border-color:var(--red)!important;background:rgba(255,107,107,.12)!important;color:var(--red)!important;animation:shake .35s ease;}
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
 
-/* nav dots */
 .slot-nav{display:flex;gap:8px;justify-content:center;padding:6px 0 2px;flex-shrink:0;}
 .slot-dot{width:9px;height:9px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .15s;}
 .slot-dot.active{background:var(--accent);}
 .slot-dot.done{background:var(--green);}
 
-/* action + feedback */
 .action-row{display:flex;gap:10px;justify-content:center;padding:4px 14px 2px;flex-shrink:0;}
 .btn-check{background:var(--accent);color:#fff;border:none;border-radius:var(--r);
   padding:12px 28px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;
@@ -135,7 +128,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .feedback-msg.ok{color:var(--green);}
 .feedback-msg.err{color:var(--red);}
 
-/* KB */
 .kb-wrap{flex-shrink:0;padding:4px 10px 10px;display:flex;flex-direction:column;gap:4px;max-height:40vh;overflow-y:auto;}
 .kb-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
 .kb-row{display:flex;gap:5px;}
@@ -146,7 +138,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .kb-btn:hover{border-color:var(--accent);background:rgba(124,108,255,.1);}
 .kb-btn:active{transform:scale(.93);border-color:var(--accent);background:rgba(124,108,255,.15);}
 
-/* ── 2P GAME ─────────────────────────────────────── */
+/* 2P GAME */
 #game2{display:none;height:100vh;flex-direction:column;overflow:hidden;}
 #game2.active{display:flex;}
 .split-arena{flex:1;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;min-height:0;}
@@ -177,7 +169,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 @keyframes pulseP1{from{box-shadow:0 0 0 0 rgba(0,200,255,.4);}to{box-shadow:0 0 0 7px rgba(0,200,255,0);}}
 @keyframes pulseP2{from{box-shadow:0 0 0 0 rgba(255,159,67,.4);}to{box-shadow:0 0 0 7px rgba(255,159,67,0);}}
 
-/* 2P puzzle zone — flex:1 hero */
 .panel-puzzle-zone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 6px;min-height:0;gap:4px;}
 .panel-puzzle-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:5px;}
 .panel-puzzle-row .puz-sym{font-family:var(--ipa);font-size:clamp(20px,4vw,32px);color:var(--muted);font-weight:600;white-space:nowrap;}
@@ -206,7 +197,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .panel-feedback.ok{color:var(--green);}
 .panel-feedback.err{color:var(--red);}
 
-/* 2P KB */
 .panel-kb{flex-shrink:0;padding:2px 5px 6px;display:flex;flex-direction:column;gap:2px;max-height:44vh;overflow:hidden;}
 .panel-kb .kb-label{font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);line-height:1.4;}
 .panel-kb .kb-row{display:flex;gap:3px;}
@@ -225,7 +215,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .p1-panel .win-label{color:var(--p1);}
 .p2-panel .win-label{color:var(--p2);}
 
-/* ── RESULT ──────────────────────────────────────── */
+/* RESULT */
 #result{align-items:center;justify-content:center;gap:20px;padding:40px 24px;text-align:center;overflow-y:auto;}
 .result-emoji{font-size:56px;}
 .result-title{font-size:26px;font-weight:700;}
@@ -246,14 +236,14 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
 <div id="setup" class="screen active">
   <div class="setup-logo"><div class="logo">IPA Blitz</div><div class="logo-sub">Phonetic Builder · BrE</div></div>
   <div class="setup-section">
-    <div class="setup-label">Danh sách từ cần luyện</div>
-    <textarea class="setup-textarea" id="wordInput" placeholder="Dán từ vào đây, mỗi từ 1 dòng hoặc cách nhau bằng dấu phẩy&#10;Ví dụ: ship, think, judge, bird, church"></textarea>
-    <div class="setup-hint">Hệ thống tự tra phiên âm BrE và tạo câu đố điền chỗ trống.</div>
+    <div class="setup-label">Danh sách từ (mỗi từ 1 dòng)</div>
+    <textarea class="setup-textarea" id="wordInput" placeholder="Nhập từng từ, có thể kèm phiên âm tùy ý:&#10;ship /ʃɪp/&#10;think /θɪŋk/&#10;judge /dʒʌdʒ/&#10;hoặc chỉ từ, hệ thống sẽ tự tra"></textarea>
+    <div class="setup-hint">👉 <b>Mẹo:</b> Nếu bạn có phiên âm sẵn, hãy viết <code>từ /phiên_âm/</code> để dùng trực tiếp, tránh sai số.</div>
   </div>
   <div class="setup-section">
     <div class="setup-label">Groq API Key (fallback)</div>
     <input class="setup-input" id="groqKey" type="password" placeholder="gsk_...">
-    <div class="setup-hint">Dùng khi dictionaryapi.dev không có từ. Lấy key tại <a href="https://console.groq.com" target="_blank">console.groq.com</a></div>
+    <div class="setup-hint">Dùng khi từ không có trong từ điển. Lấy key tại <a href="https://console.groq.com" target="_blank">console.groq.com</a></div>
   </div>
   <div class="setup-section">
     <div class="setup-label">Số câu mỗi ván</div>
@@ -277,8 +267,8 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
 <!-- LOADING -->
 <div id="loading" class="screen">
   <div class="spinner"></div>
-  <div class="loading-title">Đang tra phiên âm...</div>
-  <div class="loading-sub">Hệ thống đang tìm BrE IPA cho từng từ</div>
+  <div class="loading-title">Đang xử lý...</div>
+  <div class="loading-sub">Đọc phiên âm và tạo câu đố</div>
   <div class="loading-log" id="loadingLog"></div>
 </div>
 
@@ -293,7 +283,6 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
     <button class="listen-btn" id="listenBtn" onclick="playWord(cur1P,'listenBtn')">🔊</button>
     <div class="listen-hint">Bấm để nghe từ &nbsp;·&nbsp; 🇬🇧 BrE</div>
   </div>
-  <!-- PUZZLE HERO -->
   <div class="puzzle-zone">
     <div class="word-display" id="wordDisplay"></div>
     <div class="puzzle-row" id="puzzleRow"></div>
@@ -405,14 +394,16 @@ function shuffle(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){const j=0|Mat
 function log(msg){ const el=document.getElementById('loadingLog'); el.innerHTML+=msg+'<br>'; el.scrollTop=el.scrollHeight; }
 
 // ═══════════════════════════════════════
-// BrE VOICE
+// SPEECH SYNTHESIS (BrE)
 // ═══════════════════════════════════════
 let breVoice=null;
 function loadVoices(){
   const v=speechSynthesis.getVoices();
-  breVoice=v.find(x=>/google uk english/i.test(x.name))||v.find(x=>x.name==='Daniel')||v.find(x=>x.name==='Martha')||v.find(x=>x.lang==='en-GB')||null;
+  breVoice=v.find(x=>/google uk english|daniel|martha|en-gb/i.test(x.name))||v.find(x=>x.lang==='en-GB')||null;
+  if(!breVoice) console.warn('No UK voice found, using default');
 }
 speechSynthesis.onvoiceschanged=loadVoices; loadVoices();
+
 function playWord(q,btnId){
   if(!q) return;
   const btn=document.getElementById(btnId);
@@ -425,32 +416,44 @@ function playWord(q,btnId){
 }
 
 // ═══════════════════════════════════════
-// IPA TOKENIZER
+// IPA TOKENIZER (cải tiến)
 // ═══════════════════════════════════════
 const IPA_TOKENS=['tʃ','dʒ','iː','ɑː','ɔː','uː','ɜː','eɪ','aɪ','ɔɪ','əʊ','aʊ','ɪə','eə','ʊə','ɪ','e','æ','ʌ','ɒ','ʊ','ə','p','t','k','b','d','g','f','v','θ','ð','s','z','ʃ','ʒ','h','m','n','ŋ','l','r','j','w'];
 const IPA_NORM={'\u02A4':'d\u0292','\u02A7':'t\u0283','\u02A3':'dz','\u02A8':'t\u0255','\u0263':'g','\u0294':''};
 function tokenizeIPA(raw){
-  // NFC normalize first — ensures 'd'+'ʒ' composed correctly matches our 'dʒ' token
   let s = raw.normalize('NFC');
-  // Strip slashes, brackets, stress/syllable markers
   s = s.replace(/[/\[\]ˈˌ.ˈˌˑ]/g,'').trim();
-  // Normalize ligatures to 2-char sequences
   for(const [k,v] of Object.entries(IPA_NORM)) s=s.split(k).join(v);
-  // Re-assert affricates as atomic units (safety net for any edge case)
   s = s.split('dʒ').join('dʒ');
   s = s.split('tʃ').join('tʃ');
-  // Longest-match tokenize
   const res=[]; let i=0;
   while(i<s.length){
     let ok=false;
     for(const t of IPA_TOKENS){ if(s.startsWith(t,i)){res.push(t);i+=t.length;ok=true;break;} }
-    if(!ok) i++;
+    if(!ok){ res.push(s[i]); i++; } // fallback: lấy ký tự đơn
   }
   return res;
 }
 
 // ═══════════════════════════════════════
-// FETCH IPA — 3-tier
+// PARSE INPUT: hỗ trợ "word /ipa/" hoặc "word"
+// ═══════════════════════════════════════
+function parseInputLine(line){
+  line=line.trim();
+  if(!line) return null;
+  // Tìm cặp // hoặc /.../
+  let m=line.match(/\/([^\/]+)\//);
+  if(m){
+    const ipaRaw=m[1].trim();
+    const word=line.replace(/\s*\/[^\/]+\/\s*/, '').trim();
+    if(word && ipaRaw) return { word, ipa: '/'+ipaRaw+'/' };
+  }
+  // Nếu không có phiên âm, chỉ trả về từ
+  return { word: line, ipa: null };
+}
+
+// ═══════════════════════════════════════
+// FETCH IPA — 3-tier (chỉ dùng khi thiếu)
 // ═══════════════════════════════════════
 async function fetchIPADict(word){
   try{
@@ -523,27 +526,40 @@ function buildPuzzle(word,tokens){
 async function handleStart(){
   const raw=document.getElementById('wordInput').value.trim();
   const groqKey=document.getElementById('groqKey').value.trim();
+  localStorage.setItem('groqKey', groqKey);
   if(!raw){alert('Vui lòng nhập danh sách từ!');return;}
-  const words=[...new Set(raw.split(/[\n,\s]+/).map(w=>w.trim().toLowerCase()).filter(w=>w.length>0))];
-  if(!words.length){alert('Không tìm thấy từ nào!');return;}
+  const lines=raw.split(/\n/).map(l=>l.trim()).filter(l=>l.length>0);
+  const items=[];
+  for(const line of lines){
+    const parsed=parseInputLine(line);
+    if(parsed) items.push(parsed);
+  }
+  if(!items.length){alert('Không tìm thấy từ nào!');return;}
   showScreen('loading');
   document.getElementById('loadingLog').innerHTML='';
   compiledQuestions=[];
-  for(const word of words){
+  for(const item of items){
+    const word=item.word;
+    let ipa=item.ipa;
     log(`🔍 <b>${word}</b>...`);
-    let ipa=await fetchIPADict(word);
-    if(ipa) log(`&nbsp;&nbsp;✓ Dict: ${ipa}`);
-    if(!ipa){
-      log(`&nbsp;&nbsp;→ Wiktionary...`);
-      ipa=await fetchIPAWikt(word);
-      if(ipa) log(`&nbsp;&nbsp;✓ Wiktionary: ${ipa}`);
+    if(ipa){
+      log(`&nbsp;&nbsp;✓ Dùng phiên âm nhập sẵn: ${ipa}`);
+    } else {
+      log(`&nbsp;&nbsp;→ Tra từ điển...`);
+      ipa=await fetchIPADict(word);
+      if(ipa) log(`&nbsp;&nbsp;✓ Dict: ${ipa}`);
+      if(!ipa){
+        log(`&nbsp;&nbsp;→ Wiktionary...`);
+        ipa=await fetchIPAWikt(word);
+        if(ipa) log(`&nbsp;&nbsp;✓ Wiktionary: ${ipa}`);
+      }
+      if(!ipa&&groqKey){
+        log(`&nbsp;&nbsp;→ Groq RP...`);
+        ipa=await fetchIPAGroq(word,groqKey);
+        if(ipa) log(`&nbsp;&nbsp;✓ Groq: ${ipa}`);
+      }
     }
-    if(!ipa&&groqKey){
-      log(`&nbsp;&nbsp;→ Groq RP...`);
-      ipa=await fetchIPAGroq(word,groqKey);
-      if(ipa) log(`&nbsp;&nbsp;✓ Groq: ${ipa}`);
-    }
-    if(!ipa){log(`&nbsp;&nbsp;✗ Bỏ qua`);continue;}
+    if(!ipa){log(`&nbsp;&nbsp;✗ Không có phiên âm, bỏ qua`);continue;}
     const tokens=tokenizeIPA(ipa);
     if(tokens.length<2){log(`&nbsp;&nbsp;✗ Quá ngắn: [${tokens}]`);continue;}
     const puz=buildPuzzle(word,tokens);
@@ -551,6 +567,8 @@ async function handleStart(){
   }
   if(!compiledQuestions.length){alert('Không tạo được câu đố nào.');showScreen('setup');return;}
   log(`<br>✅ Tạo xong ${compiledQuestions.length} câu!`);
+  // Đánh thức speech synthesis
+  speechSynthesis.speak(new SpeechSynthesisUtterance(''));
   await new Promise(r=>setTimeout(r,500));
   startGame();
 }
@@ -565,12 +583,9 @@ function replayGame(){ startGame(); }
 // ═══════════════════════════════════════
 // RENDER HELPERS
 // ═══════════════════════════════════════
-// Renders puzzle into a row container (1P or 2P)
-// Returns array of slot elements for later coloring
 function renderPuzzleRow(containerId, puzzle, inp, activeIdx, onSlotClick){
   const wrap=document.getElementById(containerId);
   wrap.innerHTML='';
-  // opening bracket
   const b1=document.createElement('span'); b1.className='puz-bracket'; b1.textContent='/'; wrap.appendChild(b1);
   puzzle.ipa.forEach((sym,i)=>{
     const bi=puzzle.blanks.indexOf(i);
@@ -600,7 +615,7 @@ function renderNavDots(cid, puzzle, inp, activeIdx, onDotClick){
   });
 }
 
-function buildKB(cid, onSym, touch=false){
+function buildKB(cid, onSym, usePointer=false){
   const wrap=document.getElementById(cid); wrap.innerHTML='';
   KB.forEach(g=>{
     const lbl=document.createElement('div'); lbl.className='kb-label'; lbl.textContent=g.label; wrap.appendChild(lbl);
@@ -608,16 +623,13 @@ function buildKB(cid, onSym, touch=false){
     g.syms.forEach(sym=>{
       const btn=document.createElement('button'); btn.className='kb-btn';
       btn.textContent='/'+sym+'/';
-      if(touch){
-        // touchstart only — no click listener to avoid double-fire
-        btn.addEventListener('touchstart',e=>{
-          e.preventDefault(); e.stopPropagation();
+      if(usePointer){
+        btn.addEventListener('pointerdown', (e)=>{
+          e.preventDefault();
           onSym(sym);
-        },{passive:false});
-        // mouse fallback for non-touch devices
-        btn.addEventListener('mousedown',e=>{ e.preventDefault(); onSym(sym); });
+        }, {passive:false});
       } else {
-        btn.onclick=()=>onSym(sym);
+        btn.onclick=(e)=>onSym(sym);
       }
       row.appendChild(btn);
     });
@@ -628,9 +640,10 @@ function buildKB(cid, onSym, touch=false){
 function isFull(inp){ return inp.every(x=>x!==undefined); }
 
 // ═══════════════════════════════════════
-// 1P
+// 1P (có khóa check)
 // ═══════════════════════════════════════
 let pool1=[],qIdx1=0,cur1P=null,inp1=[],active1=0,score1=0,miss1=0;
+let isChecking1P=false;
 
 function start1P(){
   pool1=masterPool.slice(0,TOTAL);
@@ -641,6 +654,7 @@ function load1P(){
   cur1P=pool1[qIdx1];
   inp1=new Array(cur1P.blanks.length).fill(undefined);
   active1=0;
+  isChecking1P=false;
   document.getElementById('rNum').textContent=qIdx1+1;
   document.getElementById('rTotal').textContent=TOTAL;
   document.getElementById('progFill').style.width=(qIdx1/TOTAL*100)+'%';
@@ -656,11 +670,11 @@ function load1P(){
 function render1P(){
   renderPuzzleRow('puzzleRow',cur1P,inp1,active1,i=>{active1=i;render1P();});
   renderNavDots('slotNav',cur1P,inp1,active1,i=>{active1=i;render1P();});
-  document.getElementById('checkBtn').disabled=!isFull(inp1);
+  document.getElementById('checkBtn').disabled=!isFull(inp1) || isChecking1P;
 }
 function enter1P(sym){
+  if(isChecking1P) return;
   inp1[active1]=sym;
-  // advance to next empty slot
   for(let i=1;i<=cur1P.blanks.length;i++){
     const next=(active1+i)%cur1P.blanks.length;
     if(inp1[next]===undefined){active1=next;break;}
@@ -669,16 +683,19 @@ function enter1P(sym){
   render1P();
 }
 function clear1P(){
+  if(isChecking1P) return;
   inp1=new Array(cur1P.blanks.length).fill(undefined);
   active1=0;
   document.getElementById('feedbackMsg').textContent='';
   render1P();
 }
 function check1P(){
+  if(isChecking1P || !isFull(inp1)) return;
+  isChecking1P=true;
+  document.getElementById('checkBtn').disabled=true;
   const snap=[...inp1];
   const correct=cur1P.answers;
   const ok=snap.every((s,i)=>s===correct[i]);
-  // color slots
   document.querySelectorAll('#puzzleRow .puz-slot').forEach((el,i)=>{
     el.classList.remove('filled','active');
     el.classList.add(snap[i]===correct[i]?'correct':'wrong');
@@ -688,7 +705,11 @@ function check1P(){
     document.getElementById('feedbackMsg').className='feedback-msg ok';
     score1++; document.getElementById('scoreBadge').textContent=score1+' ✓';
     document.getElementById('checkBtn').disabled=true;
-    setTimeout(()=>{qIdx1++;qIdx1>=TOTAL?end1P():load1P();},900);
+    setTimeout(()=>{
+      isChecking1P=false;
+      qIdx1++;
+      qIdx1>=TOTAL?end1P():load1P();
+    },900);
   } else {
     miss1++;
     document.getElementById('feedbackMsg').textContent='✗ Chưa đúng — thử lại!';
@@ -697,6 +718,7 @@ function check1P(){
       inp1=new Array(cur1P.blanks.length).fill(undefined);
       active1=0;
       document.getElementById('feedbackMsg').textContent='';
+      isChecking1P=false;
       render1P();
     },900);
   }
@@ -714,9 +736,10 @@ function end1P(){
 }
 
 // ═══════════════════════════════════════
-// 2P
+// 2P (có khóa check)
 // ═══════════════════════════════════════
 let p1={},p2={},gameOver2=false;
+let checking2P=[false,false];
 
 function start2P(){
   gameOver2=false;
@@ -724,9 +747,9 @@ function start2P(){
   const pb=shuffle([...masterPool]).slice(0,TOTAL);
   p1={pool:pa,idx:0,inp:[],active:0,score:0,done:false,q:pa[0]};
   p2={pool:pb,idx:0,inp:[],active:0,score:0,done:false,q:pb[0]};
+  checking2P=[false,false];
   document.getElementById('p1Win').style.display='none';
   document.getElementById('p2Win').style.display='none';
-  // wire buttons
   const p1c=document.getElementById('p1Check');
   const p2c=document.getElementById('p2Check');
   const p1cl=document.getElementById('p1ClearBtn');
@@ -754,6 +777,7 @@ function loadPanel(p){
   st.q=st.pool[st.idx];
   st.inp=new Array(st.q.blanks.length).fill(undefined);
   st.active=0;
+  checking2P[p-1]=false;
   document.getElementById(p===1?'p1Prog':'p2Prog').style.width=(st.idx/TOTAL*100)+'%';
   document.getElementById(p===1?'p1Round':'p2Round').textContent=(st.idx+1)+'/'+TOTAL;
   document.getElementById(p===1?'p1FB':'p2FB').textContent='';
@@ -769,14 +793,14 @@ function renderPanel(p){
   const st=p===1?p1:p2;
   const rowId=p===1?'p1PuzzleRow':'p2PuzzleRow';
   renderPuzzleRow(rowId,st.q,st.inp,st.active,i=>{
-    if(!st.done&&!gameOver2){st.active=i;renderPanel(p);}
+    if(!st.done&&!gameOver2&&!checking2P[p-1]){st.active=i;renderPanel(p);}
   });
-  document.getElementById(p===1?'p1Check':'p2Check').disabled=!isFull(st.inp);
+  document.getElementById(p===1?'p1Check':'p2Check').disabled=!isFull(st.inp) || checking2P[p-1];
 }
 
 function enterPanel(p,sym){
   const st=p===1?p1:p2;
-  if(st.done||gameOver2) return;
+  if(st.done||gameOver2||checking2P[p-1]) return;
   st.inp[st.active]=sym;
   for(let i=1;i<=st.q.blanks.length;i++){
     const next=(st.active+i)%st.q.blanks.length;
@@ -788,7 +812,7 @@ function enterPanel(p,sym){
 
 function clearPanel(p){
   const st=p===1?p1:p2;
-  if(st.done||gameOver2) return;
+  if(st.done||gameOver2||checking2P[p-1]) return;
   st.inp=new Array(st.q.blanks.length).fill(undefined);
   st.active=0;
   document.getElementById(p===1?'p1FB':'p2FB').textContent='';
@@ -798,7 +822,10 @@ function clearPanel(p){
 function checkPanel(p){
   if(gameOver2) return;
   const st=p===1?p1:p2;
-  if(st.done) return;
+  if(st.done||checking2P[p-1]) return;
+  if(!isFull(st.inp)) return;
+  checking2P[p-1]=true;
+  document.getElementById(p===1?'p1Check':'p2Check').disabled=true;
   const snap=[...st.inp];
   const correct=st.q.answers;
   const ok=snap.every((s,i)=>s===correct[i]);
@@ -822,7 +849,10 @@ function checkPanel(p){
         setTimeout(()=>end2P(p),1400);
       }
     } else {
-      setTimeout(()=>loadPanel(p),700);
+      setTimeout(()=>{
+        checking2P[p-1]=false;
+        loadPanel(p);
+      },700);
     }
   } else {
     document.getElementById(fbId).textContent='✗ Thử lại!';
@@ -831,6 +861,7 @@ function checkPanel(p){
       st.inp=new Array(st.q.blanks.length).fill(undefined);
       st.active=0;
       document.getElementById(fbId).textContent='';
+      checking2P[p-1]=false;
       renderPanel(p);
     },800);
   }
@@ -873,6 +904,14 @@ function launchConfetti(cols){
     if(fr<260) requestAnimationFrame(draw); else ctx.clearRect(0,0,cvs.width,cvs.height);
   })();
 }
+
+// ═══════════════════════════════════════
+// LƯU GROQ KEY VÀO LOCALSTORAGE
+// ═══════════════════════════════════════
+document.addEventListener('DOMContentLoaded', ()=>{
+  const saved = localStorage.getItem('groqKey');
+  if(saved) document.getElementById('groqKey').value = saved;
+});
 </script>
 </body>
 </html>
