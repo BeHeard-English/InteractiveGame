@@ -114,18 +114,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .kb-btn:hover{border-color:var(--accent);background:rgba(124,108,255,.1);transform:scale(1.04);}
 .kb-btn:active{transform:scale(.95);}
 
-/* ══ 2P GAME — stacked vertically, P2 rotated 180° ═══════════ */
+/* ══ 2P GAME — left/right split, full height each panel ══════ */
 #game2{padding:0;overflow:hidden;}
-/* Hide default scrollbar on game2 */
-#game2::-webkit-scrollbar{display:none;}
+.split-arena{flex:1;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;}
+.panel{display:flex;flex-direction:column;overflow:hidden;position:relative;}
+.panel.p1-panel{border-right:2px solid var(--border);}
 
-/* Two panels stacked, each exactly 50vh */
-.split-arena{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.panel{display:flex;flex-direction:column;overflow:hidden;position:relative;height:50%;}
-.panel.p2-panel{transform:rotate(180deg);border-top:2px solid var(--border);}
-
-/* Panel header — tight */
-.panel-header{display:flex;align-items:center;gap:6px;padding:4px 10px 3px;flex-shrink:0;}
+/* Panel header */
+.panel-header{display:flex;align-items:center;gap:5px;padding:5px 8px 3px;flex-shrink:0;}
 .panel-name{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
 .p1-panel .panel-name{color:var(--p1);}
 .p2-panel .panel-name{color:var(--p2);}
@@ -137,21 +133,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .p1-panel .panel-round{color:var(--p1);}
 .p2-panel .panel-round{color:var(--p2);}
 
-/* Compact listen + puzzle + actions row */
-.panel-top-row{display:flex;align-items:center;gap:8px;padding:3px 10px 2px;flex-shrink:0;}
-.panel-listen-btn{width:36px;height:36px;border-radius:50%;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-width:2px;border-style:solid;transition:transform .12s;flex-shrink:0;}
+/* Listen + puzzle row */
+.panel-top-row{display:flex;align-items:center;gap:6px;padding:3px 8px 2px;flex-shrink:0;}
+.panel-listen-btn{width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-width:2px;border-style:solid;
+  transition:transform .1s;flex-shrink:0;touch-action:manipulation;}
 .p1-panel .panel-listen-btn{background:var(--p1d);border-color:var(--p1);color:var(--p1);}
 .p2-panel .panel-listen-btn{background:var(--p2d);border-color:var(--p2);color:var(--p2);}
-.panel-listen-btn:active{transform:scale(.93);}
+.panel-listen-btn:active{transform:scale(.9);}
 .p1-panel .panel-listen-btn.playing{animation:pulseP1 .55s ease infinite alternate;}
 .p2-panel .panel-listen-btn.playing{animation:pulseP2 .55s ease infinite alternate;}
 @keyframes pulseP1{from{box-shadow:0 0 0 0 rgba(0,200,255,.4);}to{box-shadow:0 0 0 7px rgba(0,200,255,0);}}
 @keyframes pulseP2{from{box-shadow:0 0 0 0 rgba(255,159,67,.4);}to{box-shadow:0 0 0 7px rgba(255,159,67,0);}}
 
-/* Puzzle inline */
-.panel-puzzle{display:flex;align-items:center;flex-wrap:wrap;gap:4px;flex:1;}
-.panel-puzzle .puz-sym{font-family:var(--ipa);font-size:16px;color:var(--muted);font-weight:600;}
-.panel-puzzle .puz-slot{min-width:34px;height:36px;font-size:14px;padding:0 4px;border-radius:7px;
+/* Puzzle */
+.panel-puzzle{display:flex;align-items:center;flex-wrap:wrap;gap:3px;flex:1;min-height:34px;}
+.panel-puzzle .puz-sym{font-family:var(--ipa);font-size:14px;color:var(--muted);font-weight:600;}
+.panel-puzzle .puz-slot{min-width:30px;height:34px;font-size:13px;padding:0 3px;border-radius:6px;
   border:2px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;
   font-family:var(--ipa);cursor:pointer;transition:border-color .12s,background .12s;}
 .p1-panel .puz-slot.active{border-color:var(--p1);box-shadow:0 0 0 2px rgba(0,200,255,.25);}
@@ -159,35 +157,39 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .p2-panel .puz-slot.active{border-color:var(--p2);box-shadow:0 0 0 2px rgba(255,159,67,.25);}
 .p2-panel .puz-slot.filled{border-color:var(--p2);background:var(--p2d);color:var(--p2);}
 
-/* Actions row */
-.panel-actions{display:flex;gap:5px;padding:2px 10px 2px;flex-shrink:0;}
-.panel-check{color:#fff;border:none;border-radius:8px;padding:7px 0;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;flex:1;transition:opacity .15s;}
+/* Actions */
+.panel-actions{display:flex;gap:4px;padding:2px 7px 2px;flex-shrink:0;}
+.panel-check{color:#fff;border:none;border-radius:7px;padding:7px 0;font-family:var(--font);
+  font-size:11px;font-weight:700;cursor:pointer;flex:1;transition:opacity .15s;touch-action:manipulation;}
 .p1-panel .panel-check{background:var(--p1);}
 .p2-panel .panel-check{background:var(--p2);}
 .panel-check:disabled{opacity:.28;cursor:default;}
-.panel-clear{background:var(--card);color:var(--muted);border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-family:var(--font);font-size:12px;cursor:pointer;}
-.panel-feedback{min-height:15px;text-align:center;font-size:11px;font-weight:600;padding:0 6px 1px;flex-shrink:0;}
+.panel-clear{background:var(--card);color:var(--muted);border:1.5px solid var(--border);
+  border-radius:7px;padding:7px 8px;font-family:var(--font);font-size:11px;cursor:pointer;touch-action:manipulation;}
+.panel-feedback{min-height:16px;text-align:center;font-size:11px;font-weight:600;padding:0 4px 1px;flex-shrink:0;}
 .panel-feedback.ok{color:var(--green);}
 .panel-feedback.err{color:var(--red);}
 
-/* KB — takes remaining space, uses CSS grid for uniform sizing */
-.panel-kb{flex:1;overflow:hidden;padding:3px 8px 6px;display:flex;flex-direction:column;gap:3px;}
-.panel-kb .kb-label{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
-.panel-kb .kb-row{display:flex;flex-wrap:wrap;gap:4px;}
-/* KB buttons: large touch targets, fill width proportionally */
+/* KB — fills all remaining vertical space, buttons fill width */
+.panel-kb{flex:1;overflow:hidden;padding:3px 6px 6px;display:flex;flex-direction:column;gap:3px;}
+.panel-kb .kb-label{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);line-height:1.4;}
+.panel-kb .kb-row{display:flex;gap:3px;}
 .panel-kb .kb-btn{
-  flex:1;min-width:0;height:clamp(32px,5.5vw,44px);
-  border-radius:7px;background:var(--card);border:1.5px solid var(--border);
-  color:var(--text);font-family:var(--ipa);font-size:clamp(13px,2.2vw,18px);
+  flex:1;min-width:0;
+  height:clamp(34px,4.2vh,48px);
+  border-radius:6px;background:var(--card);border:1.5px solid var(--border);
+  color:var(--text);font-family:var(--ipa);
+  font-size:clamp(14px,1.8vh,20px);
   cursor:pointer;display:flex;align-items:center;justify-content:center;
   padding:0;transition:border-color .1s,background .1s,transform .08s;
-  touch-action:manipulation;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
 }
-.panel-kb .kb-btn:active{transform:scale(.92);}
-.p1-panel .kb-btn:active{border-color:var(--p1);background:var(--p1d);}
-.p2-panel .kb-btn:active{border-color:var(--p2);background:var(--p2d);}
+.panel-kb .kb-btn:active{transform:scale(.9);}
+.p1-panel .kb-btn:active,.p1-panel .kb-btn.pressed{border-color:var(--p1);background:var(--p1d);color:var(--p1);}
+.p2-panel .kb-btn:active,.p2-panel .kb-btn.pressed{border-color:var(--p2);background:var(--p2d);color:var(--p2);}
 
-.panel-win-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;z-index:10;backdrop-filter:blur(4px);}
+.panel-win-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:6px;z-index:10;backdrop-filter:blur(4px);}
 .p1-panel .panel-win-overlay{background:rgba(0,200,255,.18);}
 .p2-panel .panel-win-overlay{background:rgba(255,159,67,.18);}
 .win-icon{font-size:40px;}
@@ -293,13 +295,12 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
   <div class="kb-wrap" id="kbWrap"></div>
 </div>
 
-<!-- ══ 2P GAME — P1 top (normal), P2 bottom (rotated 180°) ══ -->
+<!-- ══ 2P GAME — left/right split ══════════════════════════════ -->
 <div id="game2" class="screen">
   <div class="split-arena">
-    <!-- P1 — sits at top, reads normally -->
     <div class="panel p1-panel" id="p1Panel">
       <div class="panel-header">
-        <div class="panel-name">P1 🇬🇧</div>
+        <div class="panel-name">P1</div>
         <div class="panel-prog-wrap"><div class="panel-prog-fill" id="p1Prog" style="width:0%"></div></div>
         <div class="panel-round" id="p1Round">1/10</div>
       </div>
@@ -308,8 +309,8 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
         <div class="panel-puzzle" id="p1Puzzle"></div>
       </div>
       <div class="panel-actions">
-        <button class="panel-clear" onclick="clearPanel(1)">✕ Xóa</button>
-        <button class="panel-check" id="p1Check" onclick="checkPanel(1)" disabled>Kiểm tra ✓</button>
+        <button class="panel-clear" onclick="clearPanel(1)">✕</button>
+        <button class="panel-check" id="p1Check" onclick="checkPanel(1)" disabled>Kiểm tra</button>
       </div>
       <div class="panel-feedback" id="p1FB"></div>
       <div class="panel-kb" id="p1KB"></div>
@@ -317,10 +318,9 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
         <div class="win-icon">🏆</div><div class="win-label">P1 thắng!</div>
       </div>
     </div>
-    <!-- P2 — sits at bottom, rotated 180° so they face each other -->
     <div class="panel p2-panel" id="p2Panel">
       <div class="panel-header">
-        <div class="panel-name">P2 🇬🇧</div>
+        <div class="panel-name">P2</div>
         <div class="panel-prog-wrap"><div class="panel-prog-fill" id="p2Prog" style="width:0%"></div></div>
         <div class="panel-round" id="p2Round">1/10</div>
       </div>
@@ -329,8 +329,8 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
         <div class="panel-puzzle" id="p2Puzzle"></div>
       </div>
       <div class="panel-actions">
-        <button class="panel-clear" onclick="clearPanel(2)">✕ Xóa</button>
-        <button class="panel-check" id="p2Check" onclick="checkPanel(2)" disabled>Kiểm tra ✓</button>
+        <button class="panel-clear" onclick="clearPanel(2)">✕</button>
+        <button class="panel-check" id="p2Check" onclick="checkPanel(2)" disabled>Kiểm tra</button>
       </div>
       <div class="panel-feedback" id="p2FB"></div>
       <div class="panel-kb" id="p2KB"></div>
