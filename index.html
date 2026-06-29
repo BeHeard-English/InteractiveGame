@@ -237,13 +237,13 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
   <div class="setup-logo"><div class="logo">IPA Blitz</div><div class="logo-sub">Phonetic Builder · BrE</div></div>
   <div class="setup-section">
     <div class="setup-label">Danh sách (mỗi dòng một mục)</div>
-    <textarea class="setup-textarea" id="wordInput" placeholder="Nhập từ và phiên âm, hoặc chỉ phiên âm:&#10;ship /ʃɪp/&#10;think /θɪŋk/&#10;/dʒʌdʒ/&#10;hoặc chỉ từ, hệ thống sẽ tự tra"></textarea>
-    <div class="setup-hint">👉 <b>Gợi ý:</b> Bạn có thể chỉ cần dán các phiên âm như <code>/ʃɪp/</code>, <code>/θɪŋk/</code> mà không cần từ. Hệ thống sẽ tự tạo câu đố từ đó.</div>
+    <textarea class="setup-textarea" id="wordInput" placeholder="Nhập từ kèm phiên âm hoặc chỉ phiên âm:&#10;ship /ʃɪp/&#10;think /θɪŋk/&#10;/dʒʌdʒ/&#10;hoặc chỉ từ, hệ thống sẽ tự tra"></textarea>
+    <div class="setup-hint">👉 Nếu chỉ nhập phiên âm (ví dụ <code>/ʃɪp/</code>), hệ thống sẽ dùng Groq API để tìm từ tiếng Anh tương ứng.</div>
   </div>
   <div class="setup-section">
-    <div class="setup-label">Groq API Key (fallback)</div>
+    <div class="setup-label">Groq API Key (bắt buộc nếu chỉ nhập phiên âm)</div>
     <input class="setup-input" id="groqKey" type="password" placeholder="gsk_...">
-    <div class="setup-hint">Dùng khi từ không có trong từ điển. Lấy key tại <a href="https://console.groq.com" target="_blank">console.groq.com</a></div>
+    <div class="setup-hint">Dùng để tra từ từ IPA hoặc phiên âm. Lấy key tại <a href="https://console.groq.com" target="_blank">console.groq.com</a></div>
   </div>
   <div class="setup-section">
     <div class="setup-label">Số câu mỗi ván</div>
@@ -446,8 +446,8 @@ function parseInputLine(line){
   if(m){
     const ipaRaw=m[1].trim();
     const wordPart=line.replace(/\s*\/[^\/]+\/\s*/, '').trim();
-    // Nếu có từ trước thì dùng, ngược lại lấy ipaRaw làm từ
-    const word = wordPart || ipaRaw;
+    // Nếu có từ trước thì dùng, ngược lại để word = null (sẽ tra sau)
+    const word = wordPart || null;
     return { word, ipa: '/'+ipaRaw+'/' };
   }
   // Nếu không có phiên âm, chỉ trả về từ
@@ -455,7 +455,24 @@ function parseInputLine(line){
 }
 
 // ═══════════════════════════════════════
-// FETCH IPA — 3-tier (chỉ dùng khi thiếu)
+// FETCH WORD FROM IPA (dùng Groq)
+// ═══════════════════════════════════════
+async function fetchWordFromIPA(ipa, groqKey){
+  const prompt = `What English word has the pronunciation ${ipa}? Reply only the word in lowercase, no extra text. If multiple, choose the most common one.`;
+  try{
+    const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+      method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+groqKey},
+      body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:20,temperature:0,messages:[{role:'user',content:prompt}]})
+    });
+    if(!r.ok) return null;
+    const d=await r.json();
+    const word=d.choices?.[0]?.message?.content?.trim().toLowerCase()||'';
+    return word || null;
+  }catch{return null;}
+}
+
+// ═══════════════════════════════════════
+// FETCH IPA — 3-tier (chỉ dùng khi thiếu từ hoặc phiên âm)
 // ═══════════════════════════════════════
 async function fetchIPADict(word){
   try{
@@ -541,33 +558,60 @@ async function handleStart(){
   document.getElementById('loadingLog').innerHTML='';
   compiledQuestions=[];
   for(const item of items){
-    const word=item.word;
+    let word=item.word;
     let ipa=item.ipa;
-    log(`🔍 <b>${word}</b>...`);
-    if(ipa){
-      log(`&nbsp;&nbsp;✓ Dùng phiên âm nhập sẵn: ${ipa}`);
-    } else {
-      log(`&nbsp;&nbsp;→ Tra từ điển...`);
-      ipa=await fetchIPADict(word);
-      if(ipa) log(`&nbsp;&nbsp;✓ Dict: ${ipa}`);
-      if(!ipa){
-        log(`&nbsp;&nbsp;→ Wiktionary...`);
-        ipa=await fetchIPAWikt(word);
-        if(ipa) log(`&nbsp;&nbsp;✓ Wiktionary: ${ipa}`);
+    // Nếu có từ nhưng thiếu IPA, tra IPA
+    // Nếu có IPA nhưng thiếu từ, tra từ từ IPA
+    // Nếu cả hai đều có, dùng luôn
+    log(`🔍 <b>${word || ipa || '?'}</b>...`);
+
+    // 1. Nếu chỉ có IPA, tìm từ
+    if(!word && ipa) {
+      if(!groqKey){
+        log(`&nbsp;&nbsp;✗ Cần Groq Key để tìm từ từ phiên âm.`);
+        continue;
       }
-      if(!ipa&&groqKey){
-        log(`&nbsp;&nbsp;→ Groq RP...`);
-        ipa=await fetchIPAGroq(word,groqKey);
-        if(ipa) log(`&nbsp;&nbsp;✓ Groq: ${ipa}`);
+      log(`&nbsp;&nbsp;→ Tìm từ cho ${ipa}...`);
+      const foundWord = await fetchWordFromIPA(ipa, groqKey);
+      if(foundWord){
+        word = foundWord;
+        log(`&nbsp;&nbsp;✓ Tìm thấy: ${word}`);
+      } else {
+        log(`&nbsp;&nbsp;✗ Không tìm thấy từ nào.`);
+        continue;
       }
     }
-    if(!ipa){log(`&nbsp;&nbsp;✗ Không có phiên âm, bỏ qua`);continue;}
+
+    // 2. Nếu có từ nhưng thiếu IPA, tra IPA
+    if(word && !ipa) {
+      log(`&nbsp;&nbsp;→ Tra IPA cho "${word}"...`);
+      ipa = await fetchIPADict(word);
+      if(ipa) log(`&nbsp;&nbsp;✓ Dict: ${ipa}`);
+      if(!ipa) {
+        log(`&nbsp;&nbsp;→ Wiktionary...`);
+        ipa = await fetchIPAWikt(word);
+        if(ipa) log(`&nbsp;&nbsp;✓ Wiktionary: ${ipa}`);
+      }
+      if(!ipa && groqKey) {
+        log(`&nbsp;&nbsp;→ Groq RP...`);
+        ipa = await fetchIPAGroq(word, groqKey);
+        if(ipa) log(`&nbsp;&nbsp;✓ Groq: ${ipa}`);
+      }
+      if(!ipa) { log(`&nbsp;&nbsp;✗ Không có phiên âm, bỏ qua`); continue; }
+    }
+
+    // 3. Nếu vẫn không có từ (lỡ), bỏ qua
+    if(!word || !ipa) {
+      log(`&nbsp;&nbsp;✗ Thiếu thông tin, bỏ qua`);
+      continue;
+    }
+
     const tokens=tokenizeIPA(ipa);
-    if(tokens.length<2){log(`&nbsp;&nbsp;✗ Quá ngắn: [${tokens}]`);continue;}
+    if(tokens.length<2){ log(`&nbsp;&nbsp;✗ Quá ngắn: [${tokens}]`); continue; }
     const puz=buildPuzzle(word,tokens);
-    if(puz){compiledQuestions.push(puz);log(`&nbsp;&nbsp;📝 [${tokens.join(' ')}] — ${puz.blanks.length} chỗ trống`);}
+    if(puz){ compiledQuestions.push(puz); log(`&nbsp;&nbsp;📝 [${tokens.join(' ')}] — ${puz.blanks.length} chỗ trống`); }
   }
-  if(!compiledQuestions.length){alert('Không tạo được câu đố nào.');showScreen('setup');return;}
+  if(!compiledQuestions.length){ alert('Không tạo được câu đố nào.'); showScreen('setup'); return; }
   log(`<br>✅ Tạo xong ${compiledQuestions.length} câu!`);
   // Đánh thức speech synthesis
   speechSynthesis.speak(new SpeechSynthesisUtterance(''));
