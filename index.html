@@ -236,9 +236,9 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
 <div id="setup" class="screen active">
   <div class="setup-logo"><div class="logo">IPA Blitz</div><div class="logo-sub">Phonetic Builder · BrE</div></div>
   <div class="setup-section">
-    <div class="setup-label">Danh sách từ (mỗi từ 1 dòng)</div>
-    <textarea class="setup-textarea" id="wordInput" placeholder="Nhập từng từ, có thể kèm phiên âm tùy ý:&#10;ship /ʃɪp/&#10;think /θɪŋk/&#10;judge /dʒʌdʒ/&#10;hoặc chỉ từ, hệ thống sẽ tự tra"></textarea>
-    <div class="setup-hint">👉 <b>Mẹo:</b> Nếu bạn có phiên âm sẵn, hãy viết <code>từ /phiên_âm/</code> để dùng trực tiếp, tránh sai số.</div>
+    <div class="setup-label">Danh sách (mỗi dòng một mục)</div>
+    <textarea class="setup-textarea" id="wordInput" placeholder="Nhập từ và phiên âm, hoặc chỉ phiên âm:&#10;ship /ʃɪp/&#10;think /θɪŋk/&#10;/dʒʌdʒ/&#10;hoặc chỉ từ, hệ thống sẽ tự tra"></textarea>
+    <div class="setup-hint">👉 <b>Gợi ý:</b> Bạn có thể chỉ cần dán các phiên âm như <code>/ʃɪp/</code>, <code>/θɪŋk/</code> mà không cần từ. Hệ thống sẽ tự tạo câu đố từ đó.</div>
   </div>
   <div class="setup-section">
     <div class="setup-label">Groq API Key (fallback)</div>
@@ -436,7 +436,7 @@ function tokenizeIPA(raw){
 }
 
 // ═══════════════════════════════════════
-// PARSE INPUT: hỗ trợ "word /ipa/" hoặc "word"
+// PARSE INPUT: hỗ trợ "word /ipa/", "/ipa/" hoặc "word"
 // ═══════════════════════════════════════
 function parseInputLine(line){
   line=line.trim();
@@ -445,8 +445,10 @@ function parseInputLine(line){
   let m=line.match(/\/([^\/]+)\//);
   if(m){
     const ipaRaw=m[1].trim();
-    const word=line.replace(/\s*\/[^\/]+\/\s*/, '').trim();
-    if(word && ipaRaw) return { word, ipa: '/'+ipaRaw+'/' };
+    const wordPart=line.replace(/\s*\/[^\/]+\/\s*/, '').trim();
+    // Nếu có từ trước thì dùng, ngược lại lấy ipaRaw làm từ
+    const word = wordPart || ipaRaw;
+    return { word, ipa: '/'+ipaRaw+'/' };
   }
   // Nếu không có phiên âm, chỉ trả về từ
   return { word: line, ipa: null };
@@ -527,14 +529,14 @@ async function handleStart(){
   const raw=document.getElementById('wordInput').value.trim();
   const groqKey=document.getElementById('groqKey').value.trim();
   localStorage.setItem('groqKey', groqKey);
-  if(!raw){alert('Vui lòng nhập danh sách từ!');return;}
+  if(!raw){alert('Vui lòng nhập danh sách từ hoặc phiên âm!');return;}
   const lines=raw.split(/\n/).map(l=>l.trim()).filter(l=>l.length>0);
   const items=[];
   for(const line of lines){
     const parsed=parseInputLine(line);
     if(parsed) items.push(parsed);
   }
-  if(!items.length){alert('Không tìm thấy từ nào!');return;}
+  if(!items.length){alert('Không tìm thấy dữ liệu nào!');return;}
   showScreen('loading');
   document.getElementById('loadingLog').innerHTML='';
   compiledQuestions=[];
