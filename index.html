@@ -100,6 +100,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .puzzle-zone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 12px;}
 .puzzle-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;}
 .puz-bracket{font-family:var(--ipa);font-size:clamp(48px,10vw,88px);color:var(--border);font-weight:300;line-height:1;padding:0 2px;flex-shrink:0;}
+.word-display{font-family:var(--font);font-size:clamp(22px,5vw,40px);font-weight:700;color:var(--text);
+  letter-spacing:1px;margin-bottom:8px;text-align:center;opacity:.9;}
 .puz-sym{font-family:var(--ipa);font-size:clamp(48px,10vw,88px);color:var(--muted);font-weight:600;line-height:1;white-space:nowrap;flex-shrink:0;}
 .puz-slot{
   min-width:clamp(70px,14vw,120px);height:clamp(80px,16vw,130px);
@@ -164,6 +166,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .p2-panel .panel-round{color:var(--p2);}
 
 .panel-listen{display:flex;align-items:center;justify-content:center;padding:6px 8px 2px;flex-shrink:0;gap:6px;}
+.panel-word{font-family:var(--font);font-size:clamp(14px,2.8vw,22px);font-weight:700;color:var(--text);
+  text-align:center;letter-spacing:.5px;margin-bottom:3px;opacity:.9;}
 .panel-listen-btn{width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;border-width:2px;border-style:solid;touch-action:manipulation;}
 .p1-panel .panel-listen-btn{background:var(--p1d);border-color:var(--p1);color:var(--p1);}
@@ -174,7 +178,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 @keyframes pulseP2{from{box-shadow:0 0 0 0 rgba(255,159,67,.4);}to{box-shadow:0 0 0 7px rgba(255,159,67,0);}}
 
 /* 2P puzzle zone — flex:1 hero */
-.panel-puzzle-zone{flex:1;display:flex;align-items:center;justify-content:center;padding:4px 6px;min-height:0;}
+.panel-puzzle-zone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 6px;min-height:0;gap:4px;}
 .panel-puzzle-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:5px;}
 .panel-puzzle-row .puz-sym{font-family:var(--ipa);font-size:clamp(20px,4vw,32px);color:var(--muted);font-weight:600;white-space:nowrap;}
 .panel-puzzle-row .puz-slot{
@@ -291,6 +295,7 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
   </div>
   <!-- PUZZLE HERO -->
   <div class="puzzle-zone">
+    <div class="word-display" id="wordDisplay"></div>
     <div class="puzzle-row" id="puzzleRow"></div>
     <div class="slot-nav" id="slotNav"></div>
   </div>
@@ -315,7 +320,10 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
         <button class="panel-listen-btn" id="p1ListenBtn">🔊</button>
         <div style="font-size:9px;color:var(--muted)">Nghe từ · 🇬🇧</div>
       </div>
-      <div class="panel-puzzle-zone"><div class="panel-puzzle-row" id="p1PuzzleRow"></div></div>
+      <div class="panel-puzzle-zone">
+        <div class="panel-word" id="p1Word"></div>
+        <div class="panel-puzzle-row" id="p1PuzzleRow"></div>
+      </div>
       <div class="panel-actions">
         <button class="panel-clear" id="p1ClearBtn">✕</button>
         <button class="panel-check" id="p1Check" disabled>Kiểm tra</button>
@@ -334,7 +342,10 @@ canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
         <button class="panel-listen-btn" id="p2ListenBtn">🔊</button>
         <div style="font-size:9px;color:var(--muted)">Nghe từ · 🇬🇧</div>
       </div>
-      <div class="panel-puzzle-zone"><div class="panel-puzzle-row" id="p2PuzzleRow"></div></div>
+      <div class="panel-puzzle-zone">
+        <div class="panel-word" id="p2Word"></div>
+        <div class="panel-puzzle-row" id="p2PuzzleRow"></div>
+      </div>
       <div class="panel-actions">
         <button class="panel-clear" id="p2ClearBtn">✕</button>
         <button class="panel-check" id="p2Check" disabled>Kiểm tra</button>
@@ -419,8 +430,16 @@ function playWord(q,btnId){
 const IPA_TOKENS=['tʃ','dʒ','iː','ɑː','ɔː','uː','ɜː','eɪ','aɪ','ɔɪ','əʊ','aʊ','ɪə','eə','ʊə','ɪ','e','æ','ʌ','ɒ','ʊ','ə','p','t','k','b','d','g','f','v','θ','ð','s','z','ʃ','ʒ','h','m','n','ŋ','l','r','j','w'];
 const IPA_NORM={'\u02A4':'d\u0292','\u02A7':'t\u0283','\u02A3':'dz','\u02A8':'t\u0255','\u0263':'g','\u0294':''};
 function tokenizeIPA(raw){
-  let s=raw.replace(/[\/\[\]ˈˌ.\u02C8\u02CC]/g,'').trim();
+  // NFC normalize first — ensures 'd'+'ʒ' composed correctly matches our 'dʒ' token
+  let s = raw.normalize('NFC');
+  // Strip slashes, brackets, stress/syllable markers
+  s = s.replace(/[/\[\]ˈˌ.ˈˌˑ]/g,'').trim();
+  // Normalize ligatures to 2-char sequences
   for(const [k,v] of Object.entries(IPA_NORM)) s=s.split(k).join(v);
+  // Re-assert affricates as atomic units (safety net for any edge case)
+  s = s.split('dʒ').join('dʒ');
+  s = s.split('tʃ').join('tʃ');
+  // Longest-match tokenize
   const res=[]; let i=0;
   while(i<s.length){
     let ok=false;
@@ -629,6 +648,7 @@ function load1P(){
   document.getElementById('feedbackMsg').textContent='';
   document.getElementById('feedbackMsg').className='feedback-msg';
   document.getElementById('checkBtn').disabled=true;
+  document.getElementById('wordDisplay').textContent=cur1P.word;
   render1P();
   buildKB('kbWrap',sym=>enter1P(sym),false);
   setTimeout(()=>playWord(cur1P,'listenBtn'),350);
@@ -739,6 +759,7 @@ function loadPanel(p){
   document.getElementById(p===1?'p1FB':'p2FB').textContent='';
   document.getElementById(p===1?'p1FB':'p2FB').className='panel-feedback';
   document.getElementById(p===1?'p1Check':'p2Check').disabled=true;
+  document.getElementById(p===1?'p1Word':'p2Word').textContent=st.q.word;
   renderPanel(p);
   buildKB(p===1?'p1KB':'p2KB',sym=>enterPanel(p,sym),true);
   setTimeout(()=>playWord(st.q,p===1?'p1ListenBtn':'p2ListenBtn'),p===1?300:500);
