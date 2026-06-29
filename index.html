@@ -423,23 +423,48 @@ function playWord(q, btnId){
 // ══════════════════════════════════════════════
 // Ordered longest-first so 'tʃ','dʒ','iː','ɑː' etc match before single chars
 const IPA_TOKENS = [
-  'tʃ','dʒ','iː','ɑː','ɔː','uː','ɜː','eɪ','aɪ','ɔɪ','əʊ','aʊ','ɪə','eə','ʊə',
-  'ɪ','e','æ','ʌ','ɒ','ʊ','ə','p','t','k','b','d','g','f','v','θ','ð',
+  // Affricates FIRST — longest match priority
+  'tʃ','dʒ',
+  // Long vowels & diphthongs
+  'iː','ɑː','ɔː','uː','ɜː',
+  'eɪ','aɪ','ɔɪ','əʊ','aʊ','ɪə','eə','ʊə',
+  // Short vowels
+  'ɪ','e','æ','ʌ','ɒ','ʊ','ə',
+  // Consonants
+  'p','t','k','b','d','g','f','v','θ','ð',
   's','z','ʃ','ʒ','h','m','n','ŋ','l','r','j','w'
 ];
+
+// Unicode ligature normalization map
+// Some APIs/dictionaries return single-char ligatures instead of 2-char sequences
+const IPA_NORMALIZE = {
+  '\u02A4': 'd\u0292', // ʤ → dʒ
+  '\u02A7': 't\u0283', // ʧ → tʃ
+  '\u02A3': 'dz',       // ʣ → dz
+  '\u02A8': 't\u0255', // ʨ → tɕ (rare, normalize best-effort)
+  '\u0263': 'g',        // ɣ → g (approximant, map to nearest)
+  '\u0294': '',         // ʔ glottal stop — skip
+  '\u02D0': '\u02D0',  // ː length mark — keep (part of long vowels)
+};
+
 function tokenizeIPA(raw){
-  // strip /…/, stress marks, syllable dots
-  let s = raw.replace(/[\/\[\]ˈˌ.]/g,'').trim();
+  // 1. Strip slashes, brackets, stress marks, syllable dots
+  let s = raw.replace(/[\/\[\]ˈˌ.\u02C8\u02CC]/g,'').trim();
+  // 2. Normalize ligature chars to 2-char equivalents
+  for(const [lig, norm] of Object.entries(IPA_NORMALIZE)){
+    s = s.split(lig).join(norm);
+  }
+  // 3. Tokenize longest-match first
   const result = [];
   let i = 0;
   while(i < s.length){
     let matched = false;
     for(const tok of IPA_TOKENS){
       if(s.startsWith(tok, i)){
-        result.push(tok); i+=tok.length; matched=true; break;
+        result.push(tok); i += tok.length; matched = true; break;
       }
     }
-    if(!matched) i++; // skip unknown char
+    if(!matched) i++; // skip unknown/unrecognized char
   }
   return result;
 }
